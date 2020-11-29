@@ -1,0 +1,88 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": "airbnb",
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "arrow-parens": [
+            "error",
+            "as-needed"
+        ],
+        "eqeqeq": [
+            "error",
+            "always"
+        ],
+        "import/prefer-default-export": [
+            0
+        ],
+        "jsx-a11y/click-events-have-key-events": [
+            0
+        ],
+        "jsx-a11y/no-noninteractive-element-interactions": [
+            0
+        ],
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "max-len": [
+            "error",
+            150,
+            4
+        ],
+        "no-multiple-empty-lines": [
+            "error"
+        ],
+        "no-nested-ternary": [
+            0
+        ],
+        "no-param-reassign": [
+            0
+        ],
+        "no-plusplus": [
+           0
+        ],
+        "no-unused-expressions": [
+            "error"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "react/destructuring-assignment": [
+            0
+        ],
+        "react/no-access-state-in-setstate": [
+            0
+        ],
+        "react/prefer-stateless-function": [
+            0
+        ],
+        "react/prop-types": [
+            1
+        ],
+        "react/require-default-props": [
+            0
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
+}
