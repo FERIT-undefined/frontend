@@ -1,9 +1,13 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "node": true
     },
-    "extends": "airbnb",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -20,10 +24,6 @@
         "react"
     ],
     "rules": {
-        "arrow-parens": [
-            "error",
-            "as-needed"
-        ],
         "eqeqeq": [
             "error",
             "always"
@@ -38,7 +38,7 @@
             0
         ],
         "linebreak-style": [
-            "error",
+            "warn",
             "windows"
         ],
         "max-len": [
@@ -56,7 +56,7 @@
             0
         ],
         "no-plusplus": [
-           0
+            0
         ],
         "no-unused-expressions": [
             "error"
@@ -83,6 +83,19 @@
         "semi": [
             "error",
             "always"
+        ],
+        "arrow-parens": [
+            "error",
+            "as-needed"
+        ],
+        "indent": [
+            "error",
+            2
+        ],
+        "no-extra-parens": 2,
+        "comma-style": [
+            "error",
+            "last"
         ]
     }
 }
