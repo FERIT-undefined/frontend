@@ -25,7 +25,7 @@
     ],
     "rules": {
         "eqeqeq": [
-            "error",
+            "warn",
             "always"
         ],
         "import/prefer-default-export": [
@@ -42,12 +42,12 @@
             "windows"
         ],
         "max-len": [
-            "error",
+            "warn",
             150,
             4
         ],
         "no-multiple-empty-lines": [
-            "error"
+            "warn"
         ],
         "no-nested-ternary": [
             0
@@ -59,7 +59,10 @@
             0
         ],
         "no-unused-expressions": [
-            "error"
+            "warn"
+        ],
+        "no-unused-vars": [
+            "warn"
         ],
         "quotes": [
             "error",

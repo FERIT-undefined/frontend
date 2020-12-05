@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,6 +11,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { loginUser } from "../../store/actions/userActions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -32,10 +34,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn() {
-  const classes = useStyles();
+export default function SignIn(props) {
+  const [userDetails, setUserDetails] = useState({
+    email: "",
+    password: "",
+  });
 
-  return (
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  if (props.user) {
+    window.location.assign("/");
+  }
+
+  return !props.user &&
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -45,7 +57,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -56,6 +68,7 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={e => setUserDetails({...userDetails, email: e.target.value})}
           />
           <TextField
             variant="outlined"
@@ -67,26 +80,19 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            onChange={e => setUserDetails({...userDetails, password: e.target.value})}
           />
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={() => dispatch(loginUser(userDetails))}
           >
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link to="/">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
               <Link to="/register">
                 Don`&apos;t have an account? Sign Up
@@ -96,5 +102,5 @@ export default function SignIn() {
         </form>
       </div>
     </Container>
-  );
+  ;
 }
