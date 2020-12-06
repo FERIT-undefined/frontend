@@ -21,14 +21,19 @@ class PrivateRoute extends Component {
 
   renderFunc = async () => {
     const { refreshToken } = this.props;
-    const user = token.decode(refreshToken);
     if (refreshToken == null || refreshToken === "") {
       this.setState({ response: false });
+    } else {
+      this.setState({ response: true });
     }
-    if (user.iat <= moment.utc().unix()) {
+    // TODO: Remove comments if refresh token has expiration date
+    /*
+    const user = token.decode(refreshToken);
+    if (user && user.exp <= moment.utc().unix()) {
       this.setState({ response: false });
       logOutAndWipeLocalStorage();
     }
+    */
   };
 
   render() {

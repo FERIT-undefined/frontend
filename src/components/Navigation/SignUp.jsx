@@ -58,7 +58,12 @@ export default function SignUp(props) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form}>
+        <form className={classes.form}
+          onSubmit={e => {
+            e.preventDefault();
+            dispatch(registerUser(userDetails));
+          }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -112,14 +117,11 @@ export default function SignUp(props) {
             </Grid>
           </Grid>
           <Button
-            type="button"
+            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => {
-              dispatch(registerUser(userDetails));
-            }}
           >
             Sign Up
           </Button>
