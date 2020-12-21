@@ -34,10 +34,13 @@ function isTokenExpiredError(errorResponse) {
 
 export function logOutAndWipeLocalStorage() {
   persistor.pause();
-  persistor.purge().then(() => persistor.flush()).finally(() => {
-    window.localStorage.clear();
-    window.location.assign("/login");
-  });
+  persistor
+    .purge()
+    .then(() => persistor.flush())
+    .finally(() => {
+      window.localStorage.clear();
+      window.location.assign("/login");
+    });
 }
 
 export function refreshAuthentication(refreshToken) {
@@ -86,17 +89,23 @@ async function resetTokenAndReattemptRequest(error) {
 }
 
 export function intercept() {
-  axios.interceptors.request.use(config => {
-    if (!config.noAuth) {
-      config.headers.Authorization = `Bearer ${getAuthData().jwt}`;
+  axios.interceptors.request.use(
+    config => {
+      if (!config.noAuth) {
+        config.headers.Authorization = `Bearer ${getAuthData().jwt}`;
+      }
+      return config;
+    },
+    error => {
+      if (
+        getAuthData().currentUser &&
+        getAuthData().currentUser.exp <= moment().utc().unix()
+      ) {
+        resetTokenAndReattemptRequest(error);
+      }
+      Promise.reject(error);
     }
-    return config;
-  }, error => {
-    if (getAuthData().currentUser && getAuthData().currentUser.exp <= moment().utc().unix()) {
-      resetTokenAndReattemptRequest(error);
-    }
-    Promise.reject(error);
-  });
+  );
 
   axios.interceptors.response.use(
     response => response,
@@ -106,6 +115,6 @@ export function intercept() {
         return resetTokenAndReattemptRequest(error);
       }
       return Promise.reject(error);
-    },
+    }
   );
 }
