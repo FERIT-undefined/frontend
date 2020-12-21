@@ -3,16 +3,15 @@ import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function NavbarContainer(props) {
-  console.log(props.user);
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+      <Navbar.Brand>BrzaKlopa</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         {props.user.role === "Admin" &&
           <Nav className="mr-auto">
             <Nav.Link>
-              <Link to="/">Zaposlenici</Link>
+              <Link to="/zaposlenici">Zaposlenici</Link>
             </Nav.Link>
             <Nav.Link>
               <Link to="/meni">Meni</Link>
@@ -38,10 +37,8 @@ function NavbarContainer(props) {
       </Navbar.Collapse>
       <Navbar.Collapse className="justify-content-end">
         <Navbar.Text>
-          Signed in as:{" "}
-          <a href="#login">
-            {props.user.fname} {props.user.lname}
-          </a>
+          Prijavljeni ste kao:{" "}
+          {props.user.fname} {props.user.lname}
         </Navbar.Text>
       </Navbar.Collapse>
     </Navbar>

@@ -19,3 +19,14 @@ export const loginUser = user => {
       });
   };
 };
+
+export const getUsers = user => {
+  return (dispatch, getState) => {
+    Axios.post(`${process.env.REACT_APP_API_URL_USERS}`, {"accessToken": user.accessToken, "refreshToken": user.refreshToken})
+      .then(res => dispatch({ type: "USERS_RETRIEVED", users: res.data.data })
+      )
+      .catch(err => {
+        dispatch({ type: "USERS_RETRIEVED_ERROR", err });
+      });
+  };
+};
