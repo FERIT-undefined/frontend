@@ -4,6 +4,7 @@ import { Redirect, Switch, Route } from "react-router-dom";
 
 import Zaposlenici from "./Zaposlenici/Zaposlenici";
 import NavbarContainer from "./Navigation/NavbarContainer";
+import Kuhinja from "./Kuhinja/Kuhinja";
 
 /* import NavigationBarContainer from "./NavigationBarContainer/NavigationBarContainer";
 import TrackingPageContainer from "./TrackingPage/TrackingPageContainer/TrackingPageContainer";
@@ -37,6 +38,7 @@ function Routes(props) {
               <Route path="/stolovi" component={null} />
             </>
           }
+          {props.user.role === "Kitchen" && <Kuhinja/>}
         </Switch>
       </Col>
     </Container>
