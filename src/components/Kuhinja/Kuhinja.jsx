@@ -47,15 +47,15 @@ const Kuhinja = () => {
                   <p>{item.table}</p>
                 </td>
                 <td>
-                  {tableOrders[0].meals.map((item, i) => <p key={i}>{item.name}</p>)}
+                  {tableOrders[i].meals.map((item, i) => <p key={i}>{item.name}</p>)}
                 </td>
                 <td>
-                  {tableOrders[0].meals.map((item, i) => <p key={i}>{item.quantity}</p>)}
+                  {tableOrders[i].meals.map((item, i) => <p key={i}>{item.quantity}</p>)}
                 </td>
                 <td>
                 </td>
                 <td>
-                  {tableOrders[0].meals.map((item, i) => <React.Fragment key={i}>  
+                  {tableOrders[i].meals.map((item, i) => <React.Fragment key={i}>  
                     <Row>
                       <Col xs={2}>
                         <p>{item.status}</p>

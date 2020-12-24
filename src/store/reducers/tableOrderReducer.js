@@ -1,4 +1,5 @@
 import { useRouteMatch } from "react-router-dom";
+import update from "immutability-helper";
 
 const initState = {
   status: null,
@@ -15,7 +16,7 @@ const tableOrder = (state = initState, action) => {
   case "TABLE_ORDERS_CHANGE_STATUS_ERROR":
     return { ...state, error: action.err };
   case "TABLE_ORDERS_CHANGE_STATUS":
-    return { ...state,  tableOrders: [{...state.tableOrders[action.tableIndex], meals: [...state.tableOrders[action.tableIndex].meals.map((item, i ) => i === action.index ? {...item,status : action.status} : item)]}]};
+    return update(state, {tableOrders: { [action.tableIndex]: {meals: {[action.index]: {status: {$set: action.status}}}}}});
   default:
     return state;
   }
