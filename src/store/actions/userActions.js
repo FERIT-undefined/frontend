@@ -51,10 +51,18 @@ export const removeUser = (user, userID) => {
   };
 };
 
-export const updateUser = userID => {
+export const updateUser = (user, userToEdit) => {
   return (dispatch, getState) => {
-    Axios.patch(`${process.env.REACT_APP_API_URL_USERS}:${userID}`)
-      .then(res => dispatch({ type: "USER_PATCHED", users: res.data.data }))
+    Axios.patch(`${process.env.REACT_APP_API_URL_USERS}${userToEdit.id}`, {
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+      fname: userToEdit.fname,
+      lname: userToEdit.lname,
+    })
+      .then(res => {
+        dispatch({ type: "USER_PATCHED", users: res.data.data });
+        dispatch(getUsers(user));
+      })
       .catch(err => {
         dispatch({ type: "USER_PATCHED_ERROR", err });
       });

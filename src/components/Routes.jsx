@@ -4,6 +4,7 @@ import { Redirect, Switch, Route } from "react-router-dom";
 
 import Zaposlenici from "./Zaposlenici/Zaposlenici";
 import NavbarContainer from "./Navigation/NavbarContainer";
+import MeniList from "./Meni/MeniList";
 
 /* import NavigationBarContainer from "./NavigationBarContainer/NavigationBarContainer";
 import TrackingPageContainer from "./TrackingPage/TrackingPageContainer/TrackingPageContainer";
@@ -26,14 +27,14 @@ function Routes(props) {
           {props.user.role === "Admin" &&
             <>
               <Route path="/zaposlenici" component={() => <Zaposlenici user={props.user}/>}/>
-              <Route path="/meni" component={null} />
+              <Route path="/meni" component={() => <MeniList user={props.user}/>} />
               <Route path="/promet" component={null} />
             </>
           }
           {props.user.role === "User" &&
             <>
               <Route exact path="/" component={null} />
-              <Route path="/meni" component={null} />
+              <Route path="/meni" component={() => <MeniList user={props.user}/>} />
               <Route path="/stolovi" component={null} />
             </>
           }
