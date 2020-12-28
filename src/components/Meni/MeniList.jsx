@@ -39,6 +39,20 @@ function MeniList(props) {
       setNewMeal({ ...newMeal, [name]: value });
     }
   };
+
+  const resetMeals = () => {
+    setEditedMeal({
+      pdv: 0,
+      price: 0,
+    });
+    setNewMeal({
+      pdv: 0,
+      price: 0,
+      type: "Appetizer",
+      discount: 0,
+    });
+  };
+
   return (
     <div className="container-fluid mt-4">
       <input
@@ -63,20 +77,20 @@ function MeniList(props) {
         <div className="col">OPIS</div>
         <div className="col">CIJENA</div>
         <div className="col">TIP</div>
-        {props.user && props.user.role === "Admin" &&
+        {props.user && props.user.role === "Admin" && 
           <>
             <div className="col">POPUST</div>
             <div className="col"></div>
           </>
         }
       </div>
-      {(searchResults ? searchResults : allMeals).map(meal =>
+      {(searchResults ? searchResults : allMeals).map(meal => 
         <div className="row p-2 mt-2 mealRow" key={meal.id}>
           <div className="col">{meal.name}</div>
           <div className="col">{meal.description}</div>
           <div className="col">{Number(meal.price).toFixed(2)}</div>
           <div className="col">{meal.type}</div>
-          {props.user && props.user.role === "Admin" &&
+          {props.user && props.user.role === "Admin" && 
             <>
               <div className="col">{meal.discount}</div>
               <div className="col">
@@ -115,16 +129,17 @@ function MeniList(props) {
           }
         </div>
       )}
-      {props.user && props.user.role === "Admin" &&
+      {props.user && props.user.role === "Admin" && 
         <button
           type="button"
           className="btn-lg btn-dark mt-3 float-right"
+          id="menuAddButton"
           onClick={() => setShowMealModal(true)}
         >
           DODAJ
         </button>
       }
-      {showMealModal && editedMeal &&
+      {showMealModal && editedMeal && 
         <Modal
           open={showMealModal}
           closeIconId="user-details-close-icon"
@@ -133,30 +148,12 @@ function MeniList(props) {
           onOverlayClick={() => {
             setShowMealModal(false);
             setEdit(false);
-            setEditedMeal({
-              pdv: 0,
-              price: 0,
-            });
-            setNewMeal({
-              pdv: 0,
-              price: 0,
-              type: "Appetizer",
-              discount: 0,
-            });
+            resetMeals();
           }}
           onClose={() => {
             setShowMealModal(false);
             setEdit(false);
-            setEditedMeal({
-              pdv: 0,
-              price: 0,
-            });
-            setNewMeal({
-              pdv: 0,
-              price: 0,
-              type: "Appetizer",
-              discount: 0,
-            });
+            resetMeals();
           }}
           styles={{
             overlay: {
@@ -185,16 +182,7 @@ function MeniList(props) {
                 }
                 setShowMealModal(false);
                 setEdit(false);
-                setEditedMeal({
-                  pdv: 0,
-                  price: 0,
-                });
-                setNewMeal({
-                  pdv: 0,
-                  price: 0,
-                  type: "Appetizer",
-                  discount: 0,
-                });
+                resetMeals();
               }}
             >
               <div className="col">
