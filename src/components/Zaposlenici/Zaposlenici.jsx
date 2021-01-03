@@ -71,28 +71,10 @@ function Zaposlenici(props) {
       {editedUser && showModal &&
         <Modal
           open={showModal}
-          closeIconId="user-details-close-icon"
-          closeOnOverlayClick
-          closeOnEsc
-          onOverlayClick={() => setShowModal(false)}
+          center
           onClose={() => setShowModal(false)}
-          styles={{
-            overlay: {
-              background: "rgba(97, 98, 98, 0.75)",
-              display: "flex",
-              alignItems: "flex-start",
-              position: "fixed",
-              top: "0",
-              left: "0",
-              right: "0",
-              bottom: "0",
-              overflowY: "auto",
-              overflowX: "hidden",
-              padding: "1.2rem",
-            },
-          }}
         >
-          <div className="detail-card container-xl-1" id="fadein">
+          <div className="container-xl-1" id="fadein">
             <form
               onSubmit={e => {
                 e.preventDefault();
@@ -147,8 +129,11 @@ function Zaposlenici(props) {
                       <option name="role" value="Admin">
                         Admin
                       </option>
-                      <option name="role" value="User">
-                        User
+                      <option name="role" value="Kuhar">
+                        Kuhar
+                      </option>
+                      <option name="role" value="Konobar">
+                        Konobar
                       </option>
                     </select>
                   </div>

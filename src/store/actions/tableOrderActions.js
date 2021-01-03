@@ -20,3 +20,13 @@ export const changeStatus = (status, table, index, user, tableIndex) => {
       });
   };
 };
+
+export const addTableOrder = (table, user, meals, total_price) => {
+  return (dispatch, getState) => {
+    Axios.patch(`${process.env.REACT_APP_API_URL_ORDER}add`, {table: table, meals: meals, refreshToken: user.refreshToken, total_price: total_price})
+      .then(res => dispatch(getTableOrders()))
+      .catch(err => {
+        dispatch({ type: "TABLE_ORDER_ADD_ERROR", err });
+      });
+  };
+};

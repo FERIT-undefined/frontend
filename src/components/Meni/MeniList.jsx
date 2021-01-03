@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Modal from "react-responsive-modal";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
 import "./MenuList.scss";
 import {
   addNewMeal,
@@ -8,6 +9,7 @@ import {
   removeMeal,
   updateMeal,
 } from "../../store/actions/menuActions";
+import QuantityPicker from "./QuantityPicker";
 
 function MeniList(props) {
   const [searchResults, setSearchResults] = useState(null);
@@ -90,6 +92,7 @@ function MeniList(props) {
           <div className="col">{meal.description}</div>
           <div className="col">{Number(meal.price).toFixed(2)}</div>
           <div className="col">{meal.type}</div>
+          {props.tableSelect && <QuantityPicker min={0} max={4} />}
           {props.user && props.user.role === "Admin" && 
             <>
               <div className="col">{meal.discount}</div>
@@ -139,39 +142,17 @@ function MeniList(props) {
           DODAJ
         </button>
       }
-      {showMealModal && editedMeal && 
+      {showMealModal && 
         <Modal
+          center
           open={showMealModal}
-          closeIconId="user-details-close-icon"
-          closeOnOverlayClick
-          closeOnEsc
-          onOverlayClick={() => {
-            setShowMealModal(false);
-            setEdit(false);
-            resetMeals();
-          }}
           onClose={() => {
             setShowMealModal(false);
             setEdit(false);
             resetMeals();
           }}
-          styles={{
-            overlay: {
-              background: "rgba(97, 98, 98, 0.75)",
-              display: "flex",
-              alignItems: "flex-start",
-              position: "fixed",
-              top: "0",
-              left: "0",
-              right: "0",
-              bottom: "0",
-              overflowY: "auto",
-              overflowX: "hidden",
-              padding: "1.2rem",
-            },
-          }}
         >
-          <div className="detail-card container-xl-1" id="fadein">
+          <div className="container-xl-1" id="fadein">
             <form
               onSubmit={e => {
                 e.preventDefault();

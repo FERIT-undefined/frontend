@@ -22,7 +22,7 @@ function NavbarContainer(props) {
             </Link>
           </Nav>
         }
-        {props.user.role === "User" &&
+        {props.user.role === "Konobar" &&
           <Nav className="mr-auto">
             <Link className="pl-4 pr-4 text-white" to="/">
               Narudžbe
