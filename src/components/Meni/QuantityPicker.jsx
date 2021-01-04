@@ -13,6 +13,7 @@ export default class QuantityPicker extends Component {
     const plusState = this.state.value + 1;
     if (this.state.value < this.props.max) {
       this.setState({ value: plusState });
+      this.props.setMealQuantity(plusState);
       this.setState({ disable: false });
     }
     if (this.state.value == this.props.max - 1) {
@@ -27,11 +28,13 @@ export default class QuantityPicker extends Component {
     const minusState = this.state.value - 1;
     if (this.state.value > this.props.min) {
       this.setState({ value: minusState });
+      this.props.setMealQuantity(minusState);
       if (this.state.value == this.props.min + 1) {
         this.setState({ disableDec: true });
       }
     } else {
       this.setState({ value: this.props.min });
+      this.props.setMealQuantity(this.props.min);
     }
     if (this.state.value == this.props.max) {
       this.setState({ disableInc: false });
@@ -44,6 +47,8 @@ export default class QuantityPicker extends Component {
     return (
       <span className="quantity-picker">
         <button
+          disabled={this.props.added}
+          type="button"
           className={`${
             disableDec ? "mod-disable " : ""
           }quantity-modifier modifier-left`}
@@ -58,6 +63,8 @@ export default class QuantityPicker extends Component {
           readOnly
         />
         <button
+          disabled={this.props.added}
+          type="button"
           className={`${
             disableInc ? "mod-disable " : ""
           }quantity-modifier modifier-right`}

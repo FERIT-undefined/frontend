@@ -9,7 +9,19 @@ function Stolovi(props) {
   const [showModal, setShowModal] = useState(false);
   const [meals, setMeals] = useState([]);
   const [table, setTable] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
+
   const dispatch = useDispatch();
+
+  const addMeal = meal => {
+    setTotalPrice(totalPrice + meal.price * meal.quantity);
+    setMeals([...meals, meal ]);
+  };
+
+  const removeMeal = meal => {
+    setTotalPrice(totalPrice - meal.price * meal.quantity);
+    setMeals(meals.filter(meals => meals.id !== meal.id));
+  };
 
   return (
     <>
@@ -25,7 +37,6 @@ function Stolovi(props) {
             1
           </button>
         </div>
-        .
         <div className="all-tables__order-table green">
           <button
             className="table-button"
@@ -61,11 +72,7 @@ function Stolovi(props) {
         </div>
       </div>
       {showModal &&
-        <Modal
-          center
-          open={showModal}
-          onClose={() => setShowModal(false)}
-        >
+        <Modal center open={showModal} onClose={() => setShowModal(false)}>
           <div className="container-xl-1" id="fadein">
             <form
               onSubmit={e => {
@@ -74,7 +81,7 @@ function Stolovi(props) {
                 setShowModal(false);
               }}
             >
-              <MeniList tableSelect />
+              <MeniList addMeal={addMeal} removeMeal={removeMeal} tableSelect />
             </form>
           </div>
         </Modal>

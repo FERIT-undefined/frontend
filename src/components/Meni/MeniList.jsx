@@ -79,60 +79,101 @@ function MeniList(props) {
         <div className="col">OPIS</div>
         <div className="col">CIJENA</div>
         <div className="col">TIP</div>
-        {props.user && props.user.role === "Admin" && 
+        {props.tableSelect && <div className="col"></div>}
+        {props.user && props.user.role === "Admin" &&
           <>
             <div className="col">POPUST</div>
             <div className="col"></div>
           </>
         }
       </div>
-      {(searchResults ? searchResults : allMeals).map(meal => 
-        <div className="row p-2 mt-2 mealRow" key={meal.id}>
-          <div className="col">{meal.name}</div>
-          <div className="col">{meal.description}</div>
-          <div className="col">{Number(meal.price).toFixed(2)}</div>
-          <div className="col">{meal.type}</div>
-          {props.tableSelect && <QuantityPicker min={0} max={4} />}
-          {props.user && props.user.role === "Admin" && 
-            <>
-              <div className="col">{meal.discount}</div>
+      {(searchResults ? searchResults : allMeals).map(meal => {
+        const [mealQuantity, setMealQuantity] = useState(0);
+        const [added, setAdded] = useState(false);
+        return (
+          <div className="row p-2 mt-2 mealRow" key={meal.id}>
+            <div className="col">{meal.name}</div>
+            <div className="col">{meal.description}</div>
+            <div className="col">{Number(meal.price).toFixed(2)}</div>
+            <div className="col">{meal.type}</div>
+            {props.tableSelect &&
               <div className="col">
-                <div id="action-button-container">
-                  <button
-                    id="remove-action-button"
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          "Jeste li sigurni da želite obrisati ovog korisnika?"
-                        )
-                      ) {
-                        dispatch(removeMeal(props.user, meal.id));
-                      }
-                    }}
-                  >
-                    REMOVE
-                  </button>
-                  <button
-                    id="update-action-button"
-                    onClick={() => {
-                      setEditedMeal(meal);
-                      setEdit(true);
-                      setEditedMeal({
+                <QuantityPicker
+                  min={0}
+                  max={4}
+                  added={added}
+                  setMealQuantity={setMealQuantity}
+                />
+                <button
+                  disabled={mealQuantity === 0}
+                  type="button"
+                  style={{ background: "none", border: "none", verticalAlign: "middle", minWidth: "32px" }}
+                  onClick={() => {
+                    if (!added) {
+                      props.addMeal({
                         ...meal,
-                        price: Number(meal.price).toFixed(2),
+                        quantity: mealQuantity,
+                        status: "Ordered"
                       });
-                      setShowMealModal(true);
-                    }}
-                  >
-                    UPDATE
-                  </button>
-                </div>
+                      setAdded(!added);
+                    } else {
+                      props.removeMeal({
+                        ...meal,
+                        quantity: mealQuantity,
+                      });
+                      setAdded(!added);
+                    }
+                  }}
+                >
+                  {!added ?
+                    <i style={{ fontSize: "20px" }} className="far fa-check-circle"></i>
+                    :
+                    <i style={{ fontSize: "20px" }} className="fas fa-times"></i>
+                  }
+                </button>
               </div>
-            </>
-          }
-        </div>
-      )}
-      {props.user && props.user.role === "Admin" && 
+            }
+            {props.user && props.user.role === "Admin" &&
+              <>
+                <div className="col">{meal.discount}</div>
+                <div className="col">
+                  <div id="action-button-container">
+                    <button
+                      id="remove-action-button"
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Jeste li sigurni da želite obrisati ovog korisnika?"
+                          )
+                        ) {
+                          dispatch(removeMeal(props.user, meal.id));
+                        }
+                      }}
+                    >
+                      REMOVE
+                    </button>
+                    <button
+                      id="update-action-button"
+                      onClick={() => {
+                        setEditedMeal(meal);
+                        setEdit(true);
+                        setEditedMeal({
+                          ...meal,
+                          price: Number(meal.price).toFixed(2),
+                        });
+                        setShowMealModal(true);
+                      }}
+                    >
+                      UPDATE
+                    </button>
+                  </div>
+                </div>
+              </>
+            }
+          </div>
+        );
+      })}
+      {props.user && props.user.role === "Admin" &&
         <button
           type="button"
           className="btn-lg btn-dark mt-3 float-right"
@@ -142,7 +183,7 @@ function MeniList(props) {
           DODAJ
         </button>
       }
-      {showMealModal && 
+      {showMealModal &&
         <Modal
           center
           open={showMealModal}
