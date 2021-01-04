@@ -4,7 +4,7 @@ export default class QuantityPicker extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: this.props.min, disableDec: true, disableInc: false };
+    this.state = { value: this.props.meal.quantity, disableDec: true, disableInc: false };
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
   }
@@ -13,7 +13,7 @@ export default class QuantityPicker extends Component {
     const plusState = this.state.value + 1;
     if (this.state.value < this.props.max) {
       this.setState({ value: plusState });
-      this.props.setMealQuantity(plusState);
+      this.props.updateQuantity(this.props.index, this.props.meal, plusState);
       this.setState({ disable: false });
     }
     if (this.state.value == this.props.max - 1) {
@@ -28,13 +28,17 @@ export default class QuantityPicker extends Component {
     const minusState = this.state.value - 1;
     if (this.state.value > this.props.min) {
       this.setState({ value: minusState });
-      this.props.setMealQuantity(minusState);
+      this.props.updateQuantity(this.props.index, this.props.meal, minusState);
       if (this.state.value == this.props.min + 1) {
         this.setState({ disableDec: true });
       }
     } else {
       this.setState({ value: this.props.min });
-      this.props.setMealQuantity(this.props.min);
+      this.props.updateQuantity(
+        this.props.index,
+        this.props.meal,
+        this.props.min
+      );
     }
     if (this.state.value == this.props.max) {
       this.setState({ disableInc: false });
@@ -47,7 +51,7 @@ export default class QuantityPicker extends Component {
     return (
       <span className="quantity-picker">
         <button
-          disabled={this.props.added}
+          disabled={this.props.meal.added}
           type="button"
           className={`${
             disableDec ? "mod-disable " : ""
@@ -63,7 +67,7 @@ export default class QuantityPicker extends Component {
           readOnly
         />
         <button
-          disabled={this.props.added}
+          disabled={this.props.meal.added}
           type="button"
           className={`${
             disableInc ? "mod-disable " : ""

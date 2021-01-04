@@ -25,14 +25,26 @@ function MeniList(props) {
     price: 0,
   });
   const [edit, setEdit] = useState(false);
-
-  const allMeals = useSelector(state => state.menu.allMeals);
-
+  const [allMeals, setAllMeals] = useState([]);
+  const [searching, setSearching] = useState(false);
   const dispatch = useDispatch();
 
+  const meals = useSelector(state => state.menu.allMeals);
+
   useEffect(() => {
+    setAllMeals(meals);
     dispatch(getAllMeals());
   }, []);
+
+  useEffect(() => {
+    setAllMeals(
+      meals.filter(meal => {
+        meal.quantity = 0;
+        meal.added = false;
+        return meal;
+      })
+    );
+  }, [props.tableSelect]);
 
   const setNewMealData = (name, value) => {
     if (edit) {
@@ -55,6 +67,36 @@ function MeniList(props) {
     });
   };
 
+  const updateQuantity = (index, meal, quantity) => {
+    let newArr = [...allMeals];
+    if (searching) {
+      let newArr2 = [...searchResults];
+      newArr2[index] = { ...meal, quantity: quantity };
+      let index2 = newArr.findIndex(meals => meals.id === meal.id);
+      newArr[index2] = { ...meal, quantity: quantity };
+      setSearchResults(newArr2);
+      setAllMeals(newArr);
+    } else {
+      newArr[index] = { ...meal, quantity: quantity };
+      setAllMeals(newArr);
+    }
+  };
+
+  const updateAdded = (index, meal, added) => {
+    let newArr = [...allMeals];
+    if (searching) {
+      let newArr2 = [...searchResults];
+      newArr2[index] = { ...meal, added: added };
+      let index2 = newArr.findIndex(meals => meals.id === meal.id);
+      newArr[index2] = { ...meal, added: added };
+      setSearchResults(newArr2);
+      setAllMeals(newArr);
+    } else {
+      newArr[index] = { ...meal, added: added };
+      setAllMeals(newArr);
+    }
+  };
+
   return (
     <div className="container-fluid mt-4">
       <input
@@ -63,15 +105,21 @@ function MeniList(props) {
         placeholder="Search"
         aria-label="Search"
         onChange={e => {
-          setSearchResults(
-            allMeals.filter(
-              meal =>
-                (meal.name.includes(e.target.value) ||
-                  meal.description.includes(e.target.value) ||
-                  meal.type.includes(e.target.value)) &&
-                meal
-            )
-          );
+          if (e.target.value === "") {
+            setSearching(false);
+            setSearchResults(null);
+          } else {
+            setSearching(true);
+            setSearchResults(
+              allMeals.filter(
+                meal =>
+                  (meal.name.includes(e.target.value) ||
+                    meal.description.includes(e.target.value) ||
+                    meal.type.includes(e.target.value)) &&
+                  meal
+              )
+            );
+          }
         }}
       />
       <div className="row p-2 font-weight-bold mt-3 listInfoRow">
@@ -80,100 +128,105 @@ function MeniList(props) {
         <div className="col">CIJENA</div>
         <div className="col">TIP</div>
         {props.tableSelect && <div className="col"></div>}
-        {props.user && props.user.role === "Admin" &&
+        {props.user && props.user.role === "Admin" && 
           <>
             <div className="col">POPUST</div>
             <div className="col"></div>
           </>
         }
       </div>
-      {(searchResults ? searchResults : allMeals).map(meal => {
-        const [mealQuantity, setMealQuantity] = useState(0);
-        const [added, setAdded] = useState(false);
-        return (
-          <div className="row p-2 mt-2 mealRow" key={meal.id}>
-            <div className="col">{meal.name}</div>
-            <div className="col">{meal.description}</div>
-            <div className="col">{Number(meal.price).toFixed(2)}</div>
-            <div className="col">{meal.type}</div>
-            {props.tableSelect &&
-              <div className="col">
-                <QuantityPicker
-                  min={0}
-                  max={4}
-                  added={added}
-                  setMealQuantity={setMealQuantity}
-                />
-                <button
-                  disabled={mealQuantity === 0}
-                  type="button"
-                  style={{ background: "none", border: "none", verticalAlign: "middle", minWidth: "32px" }}
-                  onClick={() => {
-                    if (!added) {
-                      props.addMeal({
-                        ...meal,
-                        quantity: mealQuantity,
-                        status: "Ordered"
-                      });
-                      setAdded(!added);
-                    } else {
-                      props.removeMeal({
-                        ...meal,
-                        quantity: mealQuantity,
-                      });
-                      setAdded(!added);
-                    }
-                  }}
-                >
-                  {!added ?
-                    <i style={{ fontSize: "20px" }} className="far fa-check-circle"></i>
-                    :
-                    <i style={{ fontSize: "20px" }} className="fas fa-times"></i>
+      {(searchResults ? searchResults : allMeals).map((meal, index) => 
+        <div className="row p-2 mt-2 mealRow" key={meal.id}>
+          <div className="col">{meal.name}</div>
+          <div className="col">{meal.description}</div>
+          <div className="col">{Number(meal.price).toFixed(2)}</div>
+          <div className="col">{meal.type}</div>
+          {props.tableSelect && 
+            <div className="col">
+              <QuantityPicker
+                min={0}
+                max={4}
+                meal={meal}
+                index={index}
+                updateQuantity={updateQuantity}
+              />
+              <button
+                disabled={meal.quantity === 0}
+                type="button"
+                style={{
+                  background: "none",
+                  border: "none",
+                  verticalAlign: "middle",
+                  minWidth: "32px",
+                }}
+                onClick={() => {
+                  if (!meal.added) {
+                    props.addMeal({
+                      ...meal,
+                      quantity: meal.quantity,
+                      status: "Ordered",
+                    });
+                    updateAdded(index, meal, true);
+                  } else {
+                    props.removeMeal({
+                      ...meal,
+                      quantity: meal.quantity,
+                    });
+                    updateAdded(index, meal, false);
                   }
-                </button>
-              </div>
-            }
-            {props.user && props.user.role === "Admin" &&
-              <>
-                <div className="col">{meal.discount}</div>
-                <div className="col">
-                  <div id="action-button-container">
-                    <button
-                      id="remove-action-button"
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            "Jeste li sigurni da želite obrisati ovog korisnika?"
-                          )
-                        ) {
-                          dispatch(removeMeal(props.user, meal.id));
-                        }
-                      }}
-                    >
-                      REMOVE
-                    </button>
-                    <button
-                      id="update-action-button"
-                      onClick={() => {
-                        setEditedMeal(meal);
-                        setEdit(true);
-                        setEditedMeal({
-                          ...meal,
-                          price: Number(meal.price).toFixed(2),
-                        });
-                        setShowMealModal(true);
-                      }}
-                    >
-                      UPDATE
-                    </button>
-                  </div>
+                }}
+              >
+                {!meal.added ? 
+                  <i
+                    style={{ fontSize: "20px" }}
+                    className="far fa-check-circle"
+                  ></i>
+                  : 
+                  <i style={{ fontSize: "20px" }} className="fas fa-times"></i>
+                }
+              </button>
+            </div>
+          }
+          {props.user && props.user.role === "Admin" && 
+            <>
+              <div className="col">{meal.discount}</div>
+              <div className="col">
+                <div id="action-button-container">
+                  <button
+                    id="remove-action-button"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          "Jeste li sigurni da želite obrisati ovog korisnika?"
+                        )
+                      ) {
+                        dispatch(removeMeal(props.user, meal.id));
+                      }
+                    }}
+                  >
+                    REMOVE
+                  </button>
+                  <button
+                    id="update-action-button"
+                    onClick={() => {
+                      setEditedMeal(meal);
+                      setEdit(true);
+                      setEditedMeal({
+                        ...meal,
+                        price: Number(meal.price).toFixed(2),
+                      });
+                      setShowMealModal(true);
+                    }}
+                  >
+                    UPDATE
+                  </button>
                 </div>
-              </>
-            }
-          </div>
-        );
-      })}
-      {props.user && props.user.role === "Admin" &&
+              </div>
+            </>
+          }
+        </div>
+      )}
+      {props.user && props.user.role === "Admin" && 
         <button
           type="button"
           className="btn-lg btn-dark mt-3 float-right"
@@ -183,7 +236,7 @@ function MeniList(props) {
           DODAJ
         </button>
       }
-      {showMealModal &&
+      {showMealModal && 
         <Modal
           center
           open={showMealModal}
