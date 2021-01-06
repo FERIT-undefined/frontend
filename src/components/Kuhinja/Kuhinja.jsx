@@ -24,10 +24,7 @@ const Kuhinja = () => {
   }, []);
 
   const changeMealStatus = () => {
-    let status;
-    if (meal.status === "ordered") status = "started";
-    if (meal.status === "started") status = "done"; 
-    // let status = meal.status ===  "ordered" ? "started" : "done";
+    let status = meal.status ===  "ordered" ? "started" : "done";
     dispatch(changeStatus(status, table, index, user, tableIndex));
   };
   return (

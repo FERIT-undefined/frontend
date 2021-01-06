@@ -62,7 +62,7 @@
             "warn"
         ],
         "no-unused-vars": [
-            0
+            "warn"
         ],
         "quotes": [
             "error",
@@ -78,7 +78,7 @@
             0
         ],
         "react/prop-types": [
-            "off"
+            1
         ],
         "react/require-default-props": [
             0
