@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Modal from "react-responsive-modal";
+// import Modal from "react-responsive-modal";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
@@ -9,7 +9,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
-
+import Modal from "../Modal/Modal";
 import {
   getUsers,
   removeUser,
@@ -49,6 +49,11 @@ function Zaposlenici(props) {
     { value: "Kuhar" },
     { value: "Konobar" },
   ];
+
+  const closeModal = () => {
+    setShowModal(false);
+    setAddUser(false);
+  };
 
   return (
     <div className="zaposlenici">
@@ -111,35 +116,10 @@ function Zaposlenici(props) {
           )}
 
       </div>
-      {editedUser && showModal &&
+      {editedUser && showModal ?
         <Modal
-          open={showModal}
-          showCloseIcon={false}
-          closeOnOverlayClick
-          closeOnEsc
-          onOverlayClick={() => {
-            setShowModal(false);
-            setAddUser(false);
-          }}
-          onClose={() => {
-            setShowModal(false);
-            setAddUser(false);
-          }}
-          styles={{
-            overlay: {
-              background: "rgba(97, 98, 98, 0.75)",
-              display: "flex",
-              alignItems: "flex-start",
-              position: "fixed",
-              top: "0",
-              left: "0",
-              right: "0",
-              bottom: "0",
-              overflowY: "auto",
-              overflowX: "hidden",
-              padding: "1.2rem",
-            },
-          }}
+          showModal={showModal}
+          closeModal={() => closeModal}
         >
           <div className="detail-card container-xl-1" id="fadein">
             <button className="detail-card__close-icon" onClick={() => {
@@ -222,14 +202,14 @@ function Zaposlenici(props) {
                   </div>
                 </div>
                 <div className="row mt-3">
-                  <div className="col-3">
+                  <div className="col-3" id="potvrdi-container">
                     <Button variant="outlined" type="submit">Potvrdi</Button>
                   </div>
                 </div>
               </div>
             </form>
           </div>
-        </Modal>
+        </Modal> : null
       }
     </div>
   );

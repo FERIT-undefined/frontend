@@ -18,7 +18,8 @@ export const getAllMeals = () => {
 export const addNewMeal = (user, meal) => {
   return (dispatch, getState) => {
     Axios.post(`${process.env.REACT_APP_API_URL_MENU}add`, {
-      ...user,
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
       ...meal,
     })
       .then(res => {
@@ -52,7 +53,12 @@ export const updateMeal = (user, mealToEdit) => {
     Axios.patch(`${process.env.REACT_APP_API_URL_MENU}${mealToEdit.id}`, {
       accessToken: user.accessToken,
       refreshToken: user.refreshToken,
-      ...mealToEdit,
+      name: mealToEdit.name,
+      description: mealToEdit.description,
+      price: mealToEdit.price,
+      type: mealToEdit.type,
+      pdv: mealToEdit.pdv,
+      discount: mealToEdit.discount,
     })
       .then(res => {
         dispatch(getAllMeals());
