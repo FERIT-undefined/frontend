@@ -1,0 +1,36 @@
+.all-tables {
+    width: 95vw;
+    padding: 0 30px;
+    margin: 30px 0;
+    display: flex;
+    flex-flow: wrap;
+    &__order-table {
+      width: 340px;
+      height: 272px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-image: none;
+      margin-right: 40px;
+      margin-top: 40px;
+      &.black {
+        background-image: url(../../assets/images/Black-outline-table.svg);
+      }
+      &.green {
+        background-image: url(../../assets/images/Green-outline-table.svg);
+      }
+      &.red {
+        background-image: url(../../assets/images/Red-outline-table.svg);
+      }
+      &.yellow {
+        background-image: url(../../assets/images/Yellow-outline-table.svg);
+      }
+      .table-button {
+        width: 100%;
+        height: 100%;
+        background: none;
+        border: none;
+        font-size: 32px;
+        font-weight: bold;
+      }
+    }
+  }

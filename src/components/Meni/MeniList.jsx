@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import Modal from "react-responsive-modal";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
@@ -9,7 +8,17 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
+
 import Modal from "../Modal/Modal";
+import "./MenuList.scss";
+import {
+  addNewMeal,
+  getAllMeals,
+  removeMeal,
+  updateMeal,
+} from "../../store/actions/menuActions";
+import QuantityPicker from "./QuantityPicker";
+
 const useStyles = makeStyles(theme => ({
   margin: {
     margin: theme.spacing(0),
@@ -18,18 +27,16 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(0),
   },
 }));
-import "./MenuList.scss";
-import {
-  addNewMeal,
-  getAllMeals,
-  removeMeal,
-  updateMeal,
-} from "../../store/actions/menuActions";
+
 
 function MeniList(props) {
   const classes = useStyles();
+
   const [searchResults, setSearchResults] = useState(null);
   const [showMealModal, setShowMealModal] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [allMeals, setAllMeals] = useState([]);
+  const [searching, setSearching] = useState(false);
   const [newMeal, setNewMeal] = useState({
     pdv: 0,
     price: 0,
@@ -40,15 +47,24 @@ function MeniList(props) {
     pdv: 0,
     price: 0,
   });
-  const [edit, setEdit] = useState(false);
-
-  const allMeals = useSelector(state => state.menu.allMeals);
 
   const dispatch = useDispatch();
+  const meals = useSelector(state => state.menu.allMeals);
 
   useEffect(() => {
+    setAllMeals(meals);
     dispatch(getAllMeals());
   }, []);
+
+  useEffect(() => {
+    setAllMeals(
+      meals.filter(meal => {
+        meal.quantity = 0;
+        meal.added = false;
+        return meal;
+      })
+    );
+  }, [props.tableSelect]);
 
   const setNewMealData = (name, value) => {
     if (edit) {
@@ -58,9 +74,7 @@ function MeniList(props) {
     }
   };
 
-  const closeModal = () => {
-    setShowMealModal(false);
-    setEdit(false);
+  const resetMeals = () => {
     setEditedMeal({
       pdv: 0,
       price: 0,
@@ -73,29 +87,71 @@ function MeniList(props) {
     });
   };
 
+  const updateQuantity = (index, meal, quantity) => {
+    let newArr = [...allMeals];
+    if (searching) {
+      let newArr2 = [...searchResults];
+      newArr2[index] = { ...meal, quantity: quantity };
+      let index2 = newArr.findIndex(meals => meals.id === meal.id);
+      newArr[index2] = { ...meal, quantity: quantity };
+      setSearchResults(newArr2);
+      setAllMeals(newArr);
+    } else {
+      newArr[index] = { ...meal, quantity: quantity };
+      setAllMeals(newArr);
+    }
+  };
+
+  const updateAdded = (index, meal, added) => {
+    let newArr = [...allMeals];
+    if (searching) {
+      let newArr2 = [...searchResults];
+      newArr2[index] = { ...meal, added: added };
+      let index2 = newArr.findIndex(meals => meals.id === meal.id);
+      newArr[index2] = { ...meal, added: added };
+      setSearchResults(newArr2);
+      setAllMeals(newArr);
+    } else {
+      newArr[index] = { ...meal, added: added };
+      setAllMeals(newArr);
+    }
+  };
+
+  const closeModal = () => {
+    setShowMealModal(false);
+    setEdit(false);
+    resetMeals();
+  };
   const mealTypes = [
     { value: "Appetizer" },
     { value: "Main Course" },
     { value: "Dessert" },
     { value: "Grill" },
   ];
+
   return (
     <div className="container-fluid mt-4 menu">
       <input
         className="form-control menu__search"
         type="text"
         placeholder="Pretraži..."
-        aria-label="Search"
+        aria-label="Pretraži"
         onChange={e => {
-          setSearchResults(
-            allMeals.filter(
-              meal =>
-                (meal.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                  meal.description.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                  meal.type.toLowerCase().includes(e.target.value.toLowerCase())) &&
-                meal
-            )
-          );
+          if (e.target.value === "") {
+            setSearching(false);
+            setSearchResults(null);
+          } else {
+            setSearching(true);
+            setSearchResults(
+              allMeals.filter(
+                meal =>
+                  (meal.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+                    meal.description.toLowerCase().includes(e.target.value.toLowerCase()) ||
+                    meal.type.toLowerCase().includes(e.target.value.toLowerCase())) &&
+                  meal
+              )
+            );
+          }
         }}
       />
       {props.user && props.user.role === "Admin" &&
@@ -110,14 +166,14 @@ function MeniList(props) {
       <div className="row p-2 font-weight-bold mt-3 listInfoRow">
         <div className="col">IME</div>
         <div className="col">OPIS</div>
-        <div className="col">TIP</div>
+        <div className="col">VRSTA</div>
         <div className="col">CIJENA</div>
         <div className="col">PDV</div>
         <div className="col">POPUST</div>
         <div className="col">UKUPNA CIJENA</div>
-        <div className="col"></div>
+        {props.tableSelect || props.user && props.user.role === "Admin" && <div className="col"></div>}
       </div>
-      {(searchResults ? searchResults : allMeals).map(meal =>
+      {(searchResults ? searchResults : allMeals).map((meal, index) =>
         <div className="row p-2 mt-2 mealRow" key={meal.id}>
           <div className="col">{meal.name}</div>
           <div className="col">{meal.description}</div>
@@ -126,9 +182,54 @@ function MeniList(props) {
           <div className="col">{meal.pdv}%</div>
           <div className="col">{meal.discount}%</div>
           <div className="col">{(meal.price + (meal.price * (meal.pdv / 100) - meal.price * (meal.discount / 100))).toFixed(2)} HRK</div>
+          {props.tableSelect &&
+            <div className="col">
+              <QuantityPicker
+                min={0}
+                max={4}
+                meal={meal}
+                index={index}
+                updateQuantity={updateQuantity}
+              />
+              <button
+                disabled={meal.quantity === 0}
+                type="button"
+                style={{
+                  background: "none",
+                  border: "none",
+                  verticalAlign: "middle",
+                  minWidth: "32px",
+                }}
+                onClick={() => {
+                  if (!meal.added) {
+                    props.addMeal({
+                      ...meal,
+                      quantity: meal.quantity,
+                      status: "Ordered",
+                    });
+                    updateAdded(index, meal, true);
+                  } else {
+                    props.removeMeal({
+                      ...meal,
+                      quantity: meal.quantity,
+                    });
+                    updateAdded(index, meal, false);
+                  }
+                }}
+              >
+                {!meal.added ?
+                  <i
+                    style={{ fontSize: "20px" }}
+                    className="far fa-check-circle"
+                  ></i>
+                  :
+                  <i style={{ fontSize: "20px" }} className="fas fa-times"></i>
+                }
+              </button>
+            </div>
+          }
           {props.user && props.user.role === "Admin" &&
             <>
-
               <div className="col">
                 <div className="button-container">
                   <IconButton
@@ -176,20 +277,8 @@ function MeniList(props) {
             <div className="detail-card__close-icon">
               <IconButton
                 id="close"
-                onClick={() => {
-                  setShowMealModal(false);
-                  setEdit(false);
-                  setEditedMeal({
-                    pdv: 0,
-                    price: 0,
-                  });
-                  setNewMeal({
-                    pdv: 0,
-                    price: 0,
-                    type: "Appetizer",
-                    discount: 0,
-                  });
-                }}>
+                onClick={() => closeModal()}
+              >
                 <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
               </IconButton>
             </div>
@@ -204,16 +293,7 @@ function MeniList(props) {
                 }
                 setShowMealModal(false);
                 setEdit(false);
-                setEditedMeal({
-                  pdv: 0,
-                  price: 0,
-                });
-                setNewMeal({
-                  pdv: 0,
-                  price: 0,
-                  type: "Appetizer",
-                  discount: 0,
-                });
+                resetMeals();
               }}
             >
               <div className="col">
