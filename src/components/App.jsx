@@ -18,7 +18,8 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/login" component={() => <SignIn user={user}/>}/>
+        <Route
+        path="/login" component={() => <SignIn user={user}/>}/>
         <Route path="/register" component={() => <SignUp user={user}/>}/>
         <PrivateRoute component={() => <Routes user={user}/>} />
       </Switch>
