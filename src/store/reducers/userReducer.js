@@ -5,7 +5,7 @@ const initState = {
 };
 const users = (state = initState, action) => {
   switch (action.type) {
-  case "REGISTERED_USER":
+  // case "REGISTERED_USER":
   case "USER_LOGGED_IN":
     return { ...state, user: action.user };
   case "USER_REMOVED_ERROR":

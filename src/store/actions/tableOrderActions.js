@@ -12,8 +12,9 @@ export const getTableOrders = () => {
 };
 
 export const changeStatus = (status, table, index, user, tableIndex) => {
+  console.log(table, index);
   return (dispatch, getState) => {
-    Axios.patch(`${process.env.REACT_APP_API_URL_ORDER}/${table.table}/${index}`, {refreshToken: user.refreshToken, status:  status})
+    Axios.patch(`${process.env.REACT_APP_API_URL_ORDER}${table.table}/${index}`, {refreshToken: user.refreshToken, status:  status, accessToken: user.accessToken})
       .then(res => dispatch({ type: "TABLE_ORDERS_CHANGE_STATUS", index: index, status: status, tableIndex: tableIndex}))
       .catch(err => {
         dispatch({ type: "TABLE_ORDERS_CHANGE_STATUS_ERROR", err });
