@@ -89,5 +89,4 @@ function Stolovi(props) {
     </>
   );
 }
-
 export default Stolovi;

@@ -100,11 +100,11 @@ export default function SignIn(props) {
             >
               Sign In
             </Button>
-            <Grid container>
+            {/*<Grid container>
               <Grid item>
                 <Link to="/register">Don`&apos;t have an account? Sign Up</Link>
               </Grid>
-            </Grid>
+            </Grid>*/}
           </form>
         </div>
       </Container>
