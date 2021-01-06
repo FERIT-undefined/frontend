@@ -1,6 +1,23 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-responsive-modal";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
+import CloseIcon from "@material-ui/icons/Close";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
+}));
 import "./MenuList.scss";
 import {
   addNewMeal,
@@ -10,6 +27,7 @@ import {
 } from "../../store/actions/menuActions";
 
 function MeniList(props) {
+  const classes = useStyles();
   const [searchResults, setSearchResults] = useState(null);
   const [showMealModal, setShowMealModal] = useState(false);
   const [newMeal, setNewMeal] = useState({
@@ -39,12 +57,20 @@ function MeniList(props) {
       setNewMeal({ ...newMeal, [name]: value });
     }
   };
+
+  const mealTypes = [
+    { value: "Appetizer" },
+    { value: "Main Course" },
+    { value: "Dessert" },
+    { value: "Grill" },
+  ];
+
   return (
-    <div className="container-fluid mt-4">
+    <div className="container-fluid mt-4 menu">
       <input
-        className="form-control"
+        className="form-control menu__search"
         type="text"
-        placeholder="Search"
+        placeholder="Pretraži..."
         aria-label="Search"
         onChange={e => {
           setSearchResults(
@@ -58,6 +84,15 @@ function MeniList(props) {
           );
         }}
       />
+      {props.user && props.user.role === "Admin" &&
+        <button
+          type="button"
+          className="menu__add"
+          onClick={() => setShowMealModal(true)}
+        >
+          DODAJ JELO
+        </button>
+      }
       <div className="row p-2 font-weight-bold mt-3 listInfoRow">
         <div className="col">IME</div>
         <div className="col">OPIS</div>
@@ -81,22 +116,24 @@ function MeniList(props) {
               <div className="col">{meal.discount}</div>
               <div className="col">
                 <div id="action-button-container">
-                  <button
-                    id="remove-action-button"
+                  <IconButton
+                    aria-label="delete"
+                    className={classes.margin}
                     onClick={() => {
                       if (
                         window.confirm(
-                          "Jeste li sigurni da želite obrisati ovog korisnika?"
+                          "Jeste li sigurni da želite obrisati ovo jelo?"
                         )
                       ) {
                         dispatch(removeMeal(props.user, meal.id));
                       }
                     }}
                   >
-                    REMOVE
-                  </button>
-                  <button
-                    id="update-action-button"
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="edit"
+                    className={classes.margin}
                     onClick={() => {
                       setEditedMeal(meal);
                       setEdit(true);
@@ -107,27 +144,18 @@ function MeniList(props) {
                       setShowMealModal(true);
                     }}
                   >
-                    UPDATE
-                  </button>
+                    <EditTwoToneIcon style={{ color: "#219ebc" }} />
+                  </IconButton>
                 </div>
               </div>
             </>
           }
         </div>
       )}
-      {props.user && props.user.role === "Admin" &&
-        <button
-          type="button"
-          className="btn-lg btn-dark mt-3 float-right"
-          onClick={() => setShowMealModal(true)}
-        >
-          DODAJ
-        </button>
-      }
       {showMealModal && editedMeal &&
         <Modal
           open={showMealModal}
-          closeIconId="user-details-close-icon"
+          showCloseIcon={false}
           closeOnOverlayClick
           closeOnEsc
           onOverlayClick={() => {
@@ -172,9 +200,31 @@ function MeniList(props) {
               overflowX: "hidden",
               padding: "1.2rem",
             },
+            modal: {
+              top: "0",
+              left: "0",
+              right: "0",
+              bottom: "0",
+            }
           }}
         >
           <div className="detail-card container-xl-1" id="fadein">
+            <IconButton className="detail-card__close-icon" onClick={() => {
+              setShowMealModal(false);
+              setEdit(false);
+              setEditedMeal({
+                pdv: 0,
+                price: 0,
+              });
+              setNewMeal({
+                pdv: 0,
+                price: 0,
+                type: "Appetizer",
+                discount: 0,
+              });
+            }}>
+              <CloseIcon style={{ color: "#219ebc" }} />
+            </IconButton>
             <form
               onSubmit={e => {
                 e.preventDefault();
@@ -199,11 +249,11 @@ function MeniList(props) {
             >
               <div className="col">
                 <div className="row">
-                  <div className="col-3">
+                  {/* <div className="col-3">
                     <label htmlFor="name">Ime</label>
-                  </div>
+                  </div> */}
                   <div className="col-9">
-                    <input
+                    {/* <input
                       required
                       type="text"
                       name="name"
@@ -219,15 +269,23 @@ function MeniList(props) {
                       onChange={e => {
                         setNewMealData(e.target.name, e.target.value);
                       }}
+                    /> */}
+                    <TextField
+                      id="standard-required"
+                      label="Naziv"
+                      defaultValue={edit ? editedMeal.name : ""}
+                      onChange={e => {
+                        setNewMealData("name", e.target.value);
+                      }}
                     />
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
+                  {/* <div className="col-3">
                     <label htmlFor="description">Opis</label>
-                  </div>
+                  </div> */}
                   <div className="col-9">
-                    <input
+                    {/* <input
                       required
                       type="text"
                       name="description"
@@ -243,15 +301,24 @@ function MeniList(props) {
                       onChange={e => {
                         setNewMealData(e.target.name, e.target.value);
                       }}
+                    /> */}
+                    <TextField
+                      id="standard-required"
+                      label="Opis"
+                      defaultValue={edit ? editedMeal.description : ""}
+                      onChange={e => {
+                        setNewMealData("description", e.target.value);
+                      }}
+                      multiline={true}
                     />
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
+                  {/* <div className="col-3">
                     <label htmlFor="price">Cijena</label>
-                  </div>
+                  </div> */}
                   <div className="col-9">
-                    <input
+                    {/* <input
                       required
                       type="number"
                       name="price"
@@ -269,15 +336,28 @@ function MeniList(props) {
                       onChange={e => {
                         setNewMealData(e.target.name, e.target.valueAsNumber);
                       }}
+                    /> */}
+                    <TextField
+                      id="standard-number"
+                      type="number"
+                      inputProps={{
+                        step: 0.01,
+                        min: 0.01,
+                      }}
+                      label="Cijena (HRK)"
+                      defaultValue={edit ? editedMeal.price : 0}
+                      onChange={e => {
+                        setNewMealData("price", e.target.valueAsNumber);
+                      }}
                     />
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
+                  {/* <div className="col-3">
                     <label htmlFor="type">Tip</label>
-                  </div>
+                  </div> */}
                   <div className="col-9">
-                    <select
+                    {/* <select
                       required
                       name="type"
                       id="type"
@@ -306,15 +386,30 @@ function MeniList(props) {
                       <option name="role" value="Grill">
                         Grill
                       </option>
-                    </select>
+                    </select> */}
+                    <TextField
+                      id="standard-select-native"
+                      select
+                      label="Vrsta jela"
+                      value={editedMeal.type}
+                      onChange={e => setNewMealData("type", e.target.value)}
+                      SelectProps={{ native: true }}
+                      helperText="Odaberite vrstu jela"
+                    >
+                      {mealTypes.map(option =>
+                        <option key={option.value} value={option.value}>
+                          {option.value}
+                        </option>
+                      )}
+                    </TextField>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
+                  {/* <div className="col-3">
                     <label htmlFor="pdv">PDV %</label>
-                  </div>
+                  </div> */}
                   <div className="col-9">
-                    <input
+                    {/* <input
                       required
                       type="number"
                       name="pdv"
@@ -332,15 +427,28 @@ function MeniList(props) {
                       onChange={e => {
                         setNewMealData(e.target.name, e.target.valueAsNumber);
                       }}
+                    /> */}
+                    <TextField
+                      id="standard-number"
+                      type="number"
+                      inputProps={{
+                        step: 1,
+                        min: 1,
+                      }}
+                      label="PDV (%)"
+                      defaultValue={edit ? editedMeal.pdv : 0}
+                      onChange={e => {
+                        setNewMealData("pdv", e.target.valueAsNumber);
+                      }}
                     />
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
+                  {/* <div className="col-3">
                     <label htmlFor="discount">Popust %</label>
-                  </div>
+                  </div> */}
                   <div className="col-9">
-                    <input
+                    {/* <input
                       required
                       type="number"
                       name="discount"
@@ -358,12 +466,25 @@ function MeniList(props) {
                       onChange={e => {
                         setNewMealData(e.target.name, e.target.valueAsNumber);
                       }}
+                    /> */}
+                    <TextField
+                      id="standard-number"
+                      type="number"
+                      inputProps={{
+                        step: 1,
+                        min: 1,
+                      }}
+                      label="Popust (%)"
+                      defaultValue={edit ? editedMeal.discount : 0}
+                      onChange={e => {
+                        setNewMealData("discount", e.target.valueAsNumber);
+                      }}
                     />
                   </div>
                 </div>
                 <div className="row mt-3">
                   <div className="col-3">
-                    <input type="submit" value="Potvrdi" />
+                    <Button type="submit" variant="outlined">Potvrdi</Button>
                   </div>
                 </div>
               </div>

@@ -58,6 +58,7 @@ export const updateUser = (user, userToEdit) => {
       refreshToken: user.refreshToken,
       fname: userToEdit.fname,
       lname: userToEdit.lname,
+      // role: userToEdit.role,
     })
       .then(res => {
         dispatch({ type: "USER_PATCHED", users: res.data.data });
