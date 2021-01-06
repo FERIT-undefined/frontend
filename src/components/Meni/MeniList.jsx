@@ -128,7 +128,7 @@ function MeniList(props) {
     { value: "Dessert" },
     { value: "Grill" },
   ];
-
+  console.log(props.tableSelect);
   return (
     <div className="container-fluid mt-4 menu">
       <input
