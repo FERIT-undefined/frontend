@@ -1,5 +1,10 @@
 import React, { Component } from "react";
+import IconButton from "@material-ui/core/IconButton";
+import AddBoxRoundedIcon from "@material-ui/icons/AddBoxRounded";
+import IndeterminateCheckBoxRoundedIcon from "@material-ui/icons/IndeterminateCheckBoxRounded";
+import TextField from "@material-ui/core/TextField";
 
+import "./QuantityPicker.scss";
 export default class QuantityPicker extends Component {
   constructor(props) {
     super(props);
@@ -10,10 +15,12 @@ export default class QuantityPicker extends Component {
   }
 
   increment() {
+
     const plusState = this.state.value + 1;
+    console.log("picker", this.props.index, this.props.meal, plusState);
     if (this.state.value < this.props.max) {
       this.setState({ value: plusState });
-      this.props.updateQuantity(this.props.index, this.props.meal, plusState);
+
       this.setState({ disable: false });
     }
     if (this.state.value === this.props.max - 1) {
@@ -22,6 +29,7 @@ export default class QuantityPicker extends Component {
     if (this.state.value === this.props.min) {
       this.setState({ disableDec: false });
     }
+    this.props.updateQuantity(this.props.index, this.props.meal, plusState);
   }
 
   decrement() {
@@ -49,34 +57,33 @@ export default class QuantityPicker extends Component {
     const { disableDec, disableInc } = this.state;
 
     return (
-      <span className="quantity-picker">
-        <button
+      <div className="quantity-picker">
+        <IconButton
           disabled={this.props.meal.added}
           type="button"
-          className={`${
-            disableDec ? "mod-disable " : ""
+          className={`${disableDec ? "mod-disable " : ""
           }quantity-modifier modifier-left`}
           onClick={this.decrement}
         >
-          &ndash;
-        </button>
+          <IndeterminateCheckBoxRoundedIcon style={{ color: "#219ebc" }} />
+        </IconButton>
         <input
           className="quantity-display"
           type="text"
           value={this.state.value}
           readOnly
+          disabled
         />
-        <button
+        <IconButton
           disabled={this.props.meal.added}
           type="button"
-          className={`${
-            disableInc ? "mod-disable " : ""
+          className={`${disableInc ? "mod-disable " : ""
           }quantity-modifier modifier-right`}
           onClick={this.increment}
         >
-          &#xff0b;
-        </button>
-      </span>
+          <AddBoxRoundedIcon style={{ color: "219ebc" }} />
+        </IconButton>
+      </div>
     );
   }
 }
