@@ -49,46 +49,9 @@ function MeniList(props) {
     pdv: 0,
     price: 0,
   });
-  const [orderMeals, setOrderMeals] = useState([]);
-  const [order, setOrder] = useState(null);
 
   const dispatch = useDispatch();
   const meals = useSelector(state => state.menu.allMeals);
-
-  // const sendOrder = () => {
-  //   let order = {
-  //     "table": props.table,
-  //     "meals": [
-  //       {
-  //         "name": "Čevapi",
-  //         "price": 20,
-  //         "quantity": 3,
-  //         "status": "Ordered",
-  //         "type": "Grill"
-  //       }, {
-  //         "name": "Gulaš",
-  //         "price": 30,
-  //         "quantity": 1,
-  //         "status": "Ordered",
-  //         "type": "Main Course"
-  //       }
-  //     ],
-  //     "total_price": 90,
-  //   }
-  // }
-  const addToOrder = meal => {
-    setOrderMeals([...orderMeals, {
-      "name": meal.name,
-      "price": (meal.price + (meal.price * (meal.pdv / 100) - meal.price * (meal.discount / 100))).toFixed(2),
-      "quantity": meal.quantity,
-      "status":"Ordered",
-      "type":meal.type
-    }]);
-  };
-
-  const removeFromOrder = meal => {
-    setOrderMeals(orderMeals.filter(order=>order.id===meal.id));
-  };
 
   useEffect(() => {
     setAllMeals(meals);
@@ -127,7 +90,6 @@ function MeniList(props) {
   };
 
   const updateQuantity = (index, meal, quantity) => {
-    console.log("update", index, meal, quantity);
     let newArr = [...allMeals];
     if (searching) {
       let newArr2 = [...searchResults];
@@ -155,7 +117,6 @@ function MeniList(props) {
       newArr[index] = { ...meal, added: added };
       setAllMeals(newArr);
     }
-    console.log(allMeals);
   };
 
   const closeModal = () => {
@@ -169,6 +130,7 @@ function MeniList(props) {
     { value: "Dessert" },
     { value: "Grill" },
   ];
+
   return (
     <div className="container-fluid mt-4 menu">
       <input
@@ -246,19 +208,21 @@ function MeniList(props) {
                 onClick={() => {
                   if (!meal.added) {
                     props.addMeal({
-                      ...meal,
+                      name: meal.name,
+                      price: meal.price,
+                      type: meal.type,
                       quantity: meal.quantity,
                       status: "Ordered",
                     });
                     updateAdded(index, meal, true);
-                    addToOrder(meal);
                   } else {
                     props.removeMeal({
-                      ...meal,
+                      name: meal.name,
+                      price: meal.price,
+                      type: meal.type,
                       quantity: 0,
                     });
                     updateAdded(index, meal, false);
-                    removeFromOrder(meal);
                   }
                 }}
               >

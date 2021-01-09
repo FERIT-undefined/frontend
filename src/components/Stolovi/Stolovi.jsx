@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 import classNames from "classnames";
 // import { Modal } from "react-responsive-modal";
 
@@ -9,6 +10,7 @@ import Modal from "../Modal/Modal";
 import { getAllMeals } from "../../store/actions/menuActions";
 import MeniList from "../Meni/MeniList";
 import "./Stolovi.scss";
+import { addOrder } from "../../store/actions/tableOrderActions";
 
 function Stolovi(props) {
   const [showModal, setShowModal] = useState(false);
@@ -134,31 +136,39 @@ function Stolovi(props) {
           }}
         />
       </div>
-      {
-        showModal ?
-          <Modal showModal={showModal} closeModal={() => closeModal}>
-            <div className="table-card container-xl-1" id="fadein">
-              <div className="table-card__close-icon">
-                <IconButton
-                  id="close"
-                  onClick={() => closeModal()}
-                >
-                  <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
-                </IconButton>
-              </div>
-              <form
-                onSubmit={e => {
-                  e.preventDefault();
-
-                  setShowModal(false);
-                }}
-              >
-                <MeniList addMeal={addMeal} removeMeal={removeMeal} table={table} tableSelect />
-              </form>
+      {showModal ? 
+        <Modal showModal={showModal} closeModal={() => closeModal}>
+          <div className="table-card container-xl-1" id="fadein">
+            <div className="table-card__close-icon">
+              <IconButton id="close" onClick={() => closeModal()}>
+                <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
+              </IconButton>
             </div>
-          </Modal> : null
-      }
-    </div >
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                dispatch(addOrder(props.user, table, meals, totalPrice));
+                setShowModal(false);
+              }}
+            >
+              <MeniList
+                addMeal={addMeal}
+                removeMeal={removeMeal}
+                table={table}
+                tableSelect
+              />
+              <div className="row mt-3">
+                <div className="col-3" id="potvrdi-container">
+                  <Button id="potvrdi" type="submit" variant="outlined">
+                    Potvrdi
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </Modal>
+        : null}
+    </div>
   );
 }
 export default Stolovi;

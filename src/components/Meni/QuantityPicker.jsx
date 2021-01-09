@@ -15,9 +15,7 @@ export default class QuantityPicker extends Component {
   }
 
   increment() {
-
     const plusState = this.state.value + 1;
-    console.log("picker", this.props.index, this.props.meal, plusState);
     if (this.state.value < this.props.max) {
       this.setState({ value: plusState });
 
