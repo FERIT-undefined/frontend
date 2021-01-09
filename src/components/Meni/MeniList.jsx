@@ -8,6 +8,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 import Modal from "../Modal/Modal";
 import "./MenuList.scss";
@@ -128,7 +130,7 @@ function MeniList(props) {
     { value: "Dessert" },
     { value: "Grill" },
   ];
-  console.log(props.tableSelect);
+
   return (
     <div className="container-fluid mt-4 menu">
       <input
@@ -171,7 +173,7 @@ function MeniList(props) {
         <div className="col">PDV</div>
         <div className="col">POPUST</div>
         <div className="col">UKUPNA CIJENA</div>
-        {props.tableSelect || props.user && props.user.role === "Admin" && <div className="col"></div>}
+        {props.tableSelect || props.user.role === "Admin" ? <div className="col"></div> : null}
       </div>
       {(searchResults ? searchResults : allMeals).map((meal, index) =>
         <div className="row p-2 mt-2 mealRow" key={meal.id}>
@@ -180,51 +182,54 @@ function MeniList(props) {
           <div className="col">{meal.type}</div>
           <div className="col">{Number(meal.price).toFixed(2)} HRK</div>
           <div className="col">{meal.pdv}%</div>
-          <div className="col">{meal.discount}%</div>
+          <div className="col" style={{ color: meal.discount ? "#7abd73" : "black" }}>{meal.discount}%</div>
           <div className="col">{(meal.price + (meal.price * (meal.pdv / 100) - meal.price * (meal.discount / 100))).toFixed(2)} HRK</div>
           {props.tableSelect &&
-            <div className="col">
+            <div className="col" id="mealRow-picker">
               <QuantityPicker
                 min={0}
-                max={4}
+                max={10}
                 meal={meal}
                 index={index}
                 updateQuantity={updateQuantity}
               />
               <button
-                disabled={meal.quantity === 0}
+                visibility={meal.quantity === 0 ? "hidden" : "visible"}
                 type="button"
+                className="mealRow__addToOrder"
                 style={{
                   background: "none",
                   border: "none",
                   verticalAlign: "middle",
                   minWidth: "32px",
+                  color: "black",
+                  visibility: meal.quantity === 0 ? "hidden" : "visible"
                 }}
                 onClick={() => {
                   if (!meal.added) {
                     props.addMeal({
-                      ...meal,
+                      name: meal.name,
+                      price: meal.price,
+                      type: meal.type,
                       quantity: meal.quantity,
                       status: "Ordered",
                     });
                     updateAdded(index, meal, true);
                   } else {
                     props.removeMeal({
-                      ...meal,
-                      quantity: meal.quantity,
+                      name: meal.name,
+                      price: meal.price,
+                      type: meal.type,
+                      quantity: 0,
                     });
                     updateAdded(index, meal, false);
                   }
                 }}
               >
                 {!meal.added ?
-                  <i
-                    style={{ fontSize: "20px" }}
-                    className="far fa-check-circle"
-                  ></i>
-                  :
-                  <i style={{ fontSize: "20px" }} className="fas fa-times"></i>
-                }
+                  <CheckCircleOutlineIcon style={{ color: "#555555" }} />
+                  : <HighlightOffIcon style={{ color: "#555555" }} />}
+
               </button>
             </div>
           }

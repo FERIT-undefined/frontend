@@ -1,0 +1,17 @@
+.quantity-picker {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    @media screen and (max-width: 1450px) {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+      }
+    .quantity-display {
+        width: 30px;
+        height:30px;
+        text-align: center;
+        border: 1px solid #219cbe;
+        border-radius: 4px;
+    }
+}

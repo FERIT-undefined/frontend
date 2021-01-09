@@ -4,12 +4,11 @@ import "./Modal.scss";
 class Modal extends Component {
   render() {
     return (
-      <>
-        <div className="overlay" onClick={this.props.closeModal()} />
+      <div className="overlay">
         <div className="content">
           {this.props.children}
         </div>
-      </>
+      </div>
     );
   }
 }
