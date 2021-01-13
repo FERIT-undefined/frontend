@@ -102,7 +102,12 @@ function OrdersList(props) {
                       "left=0,top=0,width=300,height=auto,toolbar=0,scrollbars=0,status=0"
                     );
                     WinPrint.document.write(
-                      `<style> .orders-list { padding: 1%; }
+                      `<style>
+                      @media print {
+                        @page { margin: 0; }
+                        body { margin: 1.6cm; }
+                      }
+                      .orders-list { padding: 1%; }
                       .orders-list .mealRow .orders-meal-row { padding: 16px 0; }
                           .orders-list .mealRow .orders-meal-row .ordered {
                             color: #cc2300; }
