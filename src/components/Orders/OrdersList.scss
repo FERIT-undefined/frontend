@@ -1,0 +1,52 @@
+.orders-list {
+  padding: 1%;
+  .mealRow {
+    .orders-meal-row {
+      padding: 16px 0;
+      .ordered {
+        color: #cc2300;
+      }
+      .started {
+        color: #ffbf66;
+      }
+      .done {
+        color: #07922a;
+      }
+    }
+  }
+}
+
+.receipt {
+  width: 300px;
+  border-radius: 6px;
+  background: white;
+  height: fit-content;
+  padding: 16px;
+  &__icons {
+    position: absolute;
+    top: 35%;
+    margin-left: 320px;
+    &__close-icon {
+      background-color: white;
+      border-radius: 50%;
+    }
+    &__print-icon {
+      margin-top: 10px;
+      background-color: white;
+      border-radius: 50%;
+    }
+  }
+
+  .info {
+    text-align: center;
+  }
+  .receipt-meal-row {
+    .row:not(:first-child) {
+      margin-top: 15px;
+    }
+  }
+  .total_price {
+    text-align: -webkit-right;
+    text-align: end;
+  }
+}
