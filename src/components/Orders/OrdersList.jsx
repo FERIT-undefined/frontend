@@ -22,7 +22,6 @@ function OrdersList(props) {
     dispatch(getTableOrders());
   }, []);
 
-  console.log(orders, props.user);
   return (
     <div>
       <div className="container-fluid orders-list">
