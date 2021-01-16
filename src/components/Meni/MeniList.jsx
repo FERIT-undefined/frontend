@@ -54,9 +54,12 @@ function MeniList(props) {
   const meals = useSelector(state => state.menu.allMeals);
 
   useEffect(() => {
-    setAllMeals(meals);
     dispatch(getAllMeals());
   }, []);
+
+  useEffect(() => {
+    setAllMeals(meals);
+  }, [meals]);
 
   useEffect(() => {
     setAllMeals(

@@ -46,7 +46,7 @@ function OrdersList(props) {
                   <div className="row orders-meal-row" key={meal.name}>
                     <div className="col">{meal.name}</div>
                     <div className="col">{meal.quantity}</div>
-                    <div className="col">{meal.quantity * meal.price} Kn</div>
+                    <div className="col">{meal.quantity * meal.price} HRK</div>
                     <div
                       className={classNames({
                         col: true,
@@ -55,7 +55,9 @@ function OrdersList(props) {
                         ordered: meal.status.toLowerCase() === "ordered",
                       })}
                     >
-                      {meal.status}
+                      {meal.status.toLowerCase() === "done" && "Posluzeno"}
+                      {meal.status.toLowerCase() === "started" && "U pripremi"}
+                      {meal.status.toLowerCase() === "ordered" && "Naručeno"}
                     </div>
                   </div>
                 )}
@@ -108,12 +110,6 @@ function OrdersList(props) {
                       }
                       .orders-list { padding: 1%; }
                       .orders-list .mealRow .orders-meal-row { padding: 16px 0; }
-                          .orders-list .mealRow .orders-meal-row .ordered {
-                            color: #cc2300; }
-                          .orders-list .mealRow .orders-meal-row .started {
-                            color: #ffbf66; }
-                          .orders-list .mealRow .orders-meal-row .done {
-                            color: #07922a; }
                       .receipt {
                         width: 300px;
                         border-radius: 6px;
@@ -121,10 +117,7 @@ function OrdersList(props) {
                         height: fit-content;
                         padding: 16px; }
                         .receipt__icons {
-                          position: absolute;
-                          display: none;
-                          right: 35%;
-                          top: 35%; }
+                          display: none;}
                           .receipt__icons__close-icon {
                             background-color: white;
                             border-radius: 50%; }

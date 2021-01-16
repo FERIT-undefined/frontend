@@ -18,7 +18,7 @@ function NavbarContainer(props) {
       <Navbar.Collapse id="basic-navbar-nav">
         {props.user.role === "Admin" &&
           <Nav className="mr-auto">
-            <Link className="pl-4 pr-4 text-white" to="/zaposlenici" >
+            <Link className="pl-4 pr-4 text-white" to="/" >
               <PeopleIcon style={{ marginRight:"10px" }} />
               Zaposlenici
             </Link>
