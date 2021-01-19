@@ -6,7 +6,10 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import PrintIcon from "@material-ui/icons/Print";
 import moment from "moment";
-import { getTableOrders } from "../../store/actions/tableOrderActions";
+import {
+  exportOrder,
+  getTableOrders,
+} from "../../store/actions/tableOrderActions";
 import Modal from "../Modal/Modal";
 import "./OrdersList.scss";
 
@@ -38,29 +41,39 @@ function OrdersList(props) {
           <div className="col-3">ISPIS</div>
         </div>
         {orders &&
-          orders.map(order =>
+          orders.map(order => 
             <div className="row p-2 mt-2 mealRow" key={order.table}>
               <div className="col-1">{order.table}</div>
               <div className="col">
-                {order.meals.map(meal =>
-                  <div className="row orders-meal-row" key={meal.name}>
-                    <div className="col">{meal.name}</div>
-                    <div className="col">{meal.quantity}</div>
-                    <div className="col">{meal.quantity * meal.price} HRK</div>
-                    <div
-                      className={classNames({
-                        col: true,
-                        done: meal.status.toLowerCase() === "done",
-                        started: meal.status.toLowerCase() === "started",
-                        ordered: meal.status.toLowerCase() === "ordered",
-                      })}
-                    >
-                      {meal.status.toLowerCase() === "done" && "Posluzeno"}
-                      {meal.status.toLowerCase() === "started" && "U pripremi"}
-                      {meal.status.toLowerCase() === "ordered" && "Naručeno"}
+                {order.meals.map(meal => {
+                  const mealPrice =
+                    meal.price -
+                    meal.price * (meal.discount / 100) +
+                    (meal.price - meal.price * (meal.discount / 100)) *
+                      (meal.pdv / 100);
+                  return (
+                    <div className="row orders-meal-row" key={meal.name}>
+                      <div className="col">{meal.name}</div>
+                      <div className="col">{meal.quantity}</div>
+                      <div className="col">
+                        {(meal.quantity * mealPrice).toFixed(2)} HRK
+                      </div>
+                      <div
+                        className={classNames({
+                          col: true,
+                          done: meal.status.toLowerCase() === "done",
+                          started: meal.status.toLowerCase() === "started",
+                          ordered: meal.status.toLowerCase() === "ordered",
+                        })}
+                      >
+                        {meal.status.toLowerCase() === "done" && "Posluzeno"}
+                        {meal.status.toLowerCase() === "started" &&
+                          "U pripremi"}
+                        {meal.status.toLowerCase() === "ordered" && "Naručeno"}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })}
               </div>
               <div className="col-3">
                 <div
@@ -76,7 +89,7 @@ function OrdersList(props) {
             </div>
           )}
       </div>
-      {showModal && order &&
+      {showModal && order && 
         <Modal
           showModal={showModal}
           closeModal={() => {
@@ -159,6 +172,7 @@ function OrdersList(props) {
                     WinPrint.focus();
                     WinPrint.print();
                     WinPrint.addEventListener("afterprint", () => {
+                      dispatch(exportOrder(order.table, props.user));
                       WinPrint.close();
                       setHidden(false);
                     });
@@ -176,7 +190,7 @@ function OrdersList(props) {
             </div>
             <hr />
             <div className="receipt-meal-row">
-              {order.meals.map(meal =>
+              {order.meals.map(meal => 
                 <div className="row" key={meal.name}>
                   <div className="col">{meal.name}</div>
                   <div className="col-2">{meal.quantity}</div>

@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 function MeniList(props) {
   const classes = useStyles();
 
@@ -150,16 +149,22 @@ function MeniList(props) {
             setSearchResults(
               allMeals.filter(
                 meal =>
-                  (meal.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                    meal.description.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                    meal.type.toLowerCase().includes(e.target.value.toLowerCase())) &&
+                  (meal.name
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase()) ||
+                    meal.description
+                      .toLowerCase()
+                      .includes(e.target.value.toLowerCase()) ||
+                    meal.type
+                      .toLowerCase()
+                      .includes(e.target.value.toLowerCase())) &&
                   meal
               )
             );
           }
         }}
       />
-      {props.user && props.user.role === "Admin" &&
+      {props.user && props.user.role === "Admin" && 
         <button
           type="button"
           className="menu__add"
@@ -176,18 +181,33 @@ function MeniList(props) {
         <div className="col">PDV</div>
         <div className="col">POPUST</div>
         <div className="col">UKUPNA CIJENA</div>
-        {props.tableSelect || props.user.role === "Admin" ? <div className="col"></div> : null}
+        {props.tableSelect || props.user.role === "Admin" ? 
+          <div className="col"></div>
+          : null}
       </div>
-      {(searchResults ? searchResults : allMeals).map((meal, index) =>
+      {(searchResults ? searchResults : allMeals).map((meal, index) => 
         <div className="row p-2 mt-2 mealRow" key={meal.id}>
           <div className="col">{meal.name}</div>
           <div className="col">{meal.description}</div>
           <div className="col">{meal.type}</div>
           <div className="col">{Number(meal.price).toFixed(2)} HRK</div>
           <div className="col">{meal.pdv}%</div>
-          <div className="col" style={{ color: meal.discount ? "#7abd73" : "black" }}>{meal.discount}%</div>
-          <div className="col">{(meal.price + (meal.price * (meal.pdv / 100) - meal.price * (meal.discount / 100))).toFixed(2)} HRK</div>
-          {props.tableSelect &&
+          <div
+            className="col"
+            style={{ color: meal.discount ? "#7abd73" : "black" }}
+          >
+            {meal.discount}%
+          </div>
+          <div className="col">
+            {(
+              meal.price -
+              meal.price * (meal.discount / 100) +
+              (meal.price - meal.price * (meal.discount / 100)) *
+                (meal.pdv / 100)
+            ).toFixed(2)}{" "}
+            HRK
+          </div>
+          {props.tableSelect && 
             <div className="col" id="mealRow-picker">
               <QuantityPicker
                 min={0}
@@ -206,37 +226,32 @@ function MeniList(props) {
                   verticalAlign: "middle",
                   minWidth: "32px",
                   color: "black",
-                  visibility: meal.quantity === 0 ? "hidden" : "visible"
+                  visibility: meal.quantity === 0 ? "hidden" : "visible",
                 }}
                 onClick={() => {
                   if (!meal.added) {
                     props.addMeal({
-                      name: meal.name,
-                      price: meal.price,
-                      type: meal.type,
-                      quantity: meal.quantity,
+                      ...meal,
                       status: "Ordered",
                     });
                     updateAdded(index, meal, true);
                   } else {
                     props.removeMeal({
-                      name: meal.name,
-                      price: meal.price,
-                      type: meal.type,
-                      quantity: 0,
+                      ...meal,
                     });
                     updateAdded(index, meal, false);
                   }
                 }}
               >
-                {!meal.added ?
+                {!meal.added ? 
                   <CheckCircleOutlineIcon style={{ color: "#555555" }} />
-                  : <HighlightOffIcon style={{ color: "#555555" }} />}
-
+                  : 
+                  <HighlightOffIcon style={{ color: "#555555" }} />
+                }
               </button>
             </div>
           }
-          {props.user && props.user.role === "Admin" &&
+          {props.user && props.user.role === "Admin" && 
             <>
               <div className="col">
                 <div className="button-container">
@@ -276,17 +291,11 @@ function MeniList(props) {
           }
         </div>
       )}
-      {showMealModal && editedMeal ?
-        <Modal
-          showModal={showMealModal}
-          closeModal={() => closeModal}
-        >
+      {showMealModal && editedMeal ? 
+        <Modal showModal={showMealModal} closeModal={() => closeModal}>
           <div className="detail-card container-xl-1" id="fadein">
             <div className="detail-card__close-icon">
-              <IconButton
-                id="close"
-                onClick={() => closeModal()}
-              >
+              <IconButton id="close" onClick={() => closeModal()}>
                 <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
               </IconButton>
             </div>
@@ -357,7 +366,7 @@ function MeniList(props) {
                       onChange={e => setNewMealData("type", e.target.value)}
                       SelectProps={{ native: true }}
                     >
-                      {mealTypes.map(option =>
+                      {mealTypes.map(option => 
                         <option key={option.value} value={option.value}>
                           {option.value}
                         </option>
@@ -401,15 +410,16 @@ function MeniList(props) {
                 </div>
                 <div className="row mt-3">
                   <div className="col-3" id="potvrdi-container">
-                    <Button id="potvrdi" type="submit" variant="outlined">Potvrdi</Button>
+                    <Button id="potvrdi" type="submit" variant="outlined">
+                      Potvrdi
+                    </Button>
                   </div>
                 </div>
               </div>
             </form>
           </div>
         </Modal>
-        : null
-      }
+        : null}
     </div>
   );
 }

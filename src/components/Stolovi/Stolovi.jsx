@@ -136,7 +136,7 @@ function Stolovi(props) {
           }}
         />
       </div>
-      {showModal ? 
+      {showModal ?
         <Modal showModal={showModal} closeModal={() => closeModal}>
           <div className="table-card container-xl-1" id="fadein">
             <div className="table-card__close-icon">
