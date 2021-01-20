@@ -74,7 +74,7 @@ function Zaposlenici(props) {
           <div className="col">ULOGA</div>
           <div className="col">AKCIJE</div>
         </div>
-        {users &&
+        {users.length ?
           users.map(user =>
             <div className="row p-2 mt-2 userRow" key={user.id}>
               <div className="col">{user.fname}</div>
@@ -113,7 +113,7 @@ function Zaposlenici(props) {
                 }
               </div>
             </div>
-          )}
+          ) : <div className="no-users">TRENUTNO NEMA KORISNIKA</div>}
 
       </div>
       {editedUser && showModal ?

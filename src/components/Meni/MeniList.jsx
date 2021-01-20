@@ -41,7 +41,7 @@ function MeniList(props) {
   const [newMeal, setNewMeal] = useState({
     pdv: 0,
     price: 0,
-    type: "Appetizer",
+    type: "Predjelo",
     discount: 0,
   });
   const [editedMeal, setEditedMeal] = useState({
@@ -86,7 +86,7 @@ function MeniList(props) {
     setNewMeal({
       pdv: 0,
       price: 0,
-      type: "Appetizer",
+      type: "Predjelo",
       discount: 0,
     });
   };
@@ -127,9 +127,9 @@ function MeniList(props) {
     resetMeals();
   };
   const mealTypes = [
-    { value: "Appetizer" },
-    { value: "Main Course" },
-    { value: "Dessert" },
+    { value: "Predjelo" },
+    { value: "Glavno jelo" },
+    { value: "Desert" },
     { value: "Grill" },
   ];
 
@@ -164,7 +164,7 @@ function MeniList(props) {
           }
         }}
       />
-      {props.user && props.user.role === "Admin" && 
+      {props.user && props.user.role === "Admin" &&
         <button
           type="button"
           className="menu__add"
@@ -181,11 +181,11 @@ function MeniList(props) {
         <div className="col">PDV</div>
         <div className="col">POPUST</div>
         <div className="col">UKUPNA CIJENA</div>
-        {props.tableSelect || props.user.role === "Admin" ? 
+        {props.tableSelect || props.user.role === "Admin" ?
           <div className="col"></div>
           : null}
       </div>
-      {(searchResults ? searchResults : allMeals).map((meal, index) => 
+      {(searchResults ? searchResults : allMeals).length ? (searchResults ? searchResults : allMeals).map((meal, index) =>
         <div className="row p-2 mt-2 mealRow" key={meal.id}>
           <div className="col">{meal.name}</div>
           <div className="col">{meal.description}</div>
@@ -207,7 +207,7 @@ function MeniList(props) {
             ).toFixed(2)}{" "}
             HRK
           </div>
-          {props.tableSelect && 
+          {props.tableSelect &&
             <div className="col" id="mealRow-picker">
               <QuantityPicker
                 min={0}
@@ -243,15 +243,15 @@ function MeniList(props) {
                   }
                 }}
               >
-                {!meal.added ? 
+                {!meal.added ?
                   <CheckCircleOutlineIcon style={{ color: "#555555" }} />
-                  : 
+                  :
                   <HighlightOffIcon style={{ color: "#555555" }} />
                 }
               </button>
             </div>
           }
-          {props.user && props.user.role === "Admin" && 
+          {props.user && props.user.role === "Admin" &&
             <>
               <div className="col">
                 <div className="button-container">
@@ -290,8 +290,8 @@ function MeniList(props) {
             </>
           }
         </div>
-      )}
-      {showMealModal && editedMeal ? 
+      ) : <div className="no-meals">TRENUTNO NEMA JELA NA MENIU</div>}
+      {showMealModal && editedMeal ?
         <Modal showModal={showMealModal} closeModal={() => closeModal}>
           <div className="detail-card container-xl-1" id="fadein">
             <div className="detail-card__close-icon">
@@ -366,7 +366,7 @@ function MeniList(props) {
                       onChange={e => setNewMealData("type", e.target.value)}
                       SelectProps={{ native: true }}
                     >
-                      {mealTypes.map(option => 
+                      {mealTypes.map(option =>
                         <option key={option.value} value={option.value}>
                           {option.value}
                         </option>

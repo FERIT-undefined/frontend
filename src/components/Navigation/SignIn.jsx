@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { loginUser } from "../../store/actions/userActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -37,13 +35,18 @@ export default function SignIn(props) {
     email: "",
     password: "",
   });
-
+  const [showError, setShowError] = useState(false);
+  const error = useSelector(state => state.users.error);
   const classes = useStyles();
   const dispatch = useDispatch();
 
   if (props.user) {
     window.location.assign("/");
   }
+
+  useEffect(() => {
+    setShowError(true);
+  }, [error]);
 
   return (
     !props.user && 
@@ -58,6 +61,7 @@ export default function SignIn(props) {
           </Typography>
           <form
             className={classes.form}
+            onInput={() => setShowError(false)}
             onSubmit={e => {
               e.preventDefault();
               dispatch(loginUser(userDetails));
@@ -100,12 +104,10 @@ export default function SignIn(props) {
             >
               Sign In
             </Button>
-            {/*<Grid container>
-              <Grid item>
-                <Link to="/register">Don`&apos;t have an account? Sign Up</Link>
-              </Grid>
-            </Grid>*/}
           </form>
+          {showError && error && 
+            <div className="error">Email ili lozinka nije ispravno unesena</div>
+          }
         </div>
       </Container>
     

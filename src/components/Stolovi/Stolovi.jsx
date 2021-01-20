@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import classNames from "classnames";
 // import { Modal } from "react-responsive-modal";
 
 import Modal from "../Modal/Modal";
-import { getAllMeals } from "../../store/actions/menuActions";
 import MeniList from "../Meni/MeniList";
 import "./Stolovi.scss";
 import { addOrder } from "../../store/actions/tableOrderActions";
@@ -136,7 +134,7 @@ function Stolovi(props) {
           }}
         />
       </div>
-      {showModal ?
+      {showModal ? 
         <Modal showModal={showModal} closeModal={() => closeModal}>
           <div className="table-card container-xl-1" id="fadein">
             <div className="table-card__close-icon">

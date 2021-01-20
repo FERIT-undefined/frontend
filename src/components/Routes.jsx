@@ -8,13 +8,14 @@ import MeniList from "./Meni/MeniList";
 import Kuhinja from "./Kuhinja/Kuhinja";
 import Stolovi from "./Stolovi/Stolovi";
 import OrdersList from "./Orders/OrdersList";
+import Traffic from "./Traffic/Traffic";
 
 function Routes(props) {
   return (
     <Container fluid>
       <NavbarContainer user={props.user} />
       <Switch>
-        {props.user.role === "Admin" &&
+        {props.user.role === "Admin" && 
           <>
             <Route
               exact
@@ -25,10 +26,10 @@ function Routes(props) {
               path="/meni"
               component={() => <MeniList user={props.user} />}
             />
-            <Route path="/promet" component={null} />
+            <Route path="/promet" component={() => <Traffic />} />
           </>
         }
-        {props.user.role === "Konobar" &&
+        {props.user.role === "Konobar" && 
           <>
             <Route
               exact
