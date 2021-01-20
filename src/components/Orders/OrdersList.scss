@@ -35,6 +35,11 @@
       background-color: white;
       border-radius: 50%;
     }
+    &__traffic {
+      margin-top: 10px;
+      background-color: white;
+      border-radius: 50%;
+    }
   }
 
   .info {
@@ -49,4 +54,11 @@
     text-align: -webkit-right;
     text-align: end;
   }
+}
+
+.no-orders {
+  text-align: center;
+  font-weight: bold;
+  height: 100%;
+  padding: 50px;
 }

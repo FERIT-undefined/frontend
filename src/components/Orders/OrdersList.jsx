@@ -5,8 +5,12 @@ import ReceiptIcon from "@material-ui/icons/Receipt";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import PrintIcon from "@material-ui/icons/Print";
+import DoneIcon from "@material-ui/icons/Done";
 import moment from "moment";
-import { getTableOrders } from "../../store/actions/tableOrderActions";
+import {
+  exportOrder,
+  getTableOrders,
+} from "../../store/actions/tableOrderActions";
 import Modal from "../Modal/Modal";
 import "./OrdersList.scss";
 
@@ -37,30 +41,39 @@ function OrdersList(props) {
           </div>
           <div className="col-3">ISPIS</div>
         </div>
-        {orders &&
+        {orders.length ?
           orders.map(order =>
             <div className="row p-2 mt-2 mealRow" key={order.table}>
               <div className="col-1">{order.table}</div>
               <div className="col">
-                {order.meals.map(meal =>
-                  <div className="row orders-meal-row" key={meal.name}>
-                    <div className="col">{meal.name}</div>
-                    <div className="col">{meal.quantity}</div>
-                    <div className="col">{meal.quantity * meal.price} HRK</div>
-                    <div
-                      className={classNames({
-                        col: true,
-                        done: meal.status.toLowerCase() === "done",
-                        started: meal.status.toLowerCase() === "started",
-                        ordered: meal.status.toLowerCase() === "ordered",
-                      })}
-                    >
-                      {meal.status.toLowerCase() === "done" && "Spremno za posluživanje"}
-                      {meal.status.toLowerCase() === "started" && "U pripremi"}
-                      {meal.status.toLowerCase() === "ordered" && "Naručeno"}
+                {order.meals.map(meal => {
+                  const mealPrice =
+                    meal.price -
+                    meal.price * (meal.discount / 100) +
+                    (meal.price - meal.price * (meal.discount / 100)) *
+                    (meal.pdv / 100);
+                  return (
+                    <div className="row orders-meal-row" key={meal.name}>
+                      <div className="col">{meal.name}</div>
+                      <div className="col">{meal.quantity}</div>
+                      <div className="col">
+                        {(meal.quantity * mealPrice).toFixed(2)} HRK
+                      </div>
+                      <div
+                        className={classNames({
+                          col: true,
+                          done: meal.status.toLowerCase() === "done",
+                          started: meal.status.toLowerCase() === "started",
+                          ordered: meal.status.toLowerCase() === "ordered",
+                        })}
+                      >
+                        {meal.status.toLowerCase() === "done" && "Spremno za posluživanje"}
+                        {meal.status.toLowerCase() === "started" && "U pripremi"}
+                        {meal.status.toLowerCase() === "ordered" && "Naručeno"}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })}
               </div>
               <div className="col-3">
                 <div
@@ -74,7 +87,10 @@ function OrdersList(props) {
                 </div>
               </div>
             </div>
-          )}
+          )
+          :
+          <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
+        }
       </div>
       {showModal && order &&
         <Modal
@@ -158,13 +174,30 @@ function OrdersList(props) {
                     WinPrint.document.close();
                     WinPrint.focus();
                     WinPrint.print();
+                    setHidden(false);
                     WinPrint.addEventListener("afterprint", () => {
                       WinPrint.close();
-                      setHidden(false);
                     });
                   }}
                 >
                   <PrintIcon />
+                </IconButton>
+              </div>
+              <div className="receipt__icons__traffic">
+                <IconButton
+                  id="done"
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        "Jeste li sigurni da želite zatvoriti i spremiti račun?\nOPREZ: Nećete moći isprintati račun nakon ove akcije"
+                      )
+                    ) {
+                      setShowModal(false);
+                      dispatch(exportOrder(order.table, props.user));
+                    }
+                  }}
+                >
+                  <DoneIcon />
                 </IconButton>
               </div>
             </div>

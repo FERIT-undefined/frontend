@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 function MeniList(props) {
   const classes = useStyles();
 
@@ -42,7 +41,7 @@ function MeniList(props) {
   const [newMeal, setNewMeal] = useState({
     pdv: 0,
     price: 0,
-    type: "Appetizer",
+    type: "Predjelo",
     discount: 0,
   });
   const [editedMeal, setEditedMeal] = useState({
@@ -87,7 +86,7 @@ function MeniList(props) {
     setNewMeal({
       pdv: 0,
       price: 0,
-      type: "Appetizer",
+      type: "Predjelo",
       discount: 0,
     });
   };
@@ -128,9 +127,9 @@ function MeniList(props) {
     resetMeals();
   };
   const mealTypes = [
-    { value: "Appetizer" },
-    { value: "Main Course" },
-    { value: "Dessert" },
+    { value: "Predjelo" },
+    { value: "Glavno jelo" },
+    { value: "Desert" },
     { value: "Grill" },
   ];
 
@@ -150,9 +149,15 @@ function MeniList(props) {
             setSearchResults(
               allMeals.filter(
                 meal =>
-                  (meal.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                    meal.description.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                    meal.type.toLowerCase().includes(e.target.value.toLowerCase())) &&
+                  (meal.name
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase()) ||
+                    meal.description
+                      .toLowerCase()
+                      .includes(e.target.value.toLowerCase()) ||
+                    meal.type
+                      .toLowerCase()
+                      .includes(e.target.value.toLowerCase())) &&
                   meal
               )
             );
@@ -176,17 +181,32 @@ function MeniList(props) {
         <div className="col">PDV</div>
         <div className="col">POPUST</div>
         <div className="col">UKUPNA CIJENA</div>
-        {props.tableSelect || props.user.role === "Admin" ? <div className="col"></div> : null}
+        {props.tableSelect || props.user.role === "Admin" ?
+          <div className="col"></div>
+          : null}
       </div>
-      {(searchResults ? searchResults : allMeals).map((meal, index) =>
+      {(searchResults ? searchResults : allMeals).length ? (searchResults ? searchResults : allMeals).map((meal, index) =>
         <div className="row p-2 mt-2 mealRow" key={meal.id}>
           <div className="col">{meal.name}</div>
           <div className="col">{meal.description}</div>
           <div className="col">{meal.type}</div>
           <div className="col">{Number(meal.price).toFixed(2)} HRK</div>
           <div className="col">{meal.pdv}%</div>
-          <div className="col" style={{ color: meal.discount ? "#7abd73" : "black" }}>{meal.discount}%</div>
-          <div className="col">{(meal.price + (meal.price * (meal.pdv / 100) - meal.price * (meal.discount / 100))).toFixed(2)} HRK</div>
+          <div
+            className="col"
+            style={{ color: meal.discount ? "#7abd73" : "black" }}
+          >
+            {meal.discount}%
+          </div>
+          <div className="col">
+            {(
+              meal.price -
+              meal.price * (meal.discount / 100) +
+              (meal.price - meal.price * (meal.discount / 100)) *
+                (meal.pdv / 100)
+            ).toFixed(2)}{" "}
+            HRK
+          </div>
           {props.tableSelect &&
             <div className="col" id="mealRow-picker">
               <QuantityPicker
@@ -206,24 +226,18 @@ function MeniList(props) {
                   verticalAlign: "middle",
                   minWidth: "32px",
                   color: "black",
-                  visibility: meal.quantity === 0 ? "hidden" : "visible"
+                  visibility: meal.quantity === 0 ? "hidden" : "visible",
                 }}
                 onClick={() => {
                   if (!meal.added) {
                     props.addMeal({
-                      name: meal.name,
-                      price: meal.price,
-                      type: meal.type,
-                      quantity: meal.quantity,
+                      ...meal,
                       status: "Ordered",
                     });
                     updateAdded(index, meal, true);
                   } else {
                     props.removeMeal({
-                      name: meal.name,
-                      price: meal.price,
-                      type: meal.type,
-                      quantity: 0,
+                      ...meal,
                     });
                     updateAdded(index, meal, false);
                   }
@@ -231,8 +245,9 @@ function MeniList(props) {
               >
                 {!meal.added ?
                   <CheckCircleOutlineIcon style={{ color: "#555555" }} />
-                  : <HighlightOffIcon style={{ color: "#555555" }} />}
-
+                  :
+                  <HighlightOffIcon style={{ color: "#555555" }} />
+                }
               </button>
             </div>
           }
@@ -275,18 +290,12 @@ function MeniList(props) {
             </>
           }
         </div>
-      )}
+      ) : <div className="no-meals">TRENUTNO NEMA JELA NA MENIU</div>}
       {showMealModal && editedMeal ?
-        <Modal
-          showModal={showMealModal}
-          closeModal={() => closeModal}
-        >
+        <Modal showModal={showMealModal} closeModal={() => closeModal}>
           <div className="detail-card container-xl-1" id="fadein">
             <div className="detail-card__close-icon">
-              <IconButton
-                id="close"
-                onClick={() => closeModal()}
-              >
+              <IconButton id="close" onClick={() => closeModal()}>
                 <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
               </IconButton>
             </div>
@@ -373,6 +382,7 @@ function MeniList(props) {
                       inputProps={{
                         step: 1,
                         min: 0,
+                        max: 100,
                       }}
                       label="PDV (%)"
                       defaultValue={edit ? editedMeal.pdv : 0}
@@ -390,6 +400,7 @@ function MeniList(props) {
                       inputProps={{
                         step: 1,
                         min: 0,
+                        max: 100,
                       }}
                       label="Popust (%)"
                       defaultValue={edit ? editedMeal.discount : 0}
@@ -401,15 +412,16 @@ function MeniList(props) {
                 </div>
                 <div className="row mt-3">
                   <div className="col-3" id="potvrdi-container">
-                    <Button id="potvrdi" type="submit" variant="outlined">Potvrdi</Button>
+                    <Button id="potvrdi" type="submit" variant="outlined">
+                      Potvrdi
+                    </Button>
                   </div>
                 </div>
               </div>
             </form>
           </div>
         </Modal>
-        : null
-      }
+        : null}
     </div>
   );
 }
