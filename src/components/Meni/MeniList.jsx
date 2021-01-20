@@ -382,6 +382,7 @@ function MeniList(props) {
                       inputProps={{
                         step: 1,
                         min: 0,
+                        max: 100,
                       }}
                       label="PDV (%)"
                       defaultValue={edit ? editedMeal.pdv : 0}
@@ -399,6 +400,7 @@ function MeniList(props) {
                       inputProps={{
                         step: 1,
                         min: 0,
+                        max: 100,
                       }}
                       label="Popust (%)"
                       defaultValue={edit ? editedMeal.discount : 0}
