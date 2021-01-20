@@ -55,7 +55,7 @@ function OrdersList(props) {
                         ordered: meal.status.toLowerCase() === "ordered",
                       })}
                     >
-                      {meal.status.toLowerCase() === "done" && "Posluzeno"}
+                      {meal.status.toLowerCase() === "done" && "Spremno za posluživanje"}
                       {meal.status.toLowerCase() === "started" && "U pripremi"}
                       {meal.status.toLowerCase() === "ordered" && "Naručeno"}
                     </div>
