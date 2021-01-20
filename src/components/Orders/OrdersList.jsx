@@ -40,8 +40,8 @@ function OrdersList(props) {
           </div>
           <div className="col-3">ISPIS</div>
         </div>
-        {orders &&
-          orders.map(order => 
+        {orders.length ?
+          orders.map(order =>
             <div className="row p-2 mt-2 mealRow" key={order.table}>
               <div className="col-1">{order.table}</div>
               <div className="col">
@@ -87,9 +87,9 @@ function OrdersList(props) {
                 </div>
               </div>
             </div>
-          )}
+          ) : <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>}
       </div>
-      {showModal && order && 
+      {showModal && order &&
         <Modal
           showModal={showModal}
           closeModal={() => {
@@ -190,7 +190,7 @@ function OrdersList(props) {
             </div>
             <hr />
             <div className="receipt-meal-row">
-              {order.meals.map(meal => 
+              {order.meals.map(meal =>
                 <div className="row" key={meal.name}>
                   <div className="col">{meal.name}</div>
                   <div className="col-2">{meal.quantity}</div>
