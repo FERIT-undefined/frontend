@@ -61,7 +61,6 @@ export const exportOrder = (table, user) => {
       table: table,
     })
       .then(res => {
-        console.log(res);
         dispatch(getTableOrders());
       })
       .catch(err => {

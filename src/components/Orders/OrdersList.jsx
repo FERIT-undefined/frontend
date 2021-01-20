@@ -5,6 +5,7 @@ import ReceiptIcon from "@material-ui/icons/Receipt";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import PrintIcon from "@material-ui/icons/Print";
+import DoneIcon from "@material-ui/icons/Done";
 import moment from "moment";
 import {
   exportOrder,
@@ -87,7 +88,10 @@ function OrdersList(props) {
                 </div>
               </div>
             </div>
-          ) : <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>}
+          )
+          :
+          <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
+        }
       </div>
       {showModal && order &&
         <Modal
@@ -171,14 +175,30 @@ function OrdersList(props) {
                     WinPrint.document.close();
                     WinPrint.focus();
                     WinPrint.print();
+                    setHidden(false);
                     WinPrint.addEventListener("afterprint", () => {
-                      dispatch(exportOrder(order.table, props.user));
                       WinPrint.close();
-                      setHidden(false);
                     });
                   }}
                 >
                   <PrintIcon />
+                </IconButton>
+              </div>
+              <div className="receipt__icons__traffic">
+                <IconButton
+                  id="done"
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        "Jeste li sigurni da želite zatvoriti i spremiti račun?\nOPREZ: Nećete moći isprintati račun nakon ove akcije"
+                      )
+                    ) {
+                      setShowModal(false);
+                      dispatch(exportOrder(order.table, props.user));
+                    }
+                  }}
+                >
+                  <DoneIcon />
                 </IconButton>
               </div>
             </div>
