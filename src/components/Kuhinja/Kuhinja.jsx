@@ -18,7 +18,6 @@ const Kuhinja = () => {
   const [table, setTable] = useState(null);
   const [meal, setMeal] = useState(null);
   const [tableIndex, setTableIndex] = useState(null);
-
   useEffect(() => {
     dispatch(getTableOrders());
   }, []);
@@ -27,7 +26,6 @@ const Kuhinja = () => {
     let status;
     if (meal.status === "ordered") status = "started";
     if (meal.status === "started") status = "done"; 
-    // let status = meal.status ===  "ordered" ? "started" : "done";
     dispatch(changeStatus(status, table, index, user, tableIndex));
   };
   return (
@@ -45,32 +43,34 @@ const Kuhinja = () => {
           </thead>
           <tbody>
             {tableOrders.map((item, i) => 
-              <tr key={item.table} onClick={() => {setTable(item); setTableIndex(i);}}>
-                <td>
-                  <p>{item.table}</p>
-                </td>
-                <td>
-                  {tableOrders[i].meals.map((item, i) => <p key={i}>{item.name}</p>)}
-                </td>
-                <td>
-                  {tableOrders[i].meals.map((item, i) => <p key={i}>{item.quantity}</p>)}
-                </td>
-                <td>
-                </td>
-                <td>
-                  {tableOrders[i].meals.map((item, i) => <React.Fragment key={i}>  
-                    <Row>
-                      <Col xs={2}>
-                        <p>{item.status}</p>
-                      </Col>
-                      <Col xs={4}>
-                        <Button variant="info" size="sm" onClick={() => {setShow(true); setIndex(i); setMeal(item);}}>Change status</Button>
-                      </Col>
+              item.done === false ?
+                <tr key={item.table} onClick={() => {setTable(item); setTableIndex(i);}}>
+                  <td>
+                    <p>{item.table}</p>
+                  </td>
+                  <td>
+                    {tableOrders[i].meals.map((item, i) => <p key={i}>{item.name}</p>)}
+                  </td>
+                  <td>
+                    {tableOrders[i].meals.map((item, i) => <p key={i}>{item.quantity}</p>)}
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                    {tableOrders[i].meals.map((item, i) => <React.Fragment key={i}>  
+                      <Row>
+                        <Col xs={2}>
+                          <p>{item.status}</p>
+                        </Col>
+                        <Col xs={4}>
+                          <Button variant="info" size="sm" onClick={() => {setShow(true); setIndex(i); setMeal(item);}}>Change status</Button>
+                        </Col>
 
-                    </Row>
-                  </React.Fragment>)}
-                </td>
-              </tr>
+                      </Row>
+                    </React.Fragment>)}
+                  </td>
+                </tr>
+                : null
             )}
           </tbody>
         </Table>

@@ -31,8 +31,9 @@ export const changeStatus = (status, table, index, user, tableIndex) => {
           index: index,
           status: status,
           tableIndex: tableIndex,
-        })
+        }),
       )
+      .then(res => dispatch(getTableOrders()))
       .catch(err => {
         dispatch({ type: "TABLE_ORDERS_CHANGE_STATUS_ERROR", err });
       });
