@@ -61,25 +61,38 @@ function Traffic() {
         </div>
         <div className="col">DATUM</div>
       </div>
-      {allTraffic.length ? allTraffic.map((receipt, index) =>
-        <div className="row p-2 mt-2 mealRow" key={index}>
-          <div className="col-9">
-            {receipt.meals.map(meal =>
-              <div className="row traffic-meal-row" key={meal.name}>
-                <div className="col">{meal.name}</div>
-                <div className="col">{meal.price.toFixed(2)} HRK </div>
-                <div className="col">{meal.quantity}</div>
-                <div className="col">{(meal.price * meal.quantity).toFixed(2)} HRK</div>
-              </div>
-            )}
+      {allTraffic.length ?
+        allTraffic.map((receipt, index) =>
+          <div className="row p-2 mt-2 mealRow" key={index}>
+            <div className="col-9">
+              {receipt.meals.map(meal => {
+                const mealPrice =
+                  meal.price -
+                  meal.price * (meal.discount / 100) +
+                  (meal.price - meal.price * (meal.discount / 100)) *
+                    (meal.pdv / 100);
+                return (
+                  <div className="row traffic-meal-row" key={meal.name}>
+                    <div className="col">{meal.name}</div>
+                    <div className="col">{mealPrice.toFixed(2)} HRK </div>
+                    <div className="col">{meal.quantity}</div>
+                    <div className="col">
+                      {(meal.quantity * mealPrice).toFixed(2)} HRK
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="col">
+              {moment()
+                .utc(receipt.finished_timestamp)
+                .format("DD.MM.YYYY. hh:mm")}
+            </div>
           </div>
-          <div className="col">
-            {moment()
-              .utc(receipt.finished_timestamp)
-              .format("DD.MM.YYYY. hh:mm")}
-          </div>
-        </div>
-      ) : <div className="no-traffic">NEMA PROMETA U ODABRANOM RASPONU</div>}
+        )
+        :
+        <div className="no-traffic">NEMA PROMETA U ODABRANOM RASPONU</div>
+      }
     </div>
   );
 }

@@ -60,10 +60,11 @@ export const addOrder = (user, table, meals, totalPrice) => {
   };
 };
 
-export const exportOrder = (table, user) => {
+export const exportOrder = (table, user, totalPrice) => {
   return (dispatch, getState) => {
     Axios.patch(`${process.env.REACT_APP_API_URL_ORDER}export`, {
       table: table,
+      total_price: totalPrice,
     })
       .then(res => {
         dispatch(getTableOrders());

@@ -249,7 +249,7 @@ function OrdersList(props) {
                       )
                     ) {
                       setShowModal(false);
-                      dispatch(exportOrder(order.table, props.user));
+                      dispatch(exportOrder(order.table, props.user, getTotalPrice()));
                     }
                   }}
                 >
