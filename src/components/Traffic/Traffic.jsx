@@ -12,8 +12,6 @@ function Traffic() {
     moment().utc().startOf("month").toDate()
   );
   const [endDate, setEndDate] = useState(moment().utc().toDate());
-  const [searchResults, setSearchResults] = useState(null);
-  const [searching, setSearching] = useState(false);
   const [allTraffic, setAllTraffic] = useState([]);
 
   const traffic = useSelector(state => state.traffic.traffic);

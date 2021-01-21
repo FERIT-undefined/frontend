@@ -35,7 +35,6 @@ function OrdersList(props) {
       (meal.pdv / 100)) * meal.quantity, 0);
     return totalPrice.toFixed(2);
   };
-  console.log(order);
   return (
     <div>
       <div className="container-fluid orders-list">
@@ -141,7 +140,7 @@ function OrdersList(props) {
                         border-radius: 6px;
                         background: white;
                         height: fit-content;
-                        padding: 2%; 
+                        padding: 2%;
                       }
                         .receipt__icons {
                           display: none;}
@@ -152,7 +151,7 @@ function OrdersList(props) {
                             margin-top: 10px;
                             background-color: white;
                             border-radius: 50%; }
-                        
+
                           .info__date {
                             text-align: center;
                             font-weight: bold;
@@ -166,7 +165,7 @@ function OrdersList(props) {
                             padding-top: 5px;
                             font-size: 14px;
                           }
-                         
+
                          .receipt-table-header .receipt-meal {
                           max-width: none;
                           text-align: center;
@@ -181,7 +180,7 @@ function OrdersList(props) {
                            width: 100%;
                            margin-bottom: 2%;
                           }
-                         
+
                          .receipt .receipt-meal-row .row:not(:first-child) {
                           margin-top: 15px; }
                           .receipt-meal-row .row{display: -ms-flexbox;
@@ -203,7 +202,7 @@ function OrdersList(props) {
                           width: 45%;
                           margin-right: 2%;
                           font-weight: bold;
-                          flex-wrap: wrap; 
+                          flex-wrap: wrap;
                           .total-price__label {
                             font-size: 20px;
                           }
@@ -245,7 +244,6 @@ function OrdersList(props) {
                       )
                     ) {
                       setShowModal(false);
-                      console.log(order.table);
                       dispatch(exportOrder(order.table, props.user));
                     }
                   }}

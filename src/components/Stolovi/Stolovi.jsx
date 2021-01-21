@@ -43,14 +43,12 @@ function Stolovi(props) {
   const getStatus = tableNumber => {
     const currentTable = orders.tableOrders.filter(order => order.table === tableNumber);
     let status;
-    console.log(currentTable);
     if (!currentTable.length) {
       status = "no orders";
     } else {
       const mealOrdered = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "ordered");
       const mealStarted = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "started");
       const mealDone = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "done");
-      console.log(tableNumber, mealOrdered, mealStarted, mealDone);
       if (mealOrdered.length) status = "ordered";
       if (mealStarted.length >= 1) status = "started";
       if (mealDone.length === currentTable[0].meals.length) status = "done";
@@ -316,7 +314,6 @@ function Stolovi(props) {
                     >
                       Potvrdi
                     </Button>
-                    {console.log(order)}
                   </div>
                 </div>
               </form>
