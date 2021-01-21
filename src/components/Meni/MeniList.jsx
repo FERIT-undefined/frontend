@@ -218,7 +218,6 @@ function MeniList(props) {
                 defaultValue={0}
               />
               <button
-                visibility={meal.quantity === 0 ? "hidden" : "visible"}
                 type="button"
                 className="mealRow__addToOrder"
                 style={{
@@ -227,7 +226,7 @@ function MeniList(props) {
                   verticalAlign: "middle",
                   minWidth: "32px",
                   color: "black",
-                  visibility: meal.quantity === 0 ? "hidden" : "visible",
+                  display: !meal.quantity ? "none" : "",
                 }}
                 onClick={() => {
                   if (!meal.added) {

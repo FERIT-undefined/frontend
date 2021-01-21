@@ -53,7 +53,6 @@ export default class QuantityPicker extends Component {
 
   render() {
     const { disableDec, disableInc } = this.state;
-
     return (
       <div className="quantity-picker">
         <IconButton

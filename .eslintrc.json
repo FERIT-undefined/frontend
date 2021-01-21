@@ -37,10 +37,6 @@
         "jsx-a11y/no-noninteractive-element-interactions": [
             0
         ],
-        "linebreak-style": [
-            "warn",
-            "windows"
-        ],
         "max-len": [
             "warn",
             150,
