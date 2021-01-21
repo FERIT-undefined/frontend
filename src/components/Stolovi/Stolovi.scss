@@ -9,7 +9,7 @@
   height: 90vh;
 
   @media screen and (max-width: 900px){
-   justify-content: center; 
+   justify-content: center;
   }
   &__order-table {
     width: 250px;
@@ -73,6 +73,9 @@
 
   &__close-icon {
     width: 100%;
+    position: absolute;
+    right: 0px;
+    top: 0px;
     .MuiButtonBase-root {
       background: none;
       border: none;
