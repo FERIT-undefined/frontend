@@ -15,12 +15,13 @@ import Routes from "./Routes";
 
 function App() {
   const user = useSelector(state => state.users.user);
+  const orders = useSelector(state=>state.tableOrders);
   return (
     <Router>
       <Switch>
         <Route path="/login" component={() => <SignIn user={user} />} />
         <Route path="/register" component={() => <SignUp user={user} />} />
-        <PrivateRoute component={() => <Routes user={user} />} />
+        <PrivateRoute component={() => <Routes user={user} orders={orders} />} />
       </Switch>
     </Router>
   );

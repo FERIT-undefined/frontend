@@ -83,7 +83,7 @@ function Zaposlenici(props) {
               <div className="col">{user.role}</div>
               <div className="col">
                 {user.id !== props.user.id &&
-                  <div id="action-button-container">
+                  <div className="zaposlenici__btns" id="action-button-container">
                     <IconButton
                       aria-label="delete"
                       className={classes.margin}
