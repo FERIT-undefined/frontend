@@ -52,8 +52,13 @@ function OrdersList(props) {
         </div>
         {orders.length ?
           orders.map(order =>
-            <div className="row p-2 mt-2 mealRow" key={order.table}>
-              <div className="col-1">{order.table}</div>
+
+            <div className={classNames({
+              "row p-2 mt-2 mealRow": true,
+              isDone: order.done
+            })} key={order.table}>
+
+              <div className="col-1">{console.log(order), order.table}</div>
               <div className="col">
                 {order.meals.map(meal => {
                   const mealPrice =
