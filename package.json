@@ -34,7 +34,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "start:prod": "pm2 serve build 80 --spa --name 'brzaklopa_frontend'",
+    "start:prod": "pm2 serve -l 80 -s build --name 'brzaklopa_frontend'",
     "stop": "pm2 stop brzaklopa_frontend",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
