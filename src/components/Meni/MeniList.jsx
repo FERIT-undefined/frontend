@@ -164,7 +164,7 @@ function MeniList(props) {
           }
         }}
       />
-      {props.user && props.user.role === "Admin" &&
+      {props.user && props.user.role === "Admin" && 
         <button
           type="button"
           className="menu__add"
@@ -181,117 +181,122 @@ function MeniList(props) {
         <div className="col">PDV</div>
         <div className="col">POPUST</div>
         <div className="col">UKUPNA CIJENA</div>
-        {props.tableSelect || props.user.role === "Admin" ?
+        {props.tableSelect || props.user.role === "Admin" ? 
           <div className="col"></div>
           : null}
       </div>
-      {(searchResults ? searchResults : allMeals).length ? (searchResults ? searchResults : allMeals).map((meal, index) =>
-        <div className="row p-2 mt-2 mealRow" key={meal.id}>
-          <div className="col">{meal.name}</div>
-          <div className="col">{meal.description}</div>
-          <div className="col">{meal.type}</div>
-          <div className="col">{Number(meal.price).toFixed(2)} HRK</div>
-          <div className="col">{meal.pdv}%</div>
-          <div
-            className="col"
-            style={{ color: meal.discount ? "#7abd73" : "black" }}
-          >
-            {meal.discount}%
-          </div>
-          <div className="col">
-            {(
-              meal.price -
-              meal.price * (meal.discount / 100) +
-              (meal.price - meal.price * (meal.discount / 100)) *
-                (meal.pdv / 100)
-            ).toFixed(2)}{" "}
-            HRK
-          </div>
-          {props.tableSelect &&
-            <div className="col" id="mealRow-picker">
-              <QuantityPicker
-                min={0}
-                max={10}
-                meal={meal}
-                index={index}
-                updateQuantity={updateQuantity}
-                defaultValue={0}
-              />
-              <button
-                type="button"
-                className="mealRow__addToOrder"
-                style={{
-                  background: "none",
-                  border: "none",
-                  verticalAlign: "middle",
-                  minWidth: "32px",
-                  color: "black",
-                  display: !meal.quantity ? "none" : "",
-                }}
-                onClick={() => {
-                  if (!meal.added) {
-                    props.addMeal({
-                      ...meal,
-                      status: "Ordered",
-                    });
-                    updateAdded(index, meal, true);
-                  } else {
-                    props.removeMeal({
-                      ...meal,
-                    });
-                    updateAdded(index, meal, false);
-                  }
-                }}
-              >
-                {!meal.added ?
-                  <CheckCircleOutlineIcon style={{ color: "#555555" }} />
-                  :
-                  <HighlightOffIcon style={{ color: "#555555" }} />
-                }
-              </button>
+      {(searchResults ? searchResults : allMeals) &&
+      (searchResults ? searchResults : allMeals).length ? 
+        (searchResults ? searchResults : allMeals).map((meal, index) => 
+          <div className="row p-2 mt-2 mealRow" key={meal.id}>
+            <div className="col">{meal.name}</div>
+            <div className="col">{meal.description}</div>
+            <div className="col">{meal.type}</div>
+            <div className="col">{Number(meal.price).toFixed(2)} HRK</div>
+            <div className="col">{meal.pdv}%</div>
+            <div
+              className="col"
+              style={{ color: meal.discount ? "#7abd73" : "black" }}
+            >
+              {meal.discount}%
             </div>
-          }
-          {props.user && props.user.role === "Admin" &&
-            <>
-              <div className="col">
-                <div className="button-container">
-                  <IconButton
-                    aria-label="delete"
-                    className={classes.margin}
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          "Jeste li sigurni da želite obrisati ovo jelo?"
-                        )
-                      ) {
-                        dispatch(removeMeal(props.user, meal.id));
-                      }
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                  <IconButton
-                    aria-label="edit"
-                    className={classes.margin}
-                    onClick={() => {
-                      setEditedMeal(meal);
-                      setEdit(true);
-                      setEditedMeal({
+            <div className="col">
+              {(
+                meal.price -
+                meal.price * (meal.discount / 100) +
+                (meal.price - meal.price * (meal.discount / 100)) *
+                  (meal.pdv / 100)
+              ).toFixed(2)}{" "}
+              HRK
+            </div>
+            {props.tableSelect && 
+              <div className="col" id="mealRow-picker">
+                <QuantityPicker
+                  min={0}
+                  max={10}
+                  meal={meal}
+                  index={index}
+                  updateQuantity={updateQuantity}
+                  defaultValue={0}
+                />
+                <button
+                  type="button"
+                  className="mealRow__addToOrder"
+                  style={{
+                    background: "none",
+                    border: "none",
+                    verticalAlign: "middle",
+                    minWidth: "32px",
+                    color: "black",
+                    display: !meal.quantity ? "none" : "",
+                  }}
+                  onClick={() => {
+                    if (!meal.added) {
+                      props.addMeal({
                         ...meal,
-                        price: Number(meal.price).toFixed(2),
+                        status: "Ordered",
                       });
-                      setShowMealModal(true);
-                    }}
-                  >
-                    <EditTwoToneIcon style={{ color: "#219ebc" }} />
-                  </IconButton>
-                </div>
+                      updateAdded(index, meal, true);
+                    } else {
+                      props.removeMeal({
+                        ...meal,
+                      });
+                      updateAdded(index, meal, false);
+                    }
+                  }}
+                >
+                  {!meal.added ? 
+                    <CheckCircleOutlineIcon style={{ color: "#555555" }} />
+                    : 
+                    <HighlightOffIcon style={{ color: "#555555" }} />
+                  }
+                </button>
               </div>
-            </>
-          }
-        </div>
-      ) : <div className="no-meals">TRENUTNO NEMA JELA NA MENIU</div>}
-      {showMealModal && editedMeal ?
+            }
+            {props.user && props.user.role === "Admin" && 
+              <>
+                <div className="col">
+                  <div className="button-container">
+                    <IconButton
+                      aria-label="delete"
+                      className={classes.margin}
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Jeste li sigurni da želite obrisati ovo jelo?"
+                          )
+                        ) {
+                          dispatch(removeMeal(props.user, meal.id));
+                        }
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="edit"
+                      className={classes.margin}
+                      onClick={() => {
+                        setEditedMeal(meal);
+                        setEdit(true);
+                        setEditedMeal({
+                          ...meal,
+                          price: Number(meal.price).toFixed(2),
+                        });
+                        setShowMealModal(true);
+                      }}
+                    >
+                      <EditTwoToneIcon style={{ color: "#219ebc" }} />
+                    </IconButton>
+                  </div>
+                </div>
+              </>
+            }
+          </div>
+        )
+        : 
+        <div className="no-meals">TRENUTNO NEMA JELA NA MENIU</div>
+      }
+      {showMealModal && editedMeal ? 
         <Modal showModal={showMealModal} closeModal={() => closeModal}>
           <div className="detail-card container-xl-1" id="fadein">
             <div className="detail-card__close-icon">
@@ -366,7 +371,7 @@ function MeniList(props) {
                       onChange={e => setNewMealData("type", e.target.value)}
                       SelectProps={{ native: true }}
                     >
-                      {mealTypes.map(option =>
+                      {mealTypes.map(option => 
                         <option key={option.value} value={option.value}>
                           {option.value}
                         </option>

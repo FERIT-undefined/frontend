@@ -50,7 +50,7 @@ function OrdersList(props) {
           </div>
           <div className="col-3">ISPIS</div>
         </div>
-        {orders.length ?
+        {orders && orders.length ?
           orders.map(order =>
 
             <div className={classNames({
