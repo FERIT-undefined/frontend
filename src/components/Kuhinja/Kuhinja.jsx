@@ -1,13 +1,13 @@
-import React , { useEffect, useState } from "react";
+/* eslint-disable indent */
+import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Container";
 import { getTableOrders, changeStatus } from "../../store/actions/tableOrderActions";
 import { useDispatch, useSelector } from "react-redux";
+import classNames from "classnames";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "./Kuhinja.scss";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 const Kuhinja = () => {
   const tableOrders = useSelector(state => state.tableOrder.tableOrders);
@@ -23,15 +23,71 @@ const Kuhinja = () => {
   }, []);
 
   const changeMealStatus = () => {
+    console.log("changeMeal", meal);
     let status;
-    if (meal.status === "ordered") status = "started";
-    if (meal.status === "started") status = "done"; 
-    dispatch(changeStatus(status, table, index, user, tableIndex));
+    if (meal.status.toLowerCase() === "ordered") status = "started";
+    if (meal.status.toLowerCase() === "started") status = "done";
+    // dispatch(changeStatus(status, table, index, user, tableIndex));
+    dispatch(changeStatus(status, table, meal, user));
   };
   return (
-    <div>
+    <div className="container-fluid mt-4 kitchen">
+      <div className="row p-2 font-weight-bold mt-3 listKitchenRow">
+        <div className="col-1">STOL</div>
+        <div className="col">
+          <div className="row">
+            <div className="col">NARUDŽBA</div>
+            <div className="col">KOLIČINA</div>
+            <div className="col">STATUS</div>
+            <div className="col">PROMJENA</div>
+          </div>
+        </div>
+      </div>
+      {
+        tableOrders.length ?
+          tableOrders.map((order, i) =>
+            !order.done
+              ?
+              <div className="row p-2 mt-2 mealRow" key={order.table} onClick={() => { setTable(order); setTableIndex(i); }}>
+                <div className="col-1">{order.table}</div>
+                <div className="col">
+                  {
+                    order.meals.map(meal =>
+                      <div className="row kitchen-meal-row" key={meal.name}>
+                        <div className="col">{meal.name}</div>
+                        <div className="col">{meal.quantity}</div>
+                        <div className={classNames({
+                          col: true,
+                          done: meal.status.toLowerCase() === "done",
+                          started: meal.status.toLowerCase() === "started",
+                          ordered: meal.status.toLowerCase() === "ordered"
+                        })}>
+                          {meal.status.toLowerCase() === "done" && "Spremno za posluživanje"}
+                          {meal.status.toLowerCase() === "started" && "U pripremi"}
+                          {meal.status.toLowerCase() === "ordered" && "Naručeno"}
+                        </div>
+                        <>
+                          <div className="col">
+                            <button
+                              className="button-container__change"
+                              onClick={() => { setShow(true); setIndex(i); setMeal(meal); }}
+                            >
+                              Promijeni status
+                                </button>
+                          </div>
+                        </>
+                      </div>
+                    )
+                  }
+                </div>
+              </div>
+
+              : null
+          )
+          : <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
+      }
       <Container>
-        <Table  striped bordered hover>
+        {/* <Table striped bordered hover>
           <thead>
             <tr>
               <th>Stol</th>
@@ -42,9 +98,9 @@ const Kuhinja = () => {
             </tr>
           </thead>
           <tbody>
-            {tableOrders.map((item, i) => 
+            {tableOrders.map((item, i) =>
               item.done === false ?
-                <tr key={item.table} onClick={() => {setTable(item); setTableIndex(i);}}>
+                <tr key={item.table} onClick={() => { setTable(item); setTableIndex(i); }}>
                   <td>
                     <p>{item.table}</p>
                   </td>
@@ -57,13 +113,13 @@ const Kuhinja = () => {
                   <td>
                   </td>
                   <td>
-                    {tableOrders[i].meals.map((item, i) => <React.Fragment key={i}>  
+                    {tableOrders[i].meals.map((item, i) => <React.Fragment key={i}>
                       <Row>
                         <Col xs={2}>
                           <p>{item.status}</p>
                         </Col>
                         <Col xs={4}>
-                          <Button variant="info" size="sm" onClick={() => {setShow(true); setIndex(i); setMeal(item);}}>Change status</Button>
+                          <Button variant="info" size="sm" onClick={() => { setShow(true); setIndex(i); setMeal(item); }}>Change status</Button>
                         </Col>
 
                       </Row>
@@ -73,7 +129,7 @@ const Kuhinja = () => {
                 : null
             )}
           </tbody>
-        </Table>
+        </Table> */}
         <Modal
           show={show}
           onHide={() => setShow(false)}
@@ -83,12 +139,12 @@ const Kuhinja = () => {
         >
           <Modal.Body>
             <p>
-            Sljedeći korak?
+              Sljedeći korak?
               <button type="button" className="btn btn-default" aria-label="Left Align">
                 <span className="glyphicon glyphicon-align-left" aria-hidden="true"></span>
               </button>
-              <Button variant="success" onClick={() => { setShow(false); changeMealStatus();}}>Da</Button>
-              <Button variant="danger" onClick={() => setShow(false)}>Ne</Button> 
+              <Button variant="success" onClick={() => { setShow(false); changeMealStatus(); }}>Da</Button>
+              <Button variant="danger" onClick={() => setShow(false)}>Ne</Button>
             </p>
           </Modal.Body>
         </Modal>

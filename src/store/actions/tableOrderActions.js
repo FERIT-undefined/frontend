@@ -15,23 +15,26 @@ export const getTableOrders = () => {
   };
 };
 
-export const changeStatus = (status, table, index, user, tableIndex) => {
+export const changeStatus = (status, table, meal, user) => {
+  console.log(meal.id);
   return (dispatch, getState) => {
     Axios.patch(
-      `${process.env.REACT_APP_API_URL_ORDER}${table.table}/${index}`,
+      `${process.env.REACT_APP_API_URL_ORDER}${table.table}/${meal.id}`,
       {
         refreshToken: user.refreshToken,
         status: status,
         accessToken: user.accessToken,
       }
     )
-      .then(res =>
+      .then(res => {
+        console.log(res);
         dispatch({
           type: "TABLE_ORDERS_CHANGE_STATUS",
-          index: index,
+          // index: index,
           status: status,
-          tableIndex: tableIndex,
-        }),
+          // tableIndex: tableIndex,
+        });
+      }
       )
       .then(res => dispatch(getTableOrders()))
       .catch(err => {
@@ -41,6 +44,7 @@ export const changeStatus = (status, table, index, user, tableIndex) => {
 };
 
 export const addOrder = (user, table, meals, totalPrice) => {
+  console.log(meals);
   return (dispatch, getState) => {
     Axios.post(`${process.env.REACT_APP_API_URL_ORDER}add`, {
       table,

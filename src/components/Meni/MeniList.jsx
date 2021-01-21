@@ -215,6 +215,7 @@ function MeniList(props) {
                 meal={meal}
                 index={index}
                 updateQuantity={updateQuantity}
+                defaultValue={0}
               />
               <button
                 visibility={meal.quantity === 0 ? "hidden" : "visible"}

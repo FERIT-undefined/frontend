@@ -9,7 +9,7 @@ export default class QuantityPicker extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: this.props.meal.quantity, disableDec: true, disableInc: false };
+    this.state = { value: this.props.meal.quantity ? this.props.meal.quantity : 0, disableDec: true, disableInc: false };
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
   }

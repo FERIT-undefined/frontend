@@ -13,6 +13,10 @@
         color: #07922a;
       }
     }
+    &.isDone{
+      background:rgba(144, 238, 144, 0.15);
+      box-shadow: 0px 0px 10px 0px #90ee90;
+    }
   }
 }
 
