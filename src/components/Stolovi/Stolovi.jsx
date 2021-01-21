@@ -244,7 +244,7 @@ function Stolovi(props) {
                 <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
               </IconButton>
             </div>
-            {order.length ?
+            {order && order.length ?
               <div>
                 <div className="container-fluid orders-list">
                   <div className="row p-2 font-weight-bold mt-3 listInfoRow">
@@ -319,8 +319,6 @@ function Stolovi(props) {
               </form>
 
             }
-
-
           </div>
         </Modal>
         : null

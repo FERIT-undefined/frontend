@@ -74,7 +74,7 @@ function Zaposlenici(props) {
           <div className="col">ULOGA</div>
           <div className="col">AKCIJE</div>
         </div>
-        {users.length ?
+        {users && users.length ?
           users.map(user =>
             <div className="row p-2 mt-2 userRow" key={user.id}>
               <div className="col">{user.fname}</div>

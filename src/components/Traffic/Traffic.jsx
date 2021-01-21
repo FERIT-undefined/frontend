@@ -61,7 +61,7 @@ function Traffic() {
         </div>
         <div className="col">DATUM</div>
       </div>
-      {allTraffic.length ? allTraffic.map((receipt, index) =>
+      {allTraffic && allTraffic.length ? allTraffic.map((receipt, index) =>
         <div className="row p-2 mt-2 mealRow" key={index}>
           <div className="col-9">
             {receipt.meals.map(meal =>
