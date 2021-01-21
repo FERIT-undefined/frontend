@@ -42,7 +42,7 @@ function Routes(props) {
             />
             <Route
               path="/stolovi"
-              component={() => <Stolovi user={props.user} />}
+              component={() => <Stolovi user={props.user} orders={props.orders}/>}
             />
           </>
         }

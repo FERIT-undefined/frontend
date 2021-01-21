@@ -7,6 +7,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import PrintIcon from "@material-ui/icons/Print";
 import DoneIcon from "@material-ui/icons/Done";
 import moment from "moment";
+import _ from "lodash";
+
 import {
   exportOrder,
   getTableOrders,
@@ -26,6 +28,14 @@ function OrdersList(props) {
     dispatch(getTableOrders());
   }, []);
 
+  const getTotalPrice = () => {
+    const totalPrice = _.reduce(order.meals, (total, meal) => total + (meal.price -
+      meal.price * (meal.discount / 100) +
+      (meal.price - meal.price * (meal.discount / 100)) *
+      (meal.pdv / 100)) * meal.quantity, 0);
+    return totalPrice.toFixed(2);
+  };
+  console.log(order);
   return (
     <div>
       <div className="container-fluid orders-list">
@@ -51,7 +61,7 @@ function OrdersList(props) {
                     meal.price -
                     meal.price * (meal.discount / 100) +
                     (meal.price - meal.price * (meal.discount / 100)) *
-                      (meal.pdv / 100);
+                    (meal.pdv / 100);
                   return (
                     <div className="row orders-meal-row" key={meal.name}>
                       <div className="col">{meal.name}</div>
@@ -67,9 +77,8 @@ function OrdersList(props) {
                           ordered: meal.status.toLowerCase() === "ordered",
                         })}
                       >
-                        {meal.status.toLowerCase() === "done" && "Posluzeno"}
-                        {meal.status.toLowerCase() === "started" &&
-                          "U pripremi"}
+                        {meal.status.toLowerCase() === "done" && "Spremno za posluživanje"}
+                        {meal.status.toLowerCase() === "started" && "U pripremi"}
                         {meal.status.toLowerCase() === "ordered" && "Naručeno"}
                       </div>
                     </div>
@@ -128,11 +137,12 @@ function OrdersList(props) {
                       .orders-list { padding: 1%; }
                       .orders-list .mealRow .orders-meal-row { padding: 16px 0; }
                       .receipt {
-                        width: 300px;
+                        width: 40%;
                         border-radius: 6px;
                         background: white;
                         height: fit-content;
-                        padding: 16px; }
+                        padding: 2%; 
+                      }
                         .receipt__icons {
                           display: none;}
                           .receipt__icons__close-icon {
@@ -142,9 +152,37 @@ function OrdersList(props) {
                             margin-top: 10px;
                             background-color: white;
                             border-radius: 50%; }
-                        .info {
-                          text-align: center; }
-                        .receipt .receipt-meal-row .row:not(:first-child) {
+                        
+                          .info__date {
+                            text-align: center;
+                            font-weight: bold;
+                            font-size: 18px;
+                          }
+                          .info__waiter {
+                            padding-top: 10px;
+                            font-size: 14px;
+                          }
+                          .info__table {
+                            padding-top: 5px;
+                            font-size: 14px;
+                          }
+                         
+                         .receipt-table-header .receipt-meal {
+                          max-width: none;
+                          text-align: center;
+                          padding: 0;
+                         }
+                         .receipt-table-header .row {
+                           display: -ms-inline-flexbox;
+                           display: inline-flex;
+                           flex-wrap: nowrap;
+                           font-weight: bold;
+                           justify-content: space-evenly;
+                           width: 100%;
+                           margin-bottom: 2%;
+                          }
+                         
+                         .receipt .receipt-meal-row .row:not(:first-child) {
                           margin-top: 15px; }
                           .receipt-meal-row .row{display: -ms-flexbox;
                             display: flex;
@@ -158,9 +196,22 @@ function OrdersList(props) {
                               max-width: 100%;
                               margin: 0;
                           }
-                        .total_price {
-                          text-align: -webkit-right;
-                          text-align: end; }
+                        .total-price {
+                          display: flex;
+                          float: right;
+                          justify-content: space-between;
+                          width: 45%;
+                          margin-right: 2%;
+                          font-weight: bold;
+                          flex-wrap: wrap; 
+                          .total-price__label {
+                            font-size: 20px;
+                          }
+                          .total-price__value {
+                            font-size: 20px;
+                            white-space: nowrap;
+                          }
+                        }
                           .col-2 {-ms-flex: 0 0 16.666667%;
                             flex: 0 0 16.666667%;
                             max-width: 16.666667%;
@@ -194,6 +245,7 @@ function OrdersList(props) {
                       )
                     ) {
                       setShowModal(false);
+                      console.log(order.table);
                       dispatch(exportOrder(order.table, props.user));
                     }
                   }}
@@ -203,23 +255,50 @@ function OrdersList(props) {
               </div>
             </div>
             <div className="info">
-              <div>{moment.utc().format("DD.MM.YYYY")}</div>
-              <div>
-                {props.user.fname} {props.user.lname}
+              <div className="info__date">{moment.utc().format("DD.MM.YYYY HH:MM")}</div>
+              <div className="info__waiter">
+                Djelatnik: {props.user.fname} {props.user.lname}
+              </div>
+              <div className="info__table">
+                Stol: {order.table}
               </div>
             </div>
             <hr />
+            <div className="col-9 receipt-table-header">
+              <div className="row p-2 mt-2">
+                <div className="col">NAZIV</div>
+                <div className="col">CIJENA</div>
+                <div className="col">KOLIČINA</div>
+                <div className="col">UKUPNO</div>
+              </div>
+            </div>
             <div className="receipt-meal-row">
-              {order.meals.map(meal =>
-                <div className="row" key={meal.name}>
-                  <div className="col">{meal.name}</div>
-                  <div className="col-2">{meal.quantity}</div>
-                  <div className="col-5">{meal.quantity * meal.price} Kn</div>
-                </div>
-              )}
+              <div className="col-9 receipt-meal">
+                {order.meals.map(meal => {
+                  const mealPrice =
+                    meal.price -
+                    meal.price * (meal.discount / 100) +
+                    (meal.price - meal.price * (meal.discount / 100)) *
+                    (meal.pdv / 100);
+                  return (
+                    <div className="row p-2 mt-2" key={meal.name}>
+                      <div className="col">{meal.name}</div>
+                      <div className="col">{mealPrice.toFixed(2)} HRK</div>
+                      <div className="col">{meal.quantity}</div>
+                      <div className="col">{(meal.quantity * mealPrice).toFixed(2)} HRK</div>
+                    </div>
+                  );
+                }
+                )}
+              </div>
             </div>
             <hr />
-            <div className="total_price">{order.total_price} Kn</div>
+            <div className="total-price">
+              <div className="total-price__label">Ukupno: </div>
+              <div className="total-price__value">
+                {getTotalPrice()} HRK
+              </div>
+            </div>
           </div>
         </Modal>
       }

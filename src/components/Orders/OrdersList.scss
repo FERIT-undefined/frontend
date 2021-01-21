@@ -17,15 +17,15 @@
 }
 
 .receipt {
-  width: 300px;
+  width: 40%;
   border-radius: 6px;
   background: white;
   height: fit-content;
-  padding: 16px;
+  padding: 2%;
   &__icons {
     position: absolute;
     top: 35%;
-    margin-left: 320px;
+    margin-left: 41%;
     &__close-icon {
       background-color: white;
       border-radius: 50%;
@@ -43,16 +43,54 @@
   }
 
   .info {
-    text-align: center;
+    &__date {
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    &__waiter {
+      padding-top: 10px;
+      font-size: 14px;
+    }
+
+    &__table {
+      padding-top: 5px;
+      font-size: 14px;
+    }
   }
   .receipt-meal-row {
     .row:not(:first-child) {
       margin-top: 15px;
     }
   }
-  .total_price {
-    text-align: -webkit-right;
-    text-align: end;
+
+  .receipt-table-header,
+  .receipt-meal {
+    max-width: none;
+    text-align: center;
+    padding: 0;
+  }
+
+  .receipt-table-header {
+    font-weight: bold;
+  }
+
+  .total-price {
+    display: flex;
+    float: right;
+    justify-content: space-between;
+    width: 45%;
+    margin-right: 2%;
+    font-weight: bold;
+    flex-wrap: wrap;
+    &__label {
+      font-size: 20px;
+    }
+    &__value {
+      font-size: 20px;
+      white-space: nowrap;
+    }
   }
 }
 

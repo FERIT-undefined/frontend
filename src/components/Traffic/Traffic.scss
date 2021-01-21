@@ -1,22 +1,102 @@
-.react-datepicker__input-container input {
-  cursor: pointer;
-  padding: 5px 15px;
-  border: 0;
-  border-radius: 4px;
-  background-color: #216ba5;
-  font: inherit;
-  color: #fff;
+.range {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 2%;
+
+  @media screen and (max-width: 991px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+  }
+  &__label {
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+    width: fit-content;
+    padding-right: 5px;
+    white-space: nowrap;
+  }
 }
 
 .datepicker-select {
-  width: 100%;
-  display: flex;
-  place-content: space-evenly;
+  width: 270px;
+  display: inline-flex;
+  justify-content: space-evenly;
+
+  @media screen and (max-width: 991px) {
+    justify-content: flex-start;
+  }
+
+  .react-datepicker-wrapper{
+    margin-right: 5px;
+  }
+
+  .react-datepicker {
+    border: 1px solid #219cbe;
+    box-shadow: 0px 0px 20px 0px #d0d0d0;
+
+    &__input-container {
+      input {
+        cursor: pointer;
+        padding: 5px 15px;
+        border: 1px solid #219cbe;
+        border-radius: 4px;
+        font: inherit;
+        font-weight: bold;
+        text-align: center;
+        width: 120px;
+      }
+
+      input:hover {
+        border: 2px solid #219cbe;
+      }
+    }
+
+    &__header {
+      background-color: #219cbe;
+    }
+
+    &__current-month,
+    &__day-name {
+      color: #fff;
+    }
+
+    &__day {
+      &--outside-month {
+        color: #555555;
+      }
+
+      &--disabled {
+        color: #ccc !important;
+      }
+
+      &--selected {
+        background-color: #fff !important;
+        color: black;
+        border: 2px solid #219cbe;
+        border-radius: 6px;
+      }
+
+      &--today {
+        font-weight: normal;
+      }
+    }
+  }
 }
 
 .no-traffic {
   text-align: center;
   font-weight: bold;
   height: 100%;
-  padding: 50px;
+  padding: 100px;
+}
+
+.traffic-meal-row {
+  padding: 16px 0px;
+}
+
+.mealRow > .col {
+  min-width: 75px;
 }
