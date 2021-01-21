@@ -32,20 +32,25 @@ function Traffic() {
 
   return (
     <div className="container-fluid mt-4 menu">
-      <div className="datepicker-select">
-        <DatePicker
-          dateFormat="d.M.y"
-          selected={startDate}
-          onChange={date => setStartDate(date)}
-        />
-        <DatePicker
-          dateFormat="d.M.y"
-          selected={endDate}
-          onChange={date => {
-            date.setHours(23, 59, 59, 999);
-            setEndDate(date);
-          }}
-        />
+      <div className="range">
+        <div className="range__label">Promet za razdoblje: </div>
+        <div className="datepicker-select">
+          <DatePicker
+            dateFormat="dd.MM.yyyy"
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            maxDate={endDate}
+          />
+          <DatePicker
+            dateFormat="dd.MM.yyyy"
+            selected={endDate}
+            onChange={date => {
+              date.setHours(23, 59, 59, 999);
+              setEndDate(date);
+            }}
+            maxDate={moment.utc().toDate()}
+          />
+        </div>
       </div>
       <div className="row p-2 font-weight-bold mt-3 listInfoRow">
         <div className="col-9">
@@ -62,11 +67,11 @@ function Traffic() {
         <div className="row p-2 mt-2 mealRow" key={index}>
           <div className="col-9">
             {receipt.meals.map(meal =>
-              <div className="row" key={meal.name}>
+              <div className="row traffic-meal-row" key={meal.name}>
                 <div className="col">{meal.name}</div>
-                <div className="col">{meal.price}</div>
+                <div className="col">{meal.price.toFixed(2)} HRK </div>
                 <div className="col">{meal.quantity}</div>
-                <div className="col">{meal.price * meal.quantity} HRK</div>
+                <div className="col">{(meal.price * meal.quantity).toFixed(2)} HRK</div>
               </div>
             )}
           </div>

@@ -85,6 +85,10 @@
       color: white;
     }
   }
+
+  &__btns {
+    white-space: nowrap;
+  }
 }
 
 .userRow {
@@ -107,6 +111,8 @@
 
 .userRow > .col {
   align-self: center;
+  min-width: 75px;
+  height: fit-content;
 }
 
 .userRow:hover {

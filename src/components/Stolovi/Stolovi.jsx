@@ -307,7 +307,13 @@ function Stolovi(props) {
                 />
                 <div className="row mt-3">
                   <div className="col-3" id="potvrdi-container">
-                    <Button id="potvrdi" type="submit" variant="outlined">
+                    <Button
+                      disabled={!meals.length}
+                      hidden={!meals.length}
+                      id="potvrdi"
+                      type="submit"
+                      variant="outlined"
+                    >
                       Potvrdi
                     </Button>
                     {console.log(order)}
