@@ -34,8 +34,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "start:prod": "PORT=80 forever start -c 'npm run start:production' ./",
-    "stop": "forever stopall",
+    "start:prod": : "pm2 serve build 80 --spa --name 'brzaklopa_frontend'",
+    "stop": "pm2 stop brzaklopa_frontend",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
