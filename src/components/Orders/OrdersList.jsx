@@ -57,8 +57,8 @@ function OrdersList(props) {
           </div>
           <div className="col-3">ISPIS</div>
         </div>
-        {orders && orders.length ? 
-          orders.map(order => 
+        {orders && orders.length ?
+          orders.map(order =>
             <div
               className={classNames({
                 "row p-2 mt-2 mealRow": true,
@@ -112,11 +112,11 @@ function OrdersList(props) {
               </div>
             </div>
           )
-          : 
+          :
           <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
         }
       </div>
-      {showModal && order && 
+      {showModal && order &&
         <Modal
           showModal={showModal}
           closeModal={() => {
@@ -259,9 +259,7 @@ function OrdersList(props) {
                       )
                     ) {
                       setShowModal(false);
-                      dispatch(
-                        exportOrder(order.table, props.user, getTotalPrice())
-                      );
+                      dispatch(exportOrder(order.table, props.user, getTotalPrice()));
                     }
                   }}
                 >

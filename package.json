@@ -16,6 +16,7 @@
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "node-sass": "4.14.1",
+    "pm2": "^4.5.1",
     "react": "^17.0.1",
     "react-addons-update": "^15.6.3",
     "react-bootstrap": "^1.4.0",
@@ -29,13 +30,13 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "sass": "^1.29.0",
-    "pm2": "^4.5.1"
+    "forever": "^3.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "start:prod": "pm2 serve -l 80 -psa ./build --name 'brzaklopa_frontend'",
-    "stop": "pm2 stop brzaklopa_frontend",
+    "start:prod": "PORT=80 forever start -c 'npm run start:production' ./",
+    "stop": "forever stopall",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
