@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -21,6 +23,7 @@ function OrdersList(props) {
   const [hidden, setHidden] = useState(false);
   const [order, setOrder] = useState({});
   const orders = useSelector(state => state.tableOrder.tableOrders);
+  const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -28,9 +31,9 @@ function OrdersList(props) {
     dispatch(getTableOrders());
   }, []);
 
-  const getTotalPrice = () => {
+  const getTotalPrice = orders => {
     const totalPrice = _.reduce(
-      order.meals,
+      (orders ? orders : order).meals,
       (total, meal) =>
         total +
         (meal.price -
@@ -42,9 +45,28 @@ function OrdersList(props) {
     );
     return totalPrice.toFixed(2);
   };
+
+  const exportAllOrders = () => {
+    orders.map(orders => {
+      if (orders.done) {
+        setOrder(orders);
+        dispatch(exportOrder(orders.table, props.user, getTotalPrice(orders)));
+      }
+    });
+    setOrder({});
+  };
+
   return (
     <div>
       <div className="container-fluid orders-list">
+        <button
+          className=""
+          onClick={() => {
+            setShow(true);
+          }}
+        >
+          Pošalji na promet
+        </button>
         <div className="row p-2 font-weight-bold mt-3 listInfoRow">
           <div className="col-1">STOL</div>
           <div className="col">
@@ -57,8 +79,8 @@ function OrdersList(props) {
           </div>
           <div className="col-3">ISPIS</div>
         </div>
-        {orders && orders.length ?
-          orders.map(order =>
+        {orders && orders.length ? 
+          orders.map(order => 
             <div
               className={classNames({
                 "row p-2 mt-2 mealRow": true,
@@ -66,7 +88,7 @@ function OrdersList(props) {
               })}
               key={order.table}
             >
-              <div className="col-1">{(console.log(order), order.table)}</div>
+              <div className="col-1">{order.table}</div>
               <div className="col">
                 {order.meals.map(meal => {
                   const mealPrice =
@@ -112,11 +134,11 @@ function OrdersList(props) {
               </div>
             </div>
           )
-          :
+          : 
           <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
         }
       </div>
-      {showModal && order &&
+      {showModal && order && 
         <Modal
           showModal={showModal}
           closeModal={() => {
@@ -259,7 +281,9 @@ function OrdersList(props) {
                       )
                     ) {
                       setShowModal(false);
-                      dispatch(exportOrder(order.table, props.user, getTotalPrice()));
+                      dispatch(
+                        exportOrder(order.table, props.user, getTotalPrice())
+                      );
                     }
                   }}
                 >
@@ -313,6 +337,44 @@ function OrdersList(props) {
             </div>
           </div>
         </Modal>
+      }
+      {show && 
+        <Container>
+          <Modal show={show} closeModal={() => setShow(false)}>
+            <div className="receipt" id="fadein">
+              <div className="close-icon">
+                <IconButton id="close" onClick={() => setShow(false)}>
+                  <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
+                </IconButton>
+              </div>
+              <p>
+                Želite li stvarno poslati sve gotove narudžbe na promet?
+                <button
+                  type="button"
+                  className="btn btn-default"
+                  aria-label="Left Align"
+                >
+                  <span
+                    className="glyphicon glyphicon-align-left"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+                <Button
+                  variant="success"
+                  onClick={() => {
+                    exportAllOrders();
+                    setShow(false);
+                  }}
+                >
+                  Da
+                </Button>
+                <Button variant="danger" onClick={() => setShow(false)}>
+                  Ne
+                </Button>
+              </p>
+            </div>
+          </Modal>
+        </Container>
       }
     </div>
   );

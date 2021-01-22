@@ -17,10 +17,8 @@ const Kuhinja = () => {
   const user = useSelector(state => state.users.user);
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const [index, setIndex] = useState(null);
   const [table, setTable] = useState(null);
   const [meal, setMeal] = useState(null);
-  const [tableIndex, setTableIndex] = useState(null);
   useEffect(() => {
     dispatch(getTableOrders());
   }, []);
@@ -30,7 +28,6 @@ const Kuhinja = () => {
     let status;
     if (meal.status.toLowerCase() === "ordered") status = "started";
     if (meal.status.toLowerCase() === "started") status = "done";
-    // dispatch(changeStatus(status, table, index, user, tableIndex));
     dispatch(changeStatus(status, table, meal, user));
   };
   return (
@@ -46,20 +43,19 @@ const Kuhinja = () => {
           </div>
         </div>
       </div>
-      {tableOrders && tableOrders.length ? 
+      {tableOrders && tableOrders.length ?
         tableOrders.map((order, i) =>
-          !order.done ? 
+          !order.done ?
             <div
               className="row p-2 mt-2 mealRow"
               key={order.table}
               onClick={() => {
                 setTable(order);
-                setTableIndex(i);
               }}
             >
               <div className="col-1">{order.table}</div>
               <div className="col">
-                {order.meals.map(meal => 
+                {order.meals.map(meal =>
                   <div className="row kitchen-meal-row" key={meal.name}>
                     <div className="col">{meal.name}</div>
                     <div className="col">{meal.quantity}</div>
@@ -82,7 +78,6 @@ const Kuhinja = () => {
                           className="button-container__change"
                           onClick={() => {
                             setShow(true);
-                            setIndex(i);
                             setMeal(meal);
                           }}
                         >
@@ -96,7 +91,7 @@ const Kuhinja = () => {
             </div>
            : null
         )
-       : 
+       :
         <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
       }
       <Container>
