@@ -24,7 +24,6 @@ const Kuhinja = () => {
   }, []);
 
   const changeMealStatus = () => {
-    console.log("changeMeal", meal);
     let status;
     if (meal.status.toLowerCase() === "ordered") status = "started";
     if (meal.status.toLowerCase() === "started") status = "done";

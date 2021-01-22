@@ -79,8 +79,8 @@ function OrdersList(props) {
           </div>
           <div className="col-3">ISPIS</div>
         </div>
-        {orders && orders.length ? 
-          orders.map(order => 
+        {orders && orders.length ?
+          orders.map(order =>
             <div
               className={classNames({
                 "row p-2 mt-2 mealRow": true,
@@ -134,11 +134,11 @@ function OrdersList(props) {
               </div>
             </div>
           )
-          : 
+          :
           <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
         }
       </div>
-      {showModal && order && 
+      {showModal && order &&
         <Modal
           showModal={showModal}
           closeModal={() => {
@@ -271,25 +271,27 @@ function OrdersList(props) {
                   <PrintIcon />
                 </IconButton>
               </div>
-              <div className="receipt__icons__traffic">
-                <IconButton
-                  id="done"
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        "Jeste li sigurni da želite zatvoriti i spremiti račun?\nOPREZ: Nećete moći isprintati račun nakon ove akcije"
-                      )
-                    ) {
-                      setShowModal(false);
-                      dispatch(
-                        exportOrder(order.table, props.user, getTotalPrice())
-                      );
-                    }
-                  }}
-                >
-                  <DoneIcon />
-                </IconButton>
-              </div>
+              {order.done &&
+                <div className="receipt__icons__traffic">
+                  <IconButton
+                    id="done"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          "Jeste li sigurni da želite zatvoriti i spremiti račun?\nOPREZ: Nećete moći isprintati račun nakon ove akcije"
+                        )
+                      ) {
+                        setShowModal(false);
+                        dispatch(
+                          exportOrder(order.table, props.user, getTotalPrice())
+                        );
+                      }
+                    }}
+                  >
+                    <DoneIcon />
+                  </IconButton>
+                </div>
+              }
             </div>
             <div className="info">
               <div className="info__date">
@@ -338,7 +340,7 @@ function OrdersList(props) {
           </div>
         </Modal>
       }
-      {show && 
+      {show &&
         <Container>
           <Modal show={show} closeModal={() => setShow(false)}>
             <div className="receipt" id="fadein">
@@ -348,7 +350,7 @@ function OrdersList(props) {
                 </IconButton>
               </div>
               <p>
-                Želite li stvarno poslati sve gotove narudžbe na promet?
+                Želite li poslati sve gotove narudžbe na promet?
                 <button
                   type="button"
                   className="btn btn-default"

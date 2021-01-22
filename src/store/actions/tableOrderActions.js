@@ -16,7 +16,6 @@ export const getTableOrders = () => {
 };
 
 export const changeStatus = (status, table, meal, user) => {
-  console.log(meal.id);
   return (dispatch, getState) => {
     Axios.patch(
       `${process.env.REACT_APP_API_URL_ORDER}${table.table}/${meal.id}`,
@@ -36,7 +35,6 @@ export const changeStatus = (status, table, meal, user) => {
 };
 
 export const addOrder = (user, table, meals, totalPrice) => {
-  console.log(meals);
   return (dispatch, getState) => {
     Axios.post(`${process.env.REACT_APP_API_URL_ORDER}add`, {
       table,
