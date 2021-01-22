@@ -44,11 +44,7 @@ function Zaposlenici(props) {
     setEditedUser({ ...editedUser, [name]: value });
   };
 
-  const roles = [
-    { value: "Admin" },
-    { value: "Kuhar" },
-    { value: "Konobar" },
-  ];
+  const roles = [{ value: "Admin" }, { value: "Kuhar" }, { value: "Konobar" }];
 
   const closeModal = () => {
     setShowModal(false);
@@ -74,16 +70,19 @@ function Zaposlenici(props) {
           <div className="col">ULOGA</div>
           <div className="col">AKCIJE</div>
         </div>
-        {users && users.length ?
-          users.map(user =>
+        {users && users.length ? 
+          users.map(user => 
             <div className="row p-2 mt-2 userRow" key={user.id}>
               <div className="col">{user.fname}</div>
               <div className="col">{user.lname}</div>
               <div className="col">{user.email}</div>
               <div className="col">{user.role}</div>
               <div className="col">
-                {user.id !== props.user.id &&
-                  <div className="zaposlenici__btns" id="action-button-container">
+                {user.id !== props.user.id && 
+                  <div
+                    className="zaposlenici__btns"
+                    id="action-button-container"
+                  >
                     <IconButton
                       aria-label="delete"
                       className={classes.margin}
@@ -113,19 +112,21 @@ function Zaposlenici(props) {
                 }
               </div>
             </div>
-          ) : <div className="no-users">TRENUTNO NEMA KORISNIKA</div>}
-
+          )
+          : 
+          <div className="no-users">TRENUTNO NEMA KORISNIKA</div>
+        }
       </div>
-      {editedUser && showModal ?
-        <Modal
-          showModal={showModal}
-          closeModal={() => closeModal}
-        >
+      {editedUser && showModal ? 
+        <Modal showModal={showModal} closeModal={() => closeModal}>
           <div className="detail-card container-xl-1" id="fadein">
-            <button className="detail-card__close-icon" onClick={() => {
-              setShowModal(false);
-              setAddUser(false);
-            }}>
+            <button
+              className="detail-card__close-icon"
+              onClick={() => {
+                setShowModal(false);
+                setAddUser(false);
+              }}
+            >
               <CloseIcon style={{ color: "#219ebc" }} />
             </button>
             <form
@@ -176,7 +177,9 @@ function Zaposlenici(props) {
                     <TextField
                       id="standard-required"
                       label="Password"
-                      onChange={e => setEditedUserData("password", e.target.value)}
+                      onChange={e =>
+                        setEditedUserData("password", e.target.value)
+                      }
                     />
                   </div>
                 </div>
@@ -193,7 +196,7 @@ function Zaposlenici(props) {
                       }}
                       helperText="Odaberite ulogu zaposlenika"
                     >
-                      {roles.map(option =>
+                      {roles.map(option => 
                         <option key={option.value} value={option.value}>
                           {option.value}
                         </option>
@@ -203,14 +206,16 @@ function Zaposlenici(props) {
                 </div>
                 <div className="row mt-3">
                   <div className="col-3" id="potvrdi-container">
-                    <Button variant="outlined" type="submit">Potvrdi</Button>
+                    <Button variant="outlined" type="submit">
+                      Potvrdi
+                    </Button>
                   </div>
                 </div>
               </div>
             </form>
           </div>
-        </Modal> : null
-      }
+        </Modal>
+        : null}
     </div>
   );
 }

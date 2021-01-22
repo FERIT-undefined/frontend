@@ -29,10 +29,17 @@ function OrdersList(props) {
   }, []);
 
   const getTotalPrice = () => {
-    const totalPrice = _.reduce(order.meals, (total, meal) => total + (meal.price -
-      meal.price * (meal.discount / 100) +
-      (meal.price - meal.price * (meal.discount / 100)) *
-      (meal.pdv / 100)) * meal.quantity, 0);
+    const totalPrice = _.reduce(
+      order.meals,
+      (total, meal) =>
+        total +
+        (meal.price -
+          meal.price * (meal.discount / 100) +
+          (meal.price - meal.price * (meal.discount / 100)) *
+            (meal.pdv / 100)) *
+          meal.quantity,
+      0
+    );
     return totalPrice.toFixed(2);
   };
   return (
@@ -50,22 +57,23 @@ function OrdersList(props) {
           </div>
           <div className="col-3">ISPIS</div>
         </div>
-        {orders && orders.length ?
-          orders.map(order =>
-
-            <div className={classNames({
-              "row p-2 mt-2 mealRow": true,
-              isDone: order.done
-            })} key={order.table}>
-
-              <div className="col-1">{console.log(order), order.table}</div>
+        {orders && orders.length ? 
+          orders.map(order => 
+            <div
+              className={classNames({
+                "row p-2 mt-2 mealRow": true,
+                isDone: order.done,
+              })}
+              key={order.table}
+            >
+              <div className="col-1">{(console.log(order), order.table)}</div>
               <div className="col">
                 {order.meals.map(meal => {
                   const mealPrice =
                     meal.price -
                     meal.price * (meal.discount / 100) +
                     (meal.price - meal.price * (meal.discount / 100)) *
-                    (meal.pdv / 100);
+                      (meal.pdv / 100);
                   return (
                     <div className="row orders-meal-row" key={meal.name}>
                       <div className="col">{meal.name}</div>
@@ -81,8 +89,10 @@ function OrdersList(props) {
                           ordered: meal.status.toLowerCase() === "ordered",
                         })}
                       >
-                        {meal.status.toLowerCase() === "done" && "Spremno za posluživanje"}
-                        {meal.status.toLowerCase() === "started" && "U pripremi"}
+                        {meal.status.toLowerCase() === "done" &&
+                          "Spremno za posluživanje"}
+                        {meal.status.toLowerCase() === "started" &&
+                          "U pripremi"}
                         {meal.status.toLowerCase() === "ordered" && "Naručeno"}
                       </div>
                     </div>
@@ -102,11 +112,11 @@ function OrdersList(props) {
               </div>
             </div>
           )
-          :
+          : 
           <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
         }
       </div>
-      {showModal && order &&
+      {showModal && order && 
         <Modal
           showModal={showModal}
           closeModal={() => {
@@ -249,7 +259,9 @@ function OrdersList(props) {
                       )
                     ) {
                       setShowModal(false);
-                      dispatch(exportOrder(order.table, props.user));
+                      dispatch(
+                        exportOrder(order.table, props.user, getTotalPrice())
+                      );
                     }
                   }}
                 >
@@ -258,13 +270,13 @@ function OrdersList(props) {
               </div>
             </div>
             <div className="info">
-              <div className="info__date">{moment.utc().format("DD.MM.YYYY HH:MM")}</div>
+              <div className="info__date">
+                {moment.utc().format("DD.MM.YYYY HH:MM")}
+              </div>
               <div className="info__waiter">
                 Djelatnik: {props.user.fname} {props.user.lname}
               </div>
-              <div className="info__table">
-                Stol: {order.table}
-              </div>
+              <div className="info__table">Stol: {order.table}</div>
             </div>
             <hr />
             <div className="col-9 receipt-table-header">
@@ -282,25 +294,24 @@ function OrdersList(props) {
                     meal.price -
                     meal.price * (meal.discount / 100) +
                     (meal.price - meal.price * (meal.discount / 100)) *
-                    (meal.pdv / 100);
+                      (meal.pdv / 100);
                   return (
                     <div className="row p-2 mt-2" key={meal.name}>
                       <div className="col">{meal.name}</div>
                       <div className="col">{mealPrice.toFixed(2)} HRK</div>
                       <div className="col">{meal.quantity}</div>
-                      <div className="col">{(meal.quantity * mealPrice).toFixed(2)} HRK</div>
+                      <div className="col">
+                        {(meal.quantity * mealPrice).toFixed(2)} HRK
+                      </div>
                     </div>
                   );
-                }
-                )}
+                })}
               </div>
             </div>
             <hr />
             <div className="total-price">
               <div className="total-price__label">Ukupno: </div>
-              <div className="total-price__value">
-                {getTotalPrice()} HRK
-              </div>
+              <div className="total-price__value">{getTotalPrice()} HRK</div>
             </div>
           </div>
         </Modal>
