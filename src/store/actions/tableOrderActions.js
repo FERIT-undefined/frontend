@@ -29,7 +29,6 @@ export const changeStatus = (status, table, meal, user) => {
       .then(res => {
         dispatch(getTableOrders());
       })
-      .then(res => dispatch(getTableOrders()))
       .catch(err => {
         dispatch({ type: "TABLE_ORDERS_CHANGE_STATUS_ERROR", err });
       });
