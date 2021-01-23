@@ -17,6 +17,7 @@ import {
   registerUser,
 } from "../../store/actions/userActions";
 import "./Zaposlenici.scss";
+import Header from "../Header/Header";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -57,6 +58,7 @@ function Zaposlenici(props) {
 
   return (
     <div className="zaposlenici">
+      <Header label="Zaposlenici" user={props.user} />
       <button
         className="zaposlenici__add"
         onClick={() => {

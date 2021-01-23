@@ -14,6 +14,7 @@ import {
   getTableOrders,
 } from "../../store/actions/tableOrderActions";
 import Modal from "../Modal/Modal";
+import Header from "../Header/Header";
 import "./OrdersList.scss";
 
 function OrdersList(props) {
@@ -35,47 +36,65 @@ function OrdersList(props) {
       (meal.pdv / 100)) * meal.quantity, 0);
     return totalPrice.toFixed(2);
   };
+
+  const getStatus = tableNumber => {
+    const currentTable = orders.filter(order => order.table === tableNumber);
+    let status;
+    if (!currentTable.length) {
+      status = "no orders";
+    } else {
+      const mealOrdered = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "ordered");
+      const mealStarted = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "started");
+      const mealDone = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "done");
+      if (mealOrdered.length) status = "ordered";
+      if (mealStarted.length >= 1) status = "started";
+      if (mealDone.length === currentTable[0].meals.length) status = "done";
+    }
+    return status;
+  };
+
   return (
     <div>
-      <div className="container-fluid orders-list">
-        <div className="row p-2 font-weight-bold mt-3 listInfoRow">
-          <div className="col-1">STOL</div>
-          <div className="col">
-            <div className="row">
-              <div className="col">NARUDŽBA</div>
-              <div className="col">KOLIČINA</div>
-              <div className="col">CIJENA</div>
-              <div className="col">STATUS</div>
-            </div>
-          </div>
-          <div className="col-3">ISPIS</div>
-        </div>
+      <div className="container-fluid orders">
+        <Header label="Narudžbe" user={props.user} />
         {orders && orders.length ?
           orders.map(order =>
 
             <div className={classNames({
-              "row p-2 mt-2 mealRow": true,
-              isDone: order.done
+              "card shadow orders__card": true,
+              "done": getStatus(order.table) === "done",
+              "started": getStatus(order.table) === "started",
+              "ordered": getStatus(order.table) === "ordered"
             })} key={order.table}>
 
-              <div className="col-1">{console.log(order), order.table}</div>
-              <div className="col">
+              <div
+                className={classNames({
+                  "orders__card__table": true,
+                  "done": getStatus(order.table) === "done",
+                  "started": getStatus(order.table) === "started",
+                  "ordered": getStatus(order.table) === "ordered"
+                })}
+              >
+                {order.table}
+              </div>
+              <div className="orders__card__list">
                 {order.meals.map(meal => {
                   const mealPrice =
                     meal.price -
                     meal.price * (meal.discount / 100) +
                     (meal.price - meal.price * (meal.discount / 100)) *
                     (meal.pdv / 100);
+
                   return (
-                    <div className="row orders-meal-row" key={meal.name}>
-                      <div className="col">{meal.name}</div>
-                      <div className="col">{meal.quantity}</div>
-                      <div className="col">
+                    <div className="orders__card__list__meal" key={meal.name}>
+                      <div className="col orders__card__list__meal__name">{meal.name}</div>
+                      <div className="col orders__card__list__meal__quantity">{meal.quantity} kom</div>
+                      <div className="col orders__card__list__meal__price">
                         {(meal.quantity * mealPrice).toFixed(2)} HRK
                       </div>
                       <div
                         className={classNames({
-                          col: true,
+                          orders__card__list__meal__status: true,
                           done: meal.status.toLowerCase() === "done",
                           started: meal.status.toLowerCase() === "started",
                           ordered: meal.status.toLowerCase() === "ordered",
@@ -89,16 +108,13 @@ function OrdersList(props) {
                   );
                 })}
               </div>
-              <div className="col-3">
-                <div
-                  onClick={() => {
-                    setShowModal(true);
-                    setOrder(order);
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  <ReceiptIcon />
-                </div>
+              <div className="col orders__card__list__receipt"
+                onClick={() => {
+                  setShowModal(true);
+                  setOrder(order);
+                }}
+              >
+                <ReceiptIcon fontSize="large" />
               </div>
             </div>
           )
@@ -108,6 +124,7 @@ function OrdersList(props) {
       </div>
       {showModal && order &&
         <Modal
+          className="fade-in"
           showModal={showModal}
           closeModal={() => {
             setShowModal(false);
@@ -118,7 +135,7 @@ function OrdersList(props) {
             <div className="receipt__icons" hidden={hidden}>
               <div className="receipt__icons__close-icon">
                 <IconButton id="close" onClick={() => setShowModal(false)}>
-                  <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
+                  <CloseIcon id="closeIcon" style={{ color: "rgba(244, 243, 239, 1)" }} />
                 </IconButton>
               </div>
               <div className="receipt__icons__print-icon">
@@ -236,7 +253,7 @@ function OrdersList(props) {
                     });
                   }}
                 >
-                  <PrintIcon />
+                  <PrintIcon id="print-icon" style={{ color: " rgba(244, 243, 239, 1)" }} />
                 </IconButton>
               </div>
               <div className="receipt__icons__traffic">
@@ -253,7 +270,7 @@ function OrdersList(props) {
                     }
                   }}
                 >
-                  <DoneIcon />
+                  <DoneIcon id="done-icon" style={{ color: " rgba(244, 243, 239, 1)" }} />
                 </IconButton>
               </div>
             </div>

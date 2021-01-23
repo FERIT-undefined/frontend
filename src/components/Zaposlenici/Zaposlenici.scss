@@ -58,7 +58,15 @@
 
 
 .zaposlenici {
-  margin: 1%;
+  // margin: 1%;
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2% 5%;
+  margin-left: 13rem;
+  width: 90vw;
+  overflow-y: auto;
 
   &__add {
     transition-duration: 0.4s;

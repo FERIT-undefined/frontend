@@ -246,7 +246,7 @@ function MeniList(props) {
                   }}
                 >
                   {!meal.added ? 
-                    <CheckCircleOutlineIcon style={{ color: "#555555" }} />
+                    <button className="btn btn-success btn-circle" style={{ color: "#555555" }} />
                     : 
                     <HighlightOffIcon style={{ color: "#555555" }} />
                   }

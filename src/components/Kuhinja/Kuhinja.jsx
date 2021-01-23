@@ -8,6 +8,7 @@ import classNames from "classnames";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "./Kuhinja.scss";
+import Header from "../Header/Header";
 
 const Kuhinja = () => {
   const tableOrders = useSelector(state => state.tableOrder.tableOrders);
@@ -32,6 +33,7 @@ const Kuhinja = () => {
   };
   return (
     <div className="container-fluid mt-4 kitchen">
+      <Header label="Narudžbe" user={user} />
       <div className="row p-2 font-weight-bold mt-3 listKitchenRow">
         <div className="col-1">STOL</div>
         <div className="col">
