@@ -50,6 +50,14 @@ function Traffic() {
           />
         </div>
       </div>
+      <div>
+        Ukupno u odabranom razdoblju:{" "}
+        {allTraffic.reduce(
+          (previousScore, currentScore) => previousScore + currentScore.total_price,
+          0
+        )}{" "}
+        HRK
+      </div>
       <div className="row p-2 font-weight-bold mt-3 listInfoRow">
         <div className="col-9">
           <div className="row">
@@ -61,7 +69,7 @@ function Traffic() {
         </div>
         <div className="col">DATUM</div>
       </div>
-      {allTraffic.length ?
+      {allTraffic && allTraffic.length ?
         allTraffic.map((receipt, index) =>
           <div className="row p-2 mt-2 mealRow" key={index}>
             <div className="col-9">
@@ -84,8 +92,7 @@ function Traffic() {
               })}
             </div>
             <div className="col">
-              {moment()
-                .utc(receipt.finished_timestamp)
+              {moment(receipt.finished_timestamp)
                 .format("DD.MM.YYYY. hh:mm")}
             </div>
           </div>

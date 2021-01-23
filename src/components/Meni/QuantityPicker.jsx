@@ -9,7 +9,11 @@ export default class QuantityPicker extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: this.props.meal.quantity ? this.props.meal.quantity : 0, disableDec: true, disableInc: false };
+    this.state = {
+      value: this.props.meal.quantity ? this.props.meal.quantity : 0,
+      disableDec: true,
+      disableInc: false,
+    };
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
   }
@@ -58,7 +62,8 @@ export default class QuantityPicker extends Component {
         <IconButton
           disabled={this.props.meal.added}
           type="button"
-          className={`${disableDec ? "mod-disable " : ""
+          className={`${
+            disableDec ? "mod-disable " : ""
           }quantity-modifier modifier-left`}
           onClick={this.decrement}
         >
@@ -74,7 +79,8 @@ export default class QuantityPicker extends Component {
         <IconButton
           disabled={this.props.meal.added}
           type="button"
-          className={`${disableInc ? "mod-disable " : ""
+          className={`${
+            disableInc ? "mod-disable " : ""
           }quantity-modifier modifier-right`}
           onClick={this.increment}
         >

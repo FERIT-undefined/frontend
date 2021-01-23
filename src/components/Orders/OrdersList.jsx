@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -22,6 +24,7 @@ function OrdersList(props) {
   const [hidden, setHidden] = useState(false);
   const [order, setOrder] = useState({});
   const orders = useSelector(state => state.tableOrder.tableOrders);
+  const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -29,11 +32,18 @@ function OrdersList(props) {
     dispatch(getTableOrders());
   }, []);
 
-  const getTotalPrice = () => {
-    const totalPrice = _.reduce(order.meals, (total, meal) => total + (meal.price -
-      meal.price * (meal.discount / 100) +
-      (meal.price - meal.price * (meal.discount / 100)) *
-      (meal.pdv / 100)) * meal.quantity, 0);
+  const getTotalPrice = orders => {
+    const totalPrice = _.reduce(
+      (orders ? orders : order).meals,
+      (total, meal) =>
+        total +
+        (meal.price -
+          meal.price * (meal.discount / 100) +
+          (meal.price - meal.price * (meal.discount / 100)) *
+          (meal.pdv / 100)) *
+        meal.quantity,
+      0
+    );
     return totalPrice.toFixed(2);
   };
 
@@ -51,6 +61,16 @@ function OrdersList(props) {
       if (mealDone.length === currentTable[0].meals.length) status = "done";
     }
     return status;
+  };
+  
+  const exportAllOrders = () => {
+    orders.map(orders => {
+      if (orders.done) {
+        setOrder(orders);
+        dispatch(exportOrder(orders.table, props.user, getTotalPrice(orders)));
+      }
+    });
+    setOrder({});
   };
 
   return (
@@ -100,8 +120,10 @@ function OrdersList(props) {
                           ordered: meal.status.toLowerCase() === "ordered",
                         })}
                       >
-                        {meal.status.toLowerCase() === "done" && "Spremno za posluživanje"}
-                        {meal.status.toLowerCase() === "started" && "U pripremi"}
+                        {meal.status.toLowerCase() === "done" &&
+                          "Spremno za posluživanje"}
+                        {meal.status.toLowerCase() === "started" &&
+                          "U pripremi"}
                         {meal.status.toLowerCase() === "ordered" && "Naručeno"}
                       </div>
                     </div>
@@ -256,32 +278,36 @@ function OrdersList(props) {
                   <PrintIcon id="print-icon" style={{ color: " rgba(244, 243, 239, 1)" }} />
                 </IconButton>
               </div>
-              <div className="receipt__icons__traffic">
-                <IconButton
-                  id="done"
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        "Jeste li sigurni da želite zatvoriti i spremiti račun?\nOPREZ: Nećete moći isprintati račun nakon ove akcije"
-                      )
-                    ) {
-                      setShowModal(false);
-                      dispatch(exportOrder(order.table, props.user, getTotalPrice()));
-                    }
-                  }}
-                >
-                  <DoneIcon id="done-icon" style={{ color: " rgba(244, 243, 239, 1)" }} />
-                </IconButton>
-              </div>
+              {order.done &&
+                <div className="receipt__icons__traffic">
+                  <IconButton
+                    id="done"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          "Jeste li sigurni da želite zatvoriti i spremiti račun?\nOPREZ: Nećete moći isprintati račun nakon ove akcije"
+                        )
+                      ) {
+                        setShowModal(false);
+                        dispatch(
+                          exportOrder(order.table, props.user, getTotalPrice())
+                        );
+                      }
+                    }}
+                  >
+                    <DoneIcon />
+                  </IconButton>
+                </div>
+              }
             </div>
             <div className="info">
-              <div className="info__date">{moment.utc().format("DD.MM.YYYY HH:MM")}</div>
+              <div className="info__date">
+                {moment.utc().format("DD.MM.YYYY HH:MM")}
+              </div>
               <div className="info__waiter">
                 Djelatnik: {props.user.fname} {props.user.lname}
               </div>
-              <div className="info__table">
-                Stol: {order.table}
-              </div>
+              <div className="info__table">Stol: {order.table}</div>
             </div>
             <hr />
             <div className="col-9 receipt-table-header">
@@ -305,22 +331,59 @@ function OrdersList(props) {
                       <div className="col">{meal.name}</div>
                       <div className="col">{mealPrice.toFixed(2)} HRK</div>
                       <div className="col">{meal.quantity}</div>
-                      <div className="col">{(meal.quantity * mealPrice).toFixed(2)} HRK</div>
+                      <div className="col">
+                        {(meal.quantity * mealPrice).toFixed(2)} HRK
+                      </div>
                     </div>
                   );
-                }
-                )}
+                })}
               </div>
             </div>
             <hr />
             <div className="total-price">
               <div className="total-price__label">Ukupno: </div>
-              <div className="total-price__value">
-                {getTotalPrice()} HRK
-              </div>
+              <div className="total-price__value">{getTotalPrice()} HRK</div>
             </div>
           </div>
         </Modal>
+      }
+      {show &&
+        <Container>
+          <Modal show={show} closeModal={() => setShow(false)}>
+            <div className="receipt" id="fadein">
+              <div className="close-icon">
+                <IconButton id="close" onClick={() => setShow(false)}>
+                  <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
+                </IconButton>
+              </div>
+              <p>
+                Želite li poslati sve gotove narudžbe na promet?
+                <button
+                  type="button"
+                  className="btn btn-default"
+                  aria-label="Left Align"
+                >
+                  <span
+                    className="glyphicon glyphicon-align-left"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+                <Button
+                  variant="success"
+                  onClick={() => {
+                    exportAllOrders();
+                    setShow(false);
+                  }}
+                >
+                  Da
+                </Button>
+                <Button variant="danger" onClick={() => setShow(false)}>
+                  Ne
+                </Button>
+              </p>
+            </div>
+          </Modal>
+        </Container>
       }
     </div>
   );
