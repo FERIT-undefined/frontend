@@ -62,7 +62,7 @@ function OrdersList(props) {
     }
     return status;
   };
-  
+
   const exportAllOrders = () => {
     orders.map(orders => {
       if (orders.done) {
@@ -77,6 +77,14 @@ function OrdersList(props) {
     <div>
       <div className="container-fluid orders">
         <Header label="Narudžbe" user={props.user} />
+        <button
+          className="orders__export-all-button card"
+          onClick={() => {
+            setShow(true);
+          }}
+        >
+          Pošalji na promet
+        </button>
         {orders && orders.length ?
           orders.map(order =>
 
@@ -106,7 +114,7 @@ function OrdersList(props) {
                     (meal.pdv / 100);
 
                   return (
-                    <div className="orders__card__list__meal" key={meal.name}>
+                    <div className="orders__card__list__meal" key={meal.id}>
                       <div className="col orders__card__list__meal__name">{meal.name}</div>
                       <div className="col orders__card__list__meal__quantity">{meal.quantity} kom</div>
                       <div className="col orders__card__list__meal__price">
@@ -146,7 +154,7 @@ function OrdersList(props) {
       </div>
       {showModal && order &&
         <Modal
-          className="fade-in"
+          className="animated--grow-in delay-2s"
           showModal={showModal}
           closeModal={() => {
             setShowModal(false);
@@ -275,7 +283,7 @@ function OrdersList(props) {
                     });
                   }}
                 >
-                  <PrintIcon id="print-icon" style={{ color: " rgba(244, 243, 239, 1)" }} />
+                  <PrintIcon id="print-icon" style={{ color: " rgba(244, 243, 239, 1)", background: "transparent" }} />
                 </IconButton>
               </div>
               {order.done &&
@@ -295,54 +303,56 @@ function OrdersList(props) {
                       }
                     }}
                   >
-                    <DoneIcon />
+                    <DoneIcon style={{ color: " rgba(244, 243, 239, 1)" }} />
                   </IconButton>
                 </div>
               }
             </div>
-            <div className="info">
-              <div className="info__date">
-                {moment.utc().format("DD.MM.YYYY HH:MM")}
+            <div className="receipt__container">
+              <div className="receipt__container__info">
+                <div className="receipt__container__info__date">
+                  {moment.utc().format("DD.MM.YYYY HH:MM")}
+                </div>
+                <div className="receipt__container__info__waiter">
+                  Djelatnik: {props.user.fname} {props.user.lname}
+                </div>
+                <div className="receipt__container__info__table">Stol: {order.table}</div>
               </div>
-              <div className="info__waiter">
-                Djelatnik: {props.user.fname} {props.user.lname}
+              <hr />
+              <div className="col-9 receipt__container__table-header">
+                <div className="row p-2 mt-2">
+                  <div className="col">NAZIV</div>
+                  <div className="col">CIJENA</div>
+                  <div className="col">KOLIČINA</div>
+                  <div className="col">UKUPNO</div>
+                </div>
               </div>
-              <div className="info__table">Stol: {order.table}</div>
-            </div>
-            <hr />
-            <div className="col-9 receipt-table-header">
-              <div className="row p-2 mt-2">
-                <div className="col">NAZIV</div>
-                <div className="col">CIJENA</div>
-                <div className="col">KOLIČINA</div>
-                <div className="col">UKUPNO</div>
-              </div>
-            </div>
-            <div className="receipt-meal-row">
-              <div className="col-9 receipt-meal">
-                {order.meals.map(meal => {
-                  const mealPrice =
-                    meal.price -
-                    meal.price * (meal.discount / 100) +
-                    (meal.price - meal.price * (meal.discount / 100)) *
-                    (meal.pdv / 100);
-                  return (
-                    <div className="row p-2 mt-2" key={meal.name}>
-                      <div className="col">{meal.name}</div>
-                      <div className="col">{mealPrice.toFixed(2)} HRK</div>
-                      <div className="col">{meal.quantity}</div>
-                      <div className="col">
-                        {(meal.quantity * mealPrice).toFixed(2)} HRK
+              <div className="receipt__container__meal-row">
+                <div className="col-9 receipt__container__meal">
+                  {order.meals.map(meal => {
+                    const mealPrice =
+                      meal.price -
+                      meal.price * (meal.discount / 100) +
+                      (meal.price - meal.price * (meal.discount / 100)) *
+                      (meal.pdv / 100);
+                    return (
+                      <div className="row p-2 mt-2" key={meal.name}>
+                        <div className="col">{meal.name}</div>
+                        <div className="col">{mealPrice.toFixed(2)} HRK</div>
+                        <div className="col">{meal.quantity}</div>
+                        <div className="col">
+                          {(meal.quantity * mealPrice).toFixed(2)} HRK
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            <hr />
-            <div className="total-price">
-              <div className="total-price__label">Ukupno: </div>
-              <div className="total-price__value">{getTotalPrice()} HRK</div>
+              <hr />
+              <div className="receipt-container__total-price">
+                <div className="receipt__container__total-price__label">Ukupno: </div>
+                <div className="receipt__container__total-price__value">{getTotalPrice()} HRK</div>
+              </div>
             </div>
           </div>
         </Modal>
@@ -350,37 +360,27 @@ function OrdersList(props) {
       {show &&
         <Container>
           <Modal show={show} closeModal={() => setShow(false)}>
-            <div className="receipt" id="fadein">
-              <div className="close-icon">
-                <IconButton id="close" onClick={() => setShow(false)}>
-                  <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
-                </IconButton>
-              </div>
-              <p>
+            <div className="orders__export-modal animated--grow-in delay-2s">
+              <p className="orders__export-modal__text">
                 Želite li poslati sve gotove narudžbe na promet?
+              </p>
+              <div className="orders__export-modal__button-container">
                 <button
-                  type="button"
-                  className="btn btn-default"
-                  aria-label="Left Align"
-                >
-                  <span
-                    className="glyphicon glyphicon-align-left"
-                    aria-hidden="true"
-                  ></span>
-                </button>
-                <Button
-                  variant="success"
+                  className="orders__export-modal__button-container__confirm-button"
                   onClick={() => {
                     exportAllOrders();
                     setShow(false);
                   }}
                 >
                   Da
-                </Button>
-                <Button variant="danger" onClick={() => setShow(false)}>
+                </button>
+                <button
+                  className="orders__export-modal__button-container__decline-button"
+                  onClick={() => setShow(false)}
+                >
                   Ne
-                </Button>
-              </p>
+                </button>
+              </div>
             </div>
           </Modal>
         </Container>

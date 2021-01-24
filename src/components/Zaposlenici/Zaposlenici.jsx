@@ -121,7 +121,7 @@ function Zaposlenici(props) {
       </div>
       {editedUser && showModal ? 
         <Modal showModal={showModal} closeModal={() => closeModal}>
-          <div className="detail-card container-xl-1" id="fadein">
+          <div className="detail-card container-xl-1 animated--grow-in delay-2s">
             <button
               className="detail-card__close-icon"
               onClick={() => {

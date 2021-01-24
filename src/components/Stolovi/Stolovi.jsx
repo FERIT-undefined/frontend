@@ -238,7 +238,7 @@ function Stolovi(props) {
       </div>
       {showModal ?
         <Modal showModal={showModal} closeModal={() => closeModal}>
-          <div className="table-card container-xl-1" id="fadein">
+          <div className="table-card container-xl-1 animated--grow-in delay-2s">
             <div className="table-card__close-icon">
               <IconButton id="close" onClick={() => closeModal()}>
                 <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
@@ -302,6 +302,7 @@ function Stolovi(props) {
                   removeMeal={removeMeal}
                   table={table}
                   tableSelect
+                  hideHeader={true}
                 />
                 <div className="row mt-3">
                   <div className="col-3" id="potvrdi-container">

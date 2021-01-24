@@ -5,6 +5,7 @@
   overflow: hidden;
   background: $dark-blue;
   padding-left: 0;
+  padding-right: 0;
   box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
   z-index: 1;
   .navbar__header {
@@ -16,6 +17,7 @@
     align-items: center;
     font-weight: bold;
     font-style: italic;
+    cursor: default;
   }
   .navbar__body {
     margin-top: 5%;
