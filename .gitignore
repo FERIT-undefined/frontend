@@ -26,3 +26,5 @@ yarn-error.log*
 .eslintrc.json
 .env
 debug.log
+
+package-lock.json
