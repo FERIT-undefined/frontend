@@ -93,12 +93,14 @@
     &__type,
     &__total-price {
       font-weight: bold;
+      
     }
 
     &__price,
     &__pdv,
     &__discount,
-    &__total-price {
+    &__total-price,
+    &__type {
       text-align: center;
     }
 

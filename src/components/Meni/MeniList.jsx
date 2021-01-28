@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
@@ -183,18 +182,18 @@ function MeniList(props) {
         (searchResults ? searchResults : allMeals).length ?
         (searchResults ? searchResults : allMeals).map((meal, index) =>
           <div className="card shadow menu__card" key={meal.id}>
-            <div className="col-3 menu__card__name">{meal.name}</div>
+            <div className="col-2 menu__card__name">{meal.name}</div>
             <div className="col-3 menu__card__description">{meal.description}</div>
-            <div className="col-1 menu__card__type">{meal.type}</div>
-            <div className="col-1 menu__card__price">{Number(meal.price).toFixed(2)} HRK</div>
-            <div className="col-1 menu__card__pdv">{meal.pdv}%</div>
+            <div className="col menu__card__type">{meal.type}</div>
+            <div className="col menu__card__price">{Number(meal.price).toFixed(2)} HRK</div>
+            <div className="col menu__card__pdv">{meal.pdv}%</div>
             <div
-              className="col-1 menu__card__discount"
+              className="col menu__card__discount"
               style={{ color: meal.discount ? "#81b29a" : "" }}
             >
               {meal.discount}%
             </div>
-            <div className="col-1 menu__card__total-price">
+            <div className="col menu__card__total-price">
               {(
                 meal.price -
                 meal.price * (meal.discount / 100) +

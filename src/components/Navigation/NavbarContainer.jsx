@@ -1,6 +1,4 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-// import { Nav, Navbar } from "startbootstrap-sb-admin-2/js/sb-admin-2";
 import { Link } from "react-router-dom";
 import { logOutAndWipeLocalStorage } from "../../interceptor";
 import  RestaurantMenuIcon from "@material-ui/icons/RestaurantMenu";
@@ -111,50 +109,6 @@ function NavbarContainer(props) {
         {props.user.role === "Admin" && pages.slice(3,6)}
       </div>
     </nav>
-    // <Navbar className="navbar-nav sidebar sidebar-dark accordion" expand="lg" style={{ backgroundColor: "#219ebc" }}>
-    //   <Navbar.Brand style={{ color: "#ffffff" }}>Brza Klopa</Navbar.Brand>
-    //   <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    //   <Navbar.Collapse id="basic-navbar-nav">
-    //     {props.user.role === "Admin" &&
-    //       <Nav className="mr-auto">
-    //         <Link className="pl-4 pr-4 text-white" to="/" >
-    //           <PeopleIcon style={{ marginRight:"10px" }} />
-    //           Zaposlenici
-    //         </Link>
-    //         <Link className="pl-4 pr-4 text-white" to="/meni">
-    //           <RestaurantMenuIcon style={{ marginRight:"10px" }}/>
-    //           Menu
-    //         </Link>
-    //         <Link className="pl-4 pr-4 text-white" to="/promet">
-    //           <ReceiptIcon style={{ marginRight:"10px" }}/>
-    //           Promet
-    //         </Link>
-    //       </Nav>
-    //     }
-    //     {props.user.role === "Konobar" &&
-    //       <Nav className="mr-auto">
-    //         <Link className="pl-4 pr-4 text-white" to="/">
-    //           <ListAltIcon style={{ marginRight:"10px" }}/>
-    //           Narudžbe
-    //         </Link>
-    //         <Link className="pl-4 pr-4 text-white" to="/meni">
-    //           <RestaurantMenuIcon style={{ marginRight:"10px" }}/>
-    //           Menu
-    //         </Link>
-    //         <Link className="pl-4 pr-4 text-white" to="/stolovi">
-    //           <AllOutIcon style={{ marginRight:"10px" }}/>
-    //           Stolovi
-    //         </Link>
-    //       </Nav>
-    //     }
-    //   </Navbar.Collapse>
-    //   <Navbar.Collapse className="justify-content-end">
-    //     <Navbar.Text style={{ color: "#ffffff" }}>
-    //       Prijavljeni ste kao: {props.user.fname} {props.user.lname}
-    //     </Navbar.Text>
-    //     <Nav.Link onClick={logOutAndWipeLocalStorage}><MeetingRoomIcon style={{color: "white"}}/></Nav.Link>
-    //   </Navbar.Collapse>
-    // </Navbar>
   );
 }
 

@@ -4,7 +4,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import classNames from "classnames";
-// import { Modal } from "react-responsive-modal";
 
 import Modal from "../Modal/Modal";
 import MeniList from "../Meni/MeniList";

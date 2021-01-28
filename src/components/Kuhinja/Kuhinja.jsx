@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-// import Table from "react-bootstrap/Table";
-// import Container from "react-bootstrap/Container";
 import {
   getTableOrders,
   changeStatus,
 } from "../../store/actions/tableOrderActions";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-// import Modal from "react-bootstrap/Modal";
-// import Button from "react-bootstrap/Button";
 
 import "./Kuhinja.scss";
 import Header from "../Header/Header";
@@ -59,17 +55,6 @@ const Kuhinja = () => {
   return (
     <div className="container-fluid kitchen">
       <Header label="Narudžbe" user={user} />
-      {/* <div className="row p-2 font-weight-bold mt-3 listKitchenRow">
-        <div className="col-1">STOL</div>
-        <div className="col">
-          <div className="row">
-            <div className="col">NARUDŽBA</div>
-            <div className="col">KOLIČINA</div>
-            <div className="col">STATUS</div>
-            <div className="col">PROMJENA</div>
-          </div>
-        </div>
-      </div> */}
       {tableOrders && tableOrders.length ? 
         tableOrders.map((order, i) =>
           !order.done ? 
@@ -163,43 +148,6 @@ const Kuhinja = () => {
           </div>
         </Modal>
       }
-      {/* <Container>
-        <Modal
-          show={show}
-          onHide={() => setShow(false)}
-          dialogClassName="modal-90w"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Body>
-            <p>
-              Sljedeći korak?
-              <button
-                type="button"
-                className="btn btn-default"
-                aria-label="Left Align"
-              >
-                <span
-                  className="glyphicon glyphicon-align-left"
-                  aria-hidden="true"
-                ></span>
-              </button>
-              <Button
-                variant="success"
-                onClick={() => {
-                  setShow(false);
-                  changeMealStatus();
-                }}
-              >
-                Da
-              </Button>
-              <Button variant="danger" onClick={() => setShow(false)}>
-                Ne
-              </Button>
-            </p>
-          </Modal.Body>
-        </Modal>
-      </Container> */}
     </div>
   );
 };
