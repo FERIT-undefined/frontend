@@ -1,17 +1,18 @@
-/* eslint-disable indent */
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import Container from "react-bootstrap/Container";
+// import Table from "react-bootstrap/Table";
+// import Container from "react-bootstrap/Container";
 import {
   getTableOrders,
   changeStatus,
 } from "../../store/actions/tableOrderActions";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+// import Modal from "react-bootstrap/Modal";
+// import Button from "react-bootstrap/Button";
+
 import "./Kuhinja.scss";
 import Header from "../Header/Header";
+import Modal from "../Modal/Modal";
 
 const Kuhinja = () => {
   const tableOrders = useSelector(state => state.tableOrder.tableOrders);
@@ -30,10 +31,35 @@ const Kuhinja = () => {
     if (meal.status.toLowerCase() === "started") status = "done";
     dispatch(changeStatus(status, table, meal, user));
   };
+
+  const getStatus = tableNumber => {
+    const currentTable = tableOrders.filter(
+      order => order.table === tableNumber
+    );
+    let status;
+    if (!currentTable.length) {
+      status = "no orders";
+    } else {
+      const mealOrdered = currentTable[0].meals.filter(
+        meal => meal.status.toLowerCase() === "ordered"
+      );
+      const mealStarted = currentTable[0].meals.filter(
+        meal => meal.status.toLowerCase() === "started"
+      );
+      const mealDone = currentTable[0].meals.filter(
+        meal => meal.status.toLowerCase() === "done"
+      );
+      if (mealOrdered.length) status = "ordered";
+      if (mealStarted.length >= 1) status = "started";
+      if (mealDone.length === currentTable[0].meals.length) status = "done";
+    }
+    return status;
+  };
+
   return (
-    <div className="container-fluid mt-4 kitchen">
+    <div className="container-fluid kitchen">
       <Header label="Narudžbe" user={user} />
-      <div className="row p-2 font-weight-bold mt-3 listKitchenRow">
+      {/* <div className="row p-2 font-weight-bold mt-3 listKitchenRow">
         <div className="col-1">STOL</div>
         <div className="col">
           <div className="row">
@@ -43,26 +69,44 @@ const Kuhinja = () => {
             <div className="col">PROMJENA</div>
           </div>
         </div>
-      </div>
-      {tableOrders && tableOrders.length ?
+      </div> */}
+      {tableOrders && tableOrders.length ? 
         tableOrders.map((order, i) =>
-          !order.done ?
+          !order.done ? 
             <div
-              className="row p-2 mt-2 mealRow"
+              className={classNames({
+                "card shadow orders__card": true,
+                done: getStatus(order.table) === "done",
+                started: getStatus(order.table) === "started",
+                ordered: getStatus(order.table) === "ordered",
+              })}
               key={order.table}
               onClick={() => {
                 setTable(order);
               }}
             >
-              <div className="col-1">{order.table}</div>
-              <div className="col">
-                {order.meals.map(meal =>
-                  <div className="row kitchen-meal-row" key={meal.name}>
-                    <div className="col">{meal.name}</div>
-                    <div className="col">{meal.quantity}</div>
+              <div
+                className={classNames({
+                  orders__card__table: true,
+                  done: getStatus(order.table) === "done",
+                  started: getStatus(order.table) === "started",
+                  ordered: getStatus(order.table) === "ordered",
+                })}
+              >
+                {order.table}
+              </div>
+              <div className="orders__card__list">
+                {order.meals.map(meal => 
+                  <div className="orders__card__list__meal" key={meal.name}>
+                    <div className="col-3 orders__card__list__meal__name">
+                      {meal.name}
+                    </div>
+                    <div className="col-3 orders__card__list__meal__quantity">
+                      {meal.quantity}
+                    </div>
                     <div
                       className={classNames({
-                        col: true,
+                        orders__card__list__meal__status: true,
                         done: meal.status.toLowerCase() === "done",
                         started: meal.status.toLowerCase() === "started",
                         ordered: meal.status.toLowerCase() === "ordered",
@@ -73,29 +117,53 @@ const Kuhinja = () => {
                       {meal.status.toLowerCase() === "started" && "U pripremi"}
                       {meal.status.toLowerCase() === "ordered" && "Naručeno"}
                     </div>
-                    <>
-                      <div className="col">
-                        <button
-                          className="button-container__change"
-                          onClick={() => {
-                            setShow(true);
-                            setMeal(meal);
-                          }}
-                        >
-                          Promijeni status
-                        </button>
-                      </div>
-                    </>
+                    <div className="col kitchen__card__list__button-container">
+                      <button
+                        className="kitchen__card__list__button-container__change"
+                        onClick={() => {
+                          setShow(true);
+                          setMeal(meal);
+                        }}
+                      >
+                        Promijeni status
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
             </div>
-           : null
+            : null
         )
-       :
+        : 
         <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
       }
-      <Container>
+      {show && 
+        <Modal show={show} closeModal={() => setShow(false)}>
+          <div className="kitchen__status-modal animated--grow-in delay-2s">
+            <p className="kitchen__status-modal__text">
+              Jeste li sigurni da želite promijeniti status?
+            </p>
+            <div className="kitchen__status-modal__button-container">
+              <button
+                className="kitchen__status-modal__button-container__confirm-button"
+                onClick={() => {
+                  setShow(false);
+                  changeMealStatus();
+                }}
+              >
+                Da
+              </button>
+              <button
+                className="kitchen__status-modal__button-container__decline-button"
+                onClick={() => setShow(false)}
+              >
+                Ne
+              </button>
+            </div>
+          </div>
+        </Modal>
+      }
+      {/* <Container>
         <Modal
           show={show}
           onHide={() => setShow(false)}
@@ -131,7 +199,7 @@ const Kuhinja = () => {
             </p>
           </Modal.Body>
         </Modal>
-      </Container>
+      </Container> */}
     </div>
   );
 };
