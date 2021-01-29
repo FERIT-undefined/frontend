@@ -183,6 +183,12 @@
       }
     }
   }
+
+  &__print-modal {
+    height: 99vh;
+    width: 50vw;
+    display: flex;
+  }
 }
 
 .react-datepicker-wrapper {

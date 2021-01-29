@@ -179,14 +179,23 @@ function Traffic() {
       }
       {print && 
         <Modal showModal={print} closeModal={() => setPrint(false)}>
-          <div className="print-close-icon">
-            <IconButton id="close" onClick={() => setPrint(false)}>
-              <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
-            </IconButton>
+          <div className="traffic__print-modal">
+            <PDFViewer width="100%" height="100%">
+              {pdfFile(allTraffic, startDate, endDate, totalTraffic)}
+            </PDFViewer>
+            <div className="traffic__print-modal__close-icon">
+              <IconButton id="close" onClick={() => setPrint(false)}>
+                <CloseIcon
+                  id="closeIcon"
+                  fontSize="large"
+                  style={{
+                    color: "#3d405b",
+                    borderRadius: "25px"
+                  }}
+                />
+              </IconButton>
+            </div>
           </div>
-          <PDFViewer width="100%" height="100%">
-            {pdfFile(allTraffic, startDate, endDate, totalTraffic)}
-          </PDFViewer>
         </Modal>
       }
     </div>
