@@ -4,11 +4,10 @@ import "./Modal.scss";
 class Modal extends Component {
   render() {
     return (
-      <div className="overlay">
-        <div className="content  animated--fade-in">
-          {this.props.children}
-        </div>
-      </div>
+      <>
+        <div className="overlay" onClick={this.props.closeModal} />
+        <div className="content  animated--fade-in">{this.props.children}</div>
+      </>
     );
   }
 }

@@ -79,25 +79,26 @@ function Stolovi(props) {
   };
 
   return (
-    <div className="tables">
-      <Header label="Stolovi" user={props.user} />
-      <div className="tables__list">
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(1) === "no orders",
-            green: getStatus(1) === "done",
-            red: getStatus(1) === "ordered",
-            yellow: getStatus(1) === "started",
-          })}
-          onClick={() => {
-            setTable(1);
-            setShowModal(true);
-            getOrder(1);
-          }}
-        >
-          1
-          {/* <button
+    <div>
+      <div className="tables">
+        <Header label="Stolovi" user={props.user} />
+        <div className="tables__list">
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(1) === "no orders",
+              green: getStatus(1) === "done",
+              red: getStatus(1) === "ordered",
+              yellow: getStatus(1) === "started",
+            })}
+            onClick={() => {
+              setTable(1);
+              setShowModal(true);
+              getOrder(1);
+            }}
+          >
+            1
+            {/* <button
             className="table-button"
             onClick={() => {
               setTable(1);
@@ -105,156 +106,161 @@ function Stolovi(props) {
               getOrder(1);
             }}
           /> */}
-        </div>
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(2) === "no orders",
-            green: getStatus(2) === "done",
-            red: getStatus(2) === "ordered",
-            yellow: getStatus(2) === "started",
-          })}
-          onClick={() => {
-            setTable(2);
-            setShowModal(true);
-            getOrder(2);
-          }}
-        >
-          2
-        </div>
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(3) === "no orders",
-            green: getStatus(3) === "done",
-            red: getStatus(3) === "ordered",
-            yellow: getStatus(3) === "started",
-          })}
-          onClick={() => {
-            setTable(3);
-            setShowModal(true);
-            getOrder(3);
-          }}
-        >
-          3
-        </div>
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(4) === "no orders",
-            green: getStatus(4) === "done",
-            red: getStatus(4) === "ordered",
-            yellow: getStatus(4) === "started",
-          })}
-          onClick={() => {
-            setTable(4);
-            setShowModal(true);
-            getOrder(4);
-          }}
-        >
-          4
-        </div>
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(5) === "no orders",
-            green: getStatus(5) === "done",
-            red: getStatus(5) === "ordered",
-            yellow: getStatus(5) === "started",
-          })}
-          onClick={() => {
-            setTable(5);
-            setShowModal(true);
-            getOrder(5);
-          }}
-        >
-          5
-        </div>
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(6) === "no orders",
-            green: getStatus(6) === "done",
-            red: getStatus(6) === "ordered",
-            yellow: getStatus(6) === "started",
-          })}
-          onClick={() => {
-            setTable(6);
-            setShowModal(true);
-            getOrder(6);
-          }}
-        >
-          6
-        </div>
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(7) === "no orders",
-            green: getStatus(7) === "done",
-            red: getStatus(7) === "ordered",
-            yellow: getStatus(7) === "started",
-          })}
-          onClick={() => {
-            setTable(7);
-            setShowModal(true);
-            getOrder(7);
-          }}
-        >
-          7
-        </div>
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(8) === "no orders",
-            green: getStatus(8) === "done",
-            red: getStatus(8) === "ordered",
-            yellow: getStatus(8) === "started",
-          })}
-          onClick={() => {
-            setTable(8);
-            setShowModal(true);
-            getOrder(8);
-          }}
-        >
-          8
-        </div>
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(9) === "no orders",
-            green: getStatus(9) === "done",
-            red: getStatus(9) === "ordered",
-            yellow: getStatus(9) === "started",
-          })}
-          onClick={() => {
-            setTable(9);
-            setShowModal(true);
-            getOrder(9);
-          }}
-        >
-          9
-        </div>
-        <div
-          className={classNames({
-            "tables__list__order-table": true,
-            black: getStatus(10) === "no orders",
-            green: getStatus(10) === "done",
-            red: getStatus(10) === "ordered",
-            yellow: getStatus(10) === "started",
-          })}
-          onClick={() => {
-            setTable(10);
-            setShowModal(true);
-            getOrder(10);
-          }}
-        >
-          10
+          </div>
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(2) === "no orders",
+              green: getStatus(2) === "done",
+              red: getStatus(2) === "ordered",
+              yellow: getStatus(2) === "started",
+            })}
+            onClick={() => {
+              setTable(2);
+              setShowModal(true);
+              getOrder(2);
+            }}
+          >
+            2
+          </div>
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(3) === "no orders",
+              green: getStatus(3) === "done",
+              red: getStatus(3) === "ordered",
+              yellow: getStatus(3) === "started",
+            })}
+            onClick={() => {
+              setTable(3);
+              setShowModal(true);
+              getOrder(3);
+            }}
+          >
+            3
+          </div>
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(4) === "no orders",
+              green: getStatus(4) === "done",
+              red: getStatus(4) === "ordered",
+              yellow: getStatus(4) === "started",
+            })}
+            onClick={() => {
+              setTable(4);
+              setShowModal(true);
+              getOrder(4);
+            }}
+          >
+            4
+          </div>
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(5) === "no orders",
+              green: getStatus(5) === "done",
+              red: getStatus(5) === "ordered",
+              yellow: getStatus(5) === "started",
+            })}
+            onClick={() => {
+              setTable(5);
+              setShowModal(true);
+              getOrder(5);
+            }}
+          >
+            5
+          </div>
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(6) === "no orders",
+              green: getStatus(6) === "done",
+              red: getStatus(6) === "ordered",
+              yellow: getStatus(6) === "started",
+            })}
+            onClick={() => {
+              setTable(6);
+              setShowModal(true);
+              getOrder(6);
+            }}
+          >
+            6
+          </div>
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(7) === "no orders",
+              green: getStatus(7) === "done",
+              red: getStatus(7) === "ordered",
+              yellow: getStatus(7) === "started",
+            })}
+            onClick={() => {
+              setTable(7);
+              setShowModal(true);
+              getOrder(7);
+            }}
+          >
+            7
+          </div>
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(8) === "no orders",
+              green: getStatus(8) === "done",
+              red: getStatus(8) === "ordered",
+              yellow: getStatus(8) === "started",
+            })}
+            onClick={() => {
+              setTable(8);
+              setShowModal(true);
+              getOrder(8);
+            }}
+          >
+            8
+          </div>
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(9) === "no orders",
+              green: getStatus(9) === "done",
+              red: getStatus(9) === "ordered",
+              yellow: getStatus(9) === "started",
+            })}
+            onClick={() => {
+              setTable(9);
+              setShowModal(true);
+              getOrder(9);
+            }}
+          >
+            9
+          </div>
+          <div
+            className={classNames({
+              "tables__list__order-table": true,
+              black: getStatus(10) === "no orders",
+              green: getStatus(10) === "done",
+              red: getStatus(10) === "ordered",
+              yellow: getStatus(10) === "started",
+            })}
+            onClick={() => {
+              setTable(10);
+              setShowModal(true);
+              getOrder(10);
+            }}
+          >
+            10
+          </div>
         </div>
       </div>
-      {showModal ? 
-        <Modal showModal={showModal} closeModal={() => closeModal}>
-          <div className="tables__orders-modal animated--grow-in delay-2s">
-            <div className="tables__orders-modal__close-icon">
+      {showModal &&
+        <Modal
+          className="animated--grow-in delay-2s"
+          showModal={showModal}
+          closeModal={closeModal}
+        >
+          <div className="orders-modal animated--grow-in delay-2s">
+            <div className="orders-modal__close-icon">
               <IconButton id="close" onClick={() => closeModal()}>
                 <CloseIcon
                   id="closeIcon"
@@ -263,91 +269,90 @@ function Stolovi(props) {
                 />
               </IconButton>
             </div>
-            {
-              order && order.length ? 
-                order.map(order => 
+            {order && order.length ?
+              order.map(order =>
+                <div
+                  className={classNames({
+                    "card shadow orders-modal__card": true,
+                    done: getStatus(order.table) === "done",
+                    started: getStatus(order.table) === "started",
+                    ordered: getStatus(order.table) === "ordered",
+                  })}
+                  key={order.table}
+                >
                   <div
                     className={classNames({
-                      "card shadow tables__orders-modal__card": true,
+                      "col-1 orders-modal__card__table": true,
                       done: getStatus(order.table) === "done",
                       started: getStatus(order.table) === "started",
                       ordered: getStatus(order.table) === "ordered",
                     })}
-                    key={order.table}
                   >
-                    <div
-                      className={classNames({
-                        "col-1 tables__orders-modal__card__table": true,
-                        done: getStatus(order.table) === "done",
-                        started: getStatus(order.table) === "started",
-                        ordered: getStatus(order.table) === "ordered",
-                      })}
-                    >
-                      {order.table}
-                    </div>
-                    <div className="col tables__orders-modal__card__list">
-                      {order.meals.map(meal => 
-                        <div
-                          className="col tables__orders-modal__card__list__meal"
-                          key={meal.name}
-                        >
-                          <div className="col tables__orders-modal__card__list__meal__name">
-                            {meal.name}
-                          </div>
-                          <div className="col tables__orders-modal__card__list__meal__quantity">
-                            {meal.quantity} kom
-                          </div>
-                          <div className="col tables__orders-modal__card__list__meal__price">
-                            {(meal.quantity * meal.price).toFixed(2)} HRK
-                          </div>
-                          <div
-                            className={classNames({
-                              "col tables__orders-modal__card__list__meal__status": true,
-                              done: meal.status.toLowerCase() === "done",
-                              started: meal.status.toLowerCase() === "started",
-                              ordered: meal.status.toLowerCase() === "ordered",
-                            })}
-                          >
-                            {meal.status.toLowerCase() === "done" &&
-                              "Spremno za posluživanje"}
-                            {meal.status.toLowerCase() === "started" &&
-                              "U pripremi"}
-                            {meal.status.toLowerCase() === "ordered" &&
-                              "Naručeno"}
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                    {order.table}
                   </div>
-                )
-                : 
-                <div className="tables__orders-modal__menu">
-                  <MeniList
-                    addMeal={addMeal}
-                    removeMeal={removeMeal}
-                    table={table}
-                    tableSelect
-                    hideHeader={true}
-                    fromTables={true}
-                  />
-                  <button
-                    className="tables__orders-modal__menu__btn"
-                    onClick={e => {
-                      e.preventDefault();
-                      dispatch(addOrder(props.user, table, meals, totalPrice));
-                      setShowModal(false);
-                    }}
-                    disabled={!meals.length}
-                    hidden={!meals.length}
-                    type="button"
-                  >
-                    Potvrdi
-                  </button>
+                  <div className="col orders-modal__card__list">
+                    {order.meals.map(meal =>
+                      <div
+                        className="col orders-modal__card__list__meal"
+                        key={meal.name}
+                      >
+                        <div className="col orders-modal__card__list__meal__name">
+                          {meal.name}
+                        </div>
+                        <div className="col orders-modal__card__list__meal__quantity">
+                          {meal.quantity} kom
+                        </div>
+                        <div className="col orders-modal__card__list__meal__price">
+                          {(meal.quantity * meal.price).toFixed(2)} HRK
+                        </div>
+                        <div
+                          className={classNames({
+                            "col orders-modal__card__list__meal__status": true,
+                            done: meal.status.toLowerCase() === "done",
+                            started: meal.status.toLowerCase() === "started",
+                            ordered: meal.status.toLowerCase() === "ordered",
+                          })}
+                        >
+                          {meal.status.toLowerCase() === "done" &&
+                            "Spremno za posluživanje"}
+                          {meal.status.toLowerCase() === "started" &&
+                            "U pripremi"}
+                          {meal.status.toLowerCase() === "ordered" &&
+                            "Naručeno"}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
+              )
+              :
+              <div className="orders-modal__menu">
+                <MeniList
+                  addMeal={addMeal}
+                  removeMeal={removeMeal}
+                  table={table}
+                  tableSelect
+                  hideHeader={true}
+                  fromTables={true}
+                />
+                <button
+                  className="orders-modal__menu__btn"
+                  onClick={e => {
+                    e.preventDefault();
+                    dispatch(addOrder(props.user, table, meals, totalPrice));
+                    setShowModal(false);
+                  }}
+                  disabled={!meals.length}
+                  hidden={!meals.length}
+                  type="button"
+                >
+                  Potvrdi
+                </button>
+              </div>
             }
           </div>
         </Modal>
-        : null}
+      }
     </div>
   );
 }

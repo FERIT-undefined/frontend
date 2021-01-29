@@ -54,7 +54,7 @@ function Traffic() {
 
   const calculateTraffic = () => {
     setTotalTraffic(
-      allTraffic.reduce(
+      traffic.reduce(
         (previousScore, currentScore) =>
           previousScore + currentScore.total_price,
         0
@@ -62,72 +62,77 @@ function Traffic() {
     );
   };
 
-  console.log(allTraffic);
   return (
-    <div className="container-fluid traffic">
-      <Header label="Promet" user={user} />
-      <div className="traffic__topbar">
-        <div className="traffic__topbar__range">
-          <div className="traffic__topbar__range__label">
-            Promet za razdoblje:{" "}
+    <div>
+      <div className="container-fluid traffic">
+        <Header label="Promet" user={user} />
+        <div className="traffic__topbar">
+          <div className="traffic__topbar__range">
+            <div className="traffic__topbar__range__label">
+              Promet za razdoblje:{" "}
+            </div>
+            <div className="traffic__topbar__range__datepicker-container">
+              <DatePicker
+                dateFormat="dd.MM.yyyy"
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+                maxDate={endDate}
+              />
+              <DatePicker
+                dateFormat="dd.MM.yyyy"
+                selected={endDate}
+                onChange={date => {
+                  date.setHours(23, 59, 59, 999);
+                  setEndDate(date);
+                }}
+                maxDate={moment.utc().toDate()}
+              />
+            </div>
           </div>
-          <div className="traffic__topbar__range__datepicker-container">
-            <DatePicker
-              dateFormat="dd.MM.yyyy"
-              selected={startDate}
-              onChange={date => setStartDate(date)}
-              maxDate={endDate}
-            />
-            <DatePicker
-              dateFormat="dd.MM.yyyy"
-              selected={endDate}
-              onChange={date => {
-                date.setHours(23, 59, 59, 999);
-                setEndDate(date);
-              }}
-              maxDate={moment.utc().toDate()}
-            />
-          </div>
-        </div>
-        <div className="traffic__topbar__info">
-          <div className="traffic__topbar__info__total">
-            <p className="traffic__topbar__info__total__label">
-              Ukupno u odabranom razdoblju:
-            </p>
-            <p className="traffic__topbar__info__total__value">
-              {" "}
-              {totalTraffic} HRK
-            </p>
-          </div>
-          <div className="traffic__topbar__info__button-container">
-            {download ? 
-              <PDFDownloadLink
-                document={pdfFile(allTraffic, startDate, endDate, totalTraffic)}
-                className="save-button reporting-details__footer__link text-decoration-none traffic__topbar__info__button-container__export__link"
-                fileName={`traffic-${startDate} - ${endDate}.pdf`}
-              >
-                {({ loading }) => loading ? "Učitavanje" : "Preuzmi"}
-              </PDFDownloadLink>
-              : 
+          <div className="traffic__topbar__info">
+            <div className="traffic__topbar__info__total">
+              <p className="traffic__topbar__info__total__label">
+                Ukupno u odabranom razdoblju:
+              </p>
+              <p className="traffic__topbar__info__total__value">
+                {" "}
+                {totalTraffic} HRK
+              </p>
+            </div>
+            <div className="traffic__topbar__info__button-container">
+              {download ? 
+                <PDFDownloadLink
+                  document={pdfFile(
+                    allTraffic,
+                    startDate,
+                    endDate,
+                    totalTraffic
+                  )}
+                  className="save-button reporting-details__footer__link text-decoration-none traffic__topbar__info__button-container__export__link"
+                  fileName={`traffic-${startDate} - ${endDate}.pdf`}
+                >
+                  {({ loading }) => loading ? "Učitavanje" : "Preuzmi"}
+                </PDFDownloadLink>
+                : 
+                <button
+                  className="traffic__topbar__info__button-container__export"
+                  onClick={() => setDownload(true)}
+                  disabled={disabled}
+                >
+                  {disabled ? "Priprema..." : "Generiraj izvješće"}
+                </button>
+              }
               <button
-                className="traffic__topbar__info__button-container__export"
-                onClick={() => setDownload(true)}
+                className="traffic__topbar__info__button-container__print"
+                onClick={() => setPrint(true)}
                 disabled={disabled}
               >
-                {disabled ? "Priprema..." : "Generiraj izvješće"}
+                {disabled ? "Priprema..." : "Ispiši"}
               </button>
-            }
-            <button
-              className="traffic__topbar__info__button-container__print"
-              onClick={() => setPrint(true)}
-              disabled={disabled}
-            >
-              {disabled ? "Priprema..." : "Ispiši"}
-            </button>
+            </div>
           </div>
         </div>
-      </div>
-      {/* <div className="row p-2 font-weight-bold mt-3 listInfoRow">
+        {/* <div className="row p-2 font-weight-bold mt-3 listInfoRow">
         <div className="col-9">
           <div className="row">
             <div className="col">NAZIV</div>
@@ -138,59 +143,60 @@ function Traffic() {
         </div>
         <div className="col">DATUM</div>
       </div> */}
-      {allTraffic && allTraffic.length ? 
-        allTraffic.map((receipt, index) => 
-          <div className="card shadow traffic__card" key={index}>
-            <div className="col-1 traffic__card__list__time">
-              {moment(receipt.finished_timestamp).format("DD.MM.YYYY. hh:mm")}
+        {allTraffic && allTraffic.length ? 
+          allTraffic.map((receipt, index) => 
+            <div className="card shadow traffic__card" key={index}>
+              <div className="col-1 traffic__card__list__time">
+                {moment(receipt.finished_timestamp).format("DD.MM.YYYY. hh:mm")}
+              </div>
+              <div className="col traffic__card__list">
+                {receipt.meals.map(meal => {
+                  const mealPrice =
+                    meal.price -
+                    meal.price * (meal.discount / 100) +
+                    (meal.price - meal.price * (meal.discount / 100)) *
+                      (meal.pdv / 100);
+                  return (
+                    <div className="traffic__card__list__meal" key={meal.name}>
+                      <div className="col traffic__card__list__meal__name">
+                        {meal.name}
+                      </div>
+                      <div className="col traffic__card__list__meal__price">
+                        {mealPrice.toFixed(2)} HRK{" "}
+                      </div>
+                      <div className="col traffic__card__list__meal__quantity">
+                        {meal.quantity} kom
+                      </div>
+                      <div className="col traffic__card__list__meal__total">
+                        {(meal.quantity * mealPrice).toFixed(2)} HRK
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="col-1 traffic__card__list__price">
+                {receipt.total_price.toFixed(2)} HRK
+              </div>
             </div>
-            <div className="col traffic__card__list">
-              {receipt.meals.map(meal => {
-                const mealPrice =
-                  meal.price -
-                  meal.price * (meal.discount / 100) +
-                  (meal.price - meal.price * (meal.discount / 100)) *
-                    (meal.pdv / 100);
-                return (
-                  <div className="traffic__card__list__meal" key={meal.name}>
-                    <div className="col traffic__card__list__meal__name">
-                      {meal.name}
-                    </div>
-                    <div className="col traffic__card__list__meal__price">
-                      {mealPrice.toFixed(2)} HRK{" "}
-                    </div>
-                    <div className="col traffic__card__list__meal__quantity">
-                      {meal.quantity} kom
-                    </div>
-                    <div className="col traffic__card__list__meal__total">
-                      {(meal.quantity * mealPrice).toFixed(2)} HRK
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="col-1 traffic__card__list__price">
-              {receipt.total_price.toFixed(2)} HRK
-            </div>
-          </div>
-        )
-        : 
-        <div className="no-traffic">NEMA PROMETA U ODABRANOM RASPONU</div>
-      }
+          )
+          : 
+          <div className="no-traffic">NEMA PROMETA U ODABRANOM RASPONU</div>
+        }
+      </div>
       {print && 
         <Modal showModal={print} closeModal={() => setPrint(false)}>
-          <div className="traffic__print-modal">
+          <div className="print-modal">
             <PDFViewer width="100%" height="100%">
               {pdfFile(allTraffic, startDate, endDate, totalTraffic)}
             </PDFViewer>
-            <div className="traffic__print-modal__close-icon">
+            <div className="print-modal__close-icon">
               <IconButton id="close" onClick={() => setPrint(false)}>
                 <CloseIcon
                   id="closeIcon"
                   fontSize="large"
                   style={{
                     color: "#3d405b",
-                    borderRadius: "25px"
+                    borderRadius: "25px",
                   }}
                 />
               </IconButton>

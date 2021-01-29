@@ -39,8 +39,8 @@ function OrdersList(props) {
         (meal.price -
           meal.price * (meal.discount / 100) +
           (meal.price - meal.price * (meal.discount / 100)) *
-          (meal.pdv / 100)) *
-        meal.quantity,
+            (meal.pdv / 100)) *
+          meal.quantity,
       0
     );
     return totalPrice.toFixed(2);
@@ -52,9 +52,15 @@ function OrdersList(props) {
     if (!currentTable.length) {
       status = "no orders";
     } else {
-      const mealOrdered = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "ordered");
-      const mealStarted = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "started");
-      const mealDone = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "done");
+      const mealOrdered = currentTable[0].meals.filter(
+        meal => meal.status.toLowerCase() === "ordered"
+      );
+      const mealStarted = currentTable[0].meals.filter(
+        meal => meal.status.toLowerCase() === "started"
+      );
+      const mealDone = currentTable[0].meals.filter(
+        meal => meal.status.toLowerCase() === "done"
+      );
       if (mealOrdered.length) status = "ordered";
       if (mealStarted.length >= 1) status = "started";
       if (mealDone.length === currentTable[0].meals.length) status = "done";
@@ -86,20 +92,21 @@ function OrdersList(props) {
         </button>
         {orders && orders.length ?
           orders.map(order =>
-
-            <div className={classNames({
-              "card shadow orders__card": true,
-              "done": getStatus(order.table) === "done",
-              "started": getStatus(order.table) === "started",
-              "ordered": getStatus(order.table) === "ordered"
-            })} key={order.table}>
-
+            <div
+              className={classNames({
+                "card shadow orders__card": true,
+                done: getStatus(order.table) === "done",
+                started: getStatus(order.table) === "started",
+                ordered: getStatus(order.table) === "ordered",
+              })}
+              key={order.table}
+            >
               <div
                 className={classNames({
-                  "orders__card__table": true,
-                  "done": getStatus(order.table) === "done",
-                  "started": getStatus(order.table) === "started",
-                  "ordered": getStatus(order.table) === "ordered"
+                  orders__card__table: true,
+                  done: getStatus(order.table) === "done",
+                  started: getStatus(order.table) === "started",
+                  ordered: getStatus(order.table) === "ordered",
                 })}
               >
                 {order.table}
@@ -110,12 +117,16 @@ function OrdersList(props) {
                     meal.price -
                     meal.price * (meal.discount / 100) +
                     (meal.price - meal.price * (meal.discount / 100)) *
-                    (meal.pdv / 100);
+                      (meal.pdv / 100);
 
                   return (
                     <div className="orders__card__list__meal" key={meal.id}>
-                      <div className="col orders__card__list__meal__name">{meal.name}</div>
-                      <div className="col orders__card__list__meal__quantity">{meal.quantity} kom</div>
+                      <div className="col orders__card__list__meal__name">
+                        {meal.name}
+                      </div>
+                      <div className="col orders__card__list__meal__quantity">
+                        {meal.quantity} kom
+                      </div>
                       <div className="col orders__card__list__meal__price">
                         {(meal.quantity * mealPrice).toFixed(2)} HRK
                       </div>
@@ -137,7 +148,8 @@ function OrdersList(props) {
                   );
                 })}
               </div>
-              <div className="col orders__card__list__receipt"
+              <div
+                className="col orders__card__list__receipt"
                 onClick={() => {
                   setShowModal(true);
                   setOrder(order);
@@ -164,7 +176,10 @@ function OrdersList(props) {
             <div className="receipt__icons" hidden={hidden}>
               <div className="receipt__icons__close-icon">
                 <IconButton id="close" onClick={() => setShowModal(false)}>
-                  <CloseIcon id="closeIcon" style={{ color: "rgba(244, 243, 239, 1)" }} />
+                  <CloseIcon
+                    id="closeIcon"
+                    style={{ color: "rgba(244, 243, 239, 1)" }}
+                  />
                 </IconButton>
               </div>
               <div className="receipt__icons__print-icon">
@@ -202,27 +217,23 @@ function OrdersList(props) {
                             margin-top: 10px;
                             background-color: white;
                             border-radius: 50%; }
-
-                          .info__date {
-                            text-align: center;
-                            font-weight: bold;
-                            font-size: 18px;
-                          }
-                          .info__waiter {
-                            padding-top: 10px;
-                            font-size: 14px;
-                          }
-                          .info__table {
-                            padding-top: 5px;
-                            font-size: 14px;
-                          }
-
-                         .receipt-table-header .receipt-meal {
-                          max-width: none;
-                          text-align: center;
-                          padding: 0;
-                         }
-                         .receipt-table-header .row {
+                            .receipt__container__info__date {
+                              text-align: center;
+                              font-weight: bold;
+                              font-size: 18px; }
+                            .receipt__container__info__waiter {
+                              padding-top: 10px;
+                              font-size: 14px; }
+                            .receipt__container__info__table {
+                              padding-top: 5px;
+                              font-size: 14px; }
+                            .receipt__container__meal-row .row:not(:first-child) {
+                              margin-top: 15px; }
+                            .receipt__container__table-header, .receipt__container__meal {
+                              max-width: none;
+                              text-align: center;
+                              padding: 0; }
+                         .receipt__container__table-header .row {
                            display: -ms-inline-flexbox;
                            display: inline-flex;
                            flex-wrap: nowrap;
@@ -232,9 +243,9 @@ function OrdersList(props) {
                            margin-bottom: 2%;
                           }
 
-                         .receipt .receipt-meal-row .row:not(:first-child) {
+                         .receipt .receipt__container__meal-row .row:not(:first-child) {
                           margin-top: 15px; }
-                          .receipt-meal-row .row{display: -ms-flexbox;
+                          .receipt__container__meal-row .row{display: -ms-flexbox;
                             display: flex;
                             -ms-flex-wrap: wrap;
                             flex-wrap: wrap;}
@@ -246,7 +257,7 @@ function OrdersList(props) {
                               max-width: 100%;
                               margin: 0;
                           }
-                        .total-price {
+                        .receipt-container__total-price {
                           display: flex;
                           float: right;
                           justify-content: space-between;
@@ -254,10 +265,10 @@ function OrdersList(props) {
                           margin-right: 2%;
                           font-weight: bold;
                           flex-wrap: wrap;
-                          .total-price__label {
+                          .receipt-container__total-price__label {
                             font-size: 20px;
                           }
-                          .total-price__value {
+                          .receipt-container__total-price__value {
                             font-size: 20px;
                             white-space: nowrap;
                           }
@@ -282,7 +293,13 @@ function OrdersList(props) {
                     });
                   }}
                 >
-                  <PrintIcon id="print-icon" style={{ color: " rgba(244, 243, 239, 1)", background: "transparent" }} />
+                  <PrintIcon
+                    id="print-icon"
+                    style={{
+                      color: " rgba(244, 243, 239, 1)",
+                      background: "transparent",
+                    }}
+                  />
                 </IconButton>
               </div>
               {order.done &&
@@ -315,7 +332,9 @@ function OrdersList(props) {
                 <div className="receipt__container__info__waiter">
                   Djelatnik: {props.user.fname} {props.user.lname}
                 </div>
-                <div className="receipt__container__info__table">Stol: {order.table}</div>
+                <div className="receipt__container__info__table">
+                  Stol: {order.table}
+                </div>
               </div>
               <hr />
               <div className="col-9 receipt__container__table-header">
@@ -333,7 +352,7 @@ function OrdersList(props) {
                       meal.price -
                       meal.price * (meal.discount / 100) +
                       (meal.price - meal.price * (meal.discount / 100)) *
-                      (meal.pdv / 100);
+                        (meal.pdv / 100);
                     return (
                       <div className="row p-2 mt-2" key={meal.name}>
                         <div className="col">{meal.name}</div>
@@ -349,40 +368,42 @@ function OrdersList(props) {
               </div>
               <hr />
               <div className="receipt-container__total-price">
-                <div className="receipt__container__total-price__label">Ukupno: </div>
-                <div className="receipt__container__total-price__value">{getTotalPrice()} HRK</div>
+                <div className="receipt__container__total-price__label">
+                  Ukupno:{" "}
+                </div>
+                <div className="receipt__container__total-price__value">
+                  {getTotalPrice()} HRK
+                </div>
               </div>
             </div>
           </div>
         </Modal>
       }
       {show &&
-        <Container>
-          <Modal show={show} closeModal={() => setShow(false)}>
-            <div className="orders__export-modal animated--grow-in delay-2s">
-              <p className="orders__export-modal__text">
-                Želite li poslati sve gotove narudžbe na promet?
-              </p>
-              <div className="orders__export-modal__button-container">
-                <button
-                  className="orders__export-modal__button-container__confirm-button"
-                  onClick={() => {
-                    exportAllOrders();
-                    setShow(false);
-                  }}
-                >
-                  Da
-                </button>
-                <button
-                  className="orders__export-modal__button-container__decline-button"
-                  onClick={() => setShow(false)}
-                >
-                  Ne
-                </button>
-              </div>
+        <Modal show={show} closeModal={() => setShow(false)}>
+          <div className="export-modal animated--grow-in delay-2s">
+            <p className="export-modal__text">
+              Želite li poslati sve gotove narudžbe na promet?
+            </p>
+            <div className="export-modal__button-container">
+              <button
+                className="export-modal__button-container__confirm-button"
+                onClick={() => {
+                  exportAllOrders();
+                  setShow(false);
+                }}
+              >
+                Da
+              </button>
+              <button
+                className="export-modal__button-container__decline-button"
+                onClick={() => setShow(false)}
+              >
+                Ne
+              </button>
             </div>
-          </Modal>
-        </Container>
+          </div>
+        </Modal>
       }
     </div>
   );

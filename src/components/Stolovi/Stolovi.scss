@@ -60,194 +60,195 @@
       }
     }
   }
+}
 
-  &__orders-modal {
-    border-radius: 20px;
-    background: $dark-blue;
-    width: 65%;
-    box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
-    transition: box-shadow 300ms;
-    height: fit-content;
+.orders-modal {
+  z-index: 1000;
+  border-radius: 20px;
+  background: $dark-blue;
+  width: 65%;
+  box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
+  transition: box-shadow 300ms;
+  height: fit-content;
 
-    &__close-icon {
-      text-align: end;
-      padding: 1%;
+  &__close-icon {
+    text-align: end;
+    padding: 1%;
+  }
+  &__card {
+    display: inline-flex;
+    flex-direction: row;
+    padding: 2%;
+    margin-left: 5%;
+    margin-bottom: 5%;
+    width: 90%;
+
+    &.ordered {
+      border-left: 15px solid $red;
     }
-    &__card {
-      display: inline-flex;
-      flex-direction: row;
-      padding: 2%;
-      margin-left: 5%;
-      margin-bottom: 5%;
-      width: 90%;
+    &.started {
+      border-left: 15px solid $yellow;
+    }
+    &.done {
+      border-left: 15px solid $green;
+    }
 
+    &__table {
+      display: flex;
+      width: 5%;
+      justify-content: center;
+      align-items: center;
+      font-size: 25px;
+      font-weight: bold;
       &.ordered {
-        border-left: 15px solid $red;
+        color: $red;
       }
       &.started {
-        border-left: 15px solid $yellow;
+        color: $yellow;
       }
       &.done {
-        border-left: 15px solid $green;
+        color: $green;
+      }
+    }
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+      width: 85%;
+      font-size: 20px;
+      align-items: center;
+
+      &__meal {
+        display: inline-flex;
+        padding: 10px 0;
+        width: 100%;
+        height: 80px;
+        align-items: center;
+        &__name {
+          font-weight: bold;
+        }
+        &__quantity {
+          text-align: center;
+        }
+        &__price {
+          font-weight: bold;
+        }
+        &__status {
+          font-weight: bold;
+          white-space: nowrap;
+          &.ordered {
+            color: $red;
+          }
+          &.started {
+            color: $yellow;
+          }
+          &.done {
+            color: $green;
+          }
+        }
+      }
+    }
+  }
+
+  &__menu {
+    display: inline-flex;
+    flex-direction: column;
+    margin-left: 5%;
+    margin-bottom: 5%;
+    width: 90%;
+
+    &__list {
+      border-radius: 20px;
+
+      &__topbar {
+        display: inline-flex;
+        width: 92%;
+        align-items: center;
+        border-bottom: 1px solid $gray;
+        margin: 0% 0% 2% 0%;
+        padding-bottom: 2%;
+        box-shadow: 0px 6px 6px -6px $gray;
+
+        &__search {
+          width: 40% !important;
+          background: $dark-blue-opacity;
+          box-shadow: inset;
+          font-weight: bold;
+          border: 1px solid $cream;
+          outline: none;
+          border-radius: 0.25rem;
+          padding: 8px;
+          height: 50px;
+          box-shadow: 0 0.15rem 0.75rem 0 black !important;
+          font-size: 18px;
+
+          &:hover {
+            outline: none;
+            box-shadow: 0 0.15rem 1.75rem 0 black !important;
+            transition: box-shadow 300ms;
+          }
+
+          &:focus {
+            outline: none;
+            background: $cream;
+          }
+        }
       }
 
-      &__table {
-        display: flex;
-        width: 5%;
-        justify-content: center;
+      &__card {
+        display: inline-flex;
+        flex-direction: row;
+        padding: 2% 0 2% 2%;
+        margin: 0.5% 0 0.5% 0;
+        background: white;
+        color: $light-gray;
+        font-size: 18px;
         align-items: center;
-        font-size: 25px;
-        font-weight: bold;
-        &.ordered {
-          color: $red;
-        }
-        &.started {
-          color: $yellow;
-        }
-        &.done {
-          color: $green;
-        }
-      }
+        border-left: 10px solid $menu-border;
+        cursor: default;
+        width: 100%;
+        box-shadow: 0 0.15rem 0.5rem 0 black !important;
+        transition: box-shadow 0.5s;
 
-      &__list {
-        display: flex;
-        flex-direction: column;
-        width: 85%;
-        font-size: 20px;
-        align-items: center;
+        &:hover {
+          box-shadow: 0 0.15rem 1.75rem 0 black !important;
+          transition: box-shadow 0.5s;
+        }
 
-        &__meal {
-          display: inline-flex;
-          padding: 10px 0;
-          width: 100%;
-          height: 80px;
+        &__picker {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
           align-items: center;
-          &__name {
-            font-weight: bold;
-          }
-          &__quantity {
+          &__addToOrder {
             text-align: center;
-          }
-          &__price {
-            font-weight: bold;
-          }
-          &__status {
-            font-weight: bold;
-            white-space: nowrap;
-            &.ordered {
-              color: $red;
-            }
-            &.started {
-              color: $yellow;
-            }
-            &.done {
-              color: $green;
-            }
           }
         }
       }
     }
 
-    &__menu {
-      display: inline-flex;
-      flex-direction: column;
-      margin-left: 5%;
-      margin-bottom: 5%;
-      width: 90%;
+    &__btn {
+      width: fit-content;
+      margin-top: 20px;
+      margin-left: auto;
+      margin-right: auto;
+      background: $green;
+      color: $cream;
+      border: 1px solid $green;
+      border-radius: 4px;
+      padding: 1% 3%;
+      box-shadow: 0 0.15rem 0.5rem 0 black !important;
+      transition: box-shadow 300ms;
+      font-weight: bold;
 
-      &__list {
-        border-radius: 20px;
-
-        &__topbar {
-          display: inline-flex;
-          width: 92%;
-          align-items: center;
-          border-bottom: 1px solid $gray;
-          margin: 0% 0% 2% 0%;
-          padding-bottom: 2%;
-          box-shadow: 0px 6px 6px -6px $gray;
-
-          &__search {
-            width: 40% !important;
-            background: $dark-blue-opacity;
-            box-shadow: inset;
-            font-weight: bold;
-            border: 1px solid $cream;
-            outline: none;
-            border-radius: 0.25rem;
-            padding: 8px;
-            height: 50px;
-            box-shadow: 0 0.15rem 0.75rem 0 black !important;
-            font-size: 18px;
-
-            &:hover {
-              outline: none;
-              box-shadow: 0 0.15rem 1.75rem 0 black !important;
-              transition: box-shadow 300ms;
-            }
-
-            &:focus {
-              outline: none;
-              background: $cream;
-            }
-          }
-        }
-
-        &__card {
-          display: inline-flex;
-          flex-direction: row;
-          padding: 2% 0 2% 2%;
-          margin: 0.5% 0 0.5% 0;
-          background: white;
-          color: $light-gray;
-          font-size: 18px;
-          align-items: center;
-          border-left: 10px solid $menu-border;
-          cursor: default;
-          width: 100%;
-          box-shadow: 0 0.15rem 0.5rem 0 black !important;
-          transition: box-shadow 0.5s;
-
-          &:hover {
-            box-shadow: 0 0.15rem 1.75rem 0 black !important;
-            transition: box-shadow 0.5s;
-          }
-
-          &__picker {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            &__addToOrder {
-              text-align: center;
-            }
-          }
-        }
+      &:hover {
+        color: white;
+        box-shadow: 0 0.15rem 1.75rem 0 black !important;
+        transition: box-shadow 300ms;
       }
 
-      &__btn {
-        width: fit-content;
-        margin-top: 20px;
-        margin-left: auto;
-        margin-right: auto;
-        background: $green;
-        color: $cream;
-        border: 1px solid $green;
-        border-radius: 4px;
-        padding: 1% 3%;
-        box-shadow: 0 0.15rem 0.5rem 0 black !important;
-        transition: box-shadow 300ms;
-        font-weight: bold;
-
-        &:hover {
-          color: white;
-          box-shadow: 0 0.15rem 1.75rem 0 black !important;
-          transition: box-shadow 300ms;
-        }
-
-        &:active {
-          color: $gray;
-        }
+      &:active {
+        color: $gray;
       }
     }
   }

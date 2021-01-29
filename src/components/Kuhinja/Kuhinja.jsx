@@ -53,84 +53,89 @@ const Kuhinja = () => {
   };
 
   return (
-    <div className="container-fluid kitchen">
-      <Header label="Narudžbe" user={user} />
-      {tableOrders && tableOrders.length ? 
-        tableOrders.map((order, i) =>
-          !order.done ? 
-            <div
-              className={classNames({
-                "card shadow orders__card": true,
-                done: getStatus(order.table) === "done",
-                started: getStatus(order.table) === "started",
-                ordered: getStatus(order.table) === "ordered",
-              })}
-              key={order.table}
-              onClick={() => {
-                setTable(order);
-              }}
-            >
+    <div>
+      <div className="container-fluid kitchen">
+        <Header label="Narudžbe" user={user} />
+        {tableOrders && tableOrders.length ? 
+          tableOrders.map((order, i) =>
+            !order.done ? 
               <div
                 className={classNames({
-                  orders__card__table: true,
+                  "card shadow orders__card": true,
                   done: getStatus(order.table) === "done",
                   started: getStatus(order.table) === "started",
                   ordered: getStatus(order.table) === "ordered",
                 })}
+                key={order.table}
+                onClick={() => {
+                  setTable(order);
+                }}
               >
-                {order.table}
-              </div>
-              <div className="orders__card__list">
-                {order.meals.map(meal => 
-                  <div className="orders__card__list__meal" key={meal.name}>
-                    <div className="col-3 orders__card__list__meal__name">
-                      {meal.name}
-                    </div>
-                    <div className="col-3 orders__card__list__meal__quantity">
-                      {meal.quantity}
-                    </div>
-                    <div
-                      className={classNames({
-                        orders__card__list__meal__status: true,
-                        done: meal.status.toLowerCase() === "done",
-                        started: meal.status.toLowerCase() === "started",
-                        ordered: meal.status.toLowerCase() === "ordered",
-                      })}
-                    >
-                      {meal.status.toLowerCase() === "done" &&
-                        "Spremno za posluživanje"}
-                      {meal.status.toLowerCase() === "started" && "U pripremi"}
-                      {meal.status.toLowerCase() === "ordered" && "Naručeno"}
-                    </div>
-                    <div className="col kitchen__card__list__button-container">
-                      <button
-                        className="kitchen__card__list__button-container__change"
-                        onClick={() => {
-                          setShow(true);
-                          setMeal(meal);
-                        }}
+                <div
+                  className={classNames({
+                    orders__card__table: true,
+                    done: getStatus(order.table) === "done",
+                    started: getStatus(order.table) === "started",
+                    ordered: getStatus(order.table) === "ordered",
+                  })}
+                >
+                  {order.table}
+                </div>
+                <div className="orders__card__list">
+                  {order.meals.map(meal => 
+                    <div className="orders__card__list__meal" key={meal.name}>
+                      <div className="col-3 orders__card__list__meal__name">
+                        {meal.name}
+                      </div>
+                      <div className="col-3 orders__card__list__meal__quantity">
+                        {meal.quantity}
+                      </div>
+                      <div
+                        className={classNames({
+                          orders__card__list__meal__status: true,
+                          done: meal.status.toLowerCase() === "done",
+                          started: meal.status.toLowerCase() === "started",
+                          ordered: meal.status.toLowerCase() === "ordered",
+                        })}
                       >
-                        Promijeni status
-                      </button>
+                        {meal.status.toLowerCase() === "done" &&
+                          "Spremno za posluživanje"}
+                        {meal.status.toLowerCase() === "started" &&
+                          "U pripremi"}
+                        {meal.status.toLowerCase() === "ordered" && "Naručeno"}
+                      </div>
+                      {meal.status.toLowerCase() !== "done" && 
+                        <div className="col kitchen__card__list__button-container">
+                          <button
+                            className="kitchen__card__list__button-container__change"
+                            onClick={() => {
+                              setShow(true);
+                              setMeal(meal);
+                            }}
+                          >
+                            Promijeni status
+                          </button>
+                        </div>
+                      }
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-            : null
-        )
-        : 
-        <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
-      }
+              : null
+          )
+          : 
+          <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
+        }
+      </div>
       {show && 
         <Modal show={show} closeModal={() => setShow(false)}>
-          <div className="kitchen__status-modal animated--grow-in delay-2s">
-            <p className="kitchen__status-modal__text">
+          <div className="status-modal animated--grow-in delay-2s">
+            <p className="status-modal__text">
               Jeste li sigurni da želite promijeniti status?
             </p>
-            <div className="kitchen__status-modal__button-container">
+            <div className="status-modal__button-container">
               <button
-                className="kitchen__status-modal__button-container__confirm-button"
+                className="status-modal__button-container__confirm-button"
                 onClick={() => {
                   setShow(false);
                   changeMealStatus();
@@ -139,7 +144,7 @@ const Kuhinja = () => {
                 Da
               </button>
               <button
-                className="kitchen__status-modal__button-container__decline-button"
+                className="status-modal__button-container__decline-button"
                 onClick={() => setShow(false)}
               >
                 Ne

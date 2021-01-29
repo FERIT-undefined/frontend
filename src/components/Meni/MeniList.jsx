@@ -134,177 +134,185 @@ function MeniList(props) {
   ];
 
   return (
-    <div
-      className={classNames({
-        "container-fluid menu": !props.fromTables,
-        "tables__orders-modal__menu__list": props.fromTables,
-      })}
-    >
-      {!props.hideHeader && <Header label="Menu" user={props.user} />}
+    <div>
       <div
         className={classNames({
-          "menu__topbar": !props.fromTables,
-          "tables__orders-modal__menu__list__topbar": props.fromTables,
+          "container-fluid menu": !props.fromTables,
+          "orders-modal__menu__list": props.fromTables,
         })}
       >
-        <input
+        {!props.hideHeader && <Header label="Menu" user={props.user} />}
+        <div
           className={classNames({
-            "form-control menu__topbar__search": !props.fromTables,
-            "tables__orders-modal__menu__list__topbar__search": props.fromTables,
-            admin: props.user && props.user.role.toLowerCase() === "admin",
+            menu__topbar: !props.fromTables,
+            "orders-modal__menu__list__topbar": props.fromTables,
           })}
-          type="text"
-          placeholder="Pretraži..."
-          aria-label="Pretraži"
-          onChange={e => {
-            if (e.target.value === "") {
-              setSearching(false);
-              setSearchResults(null);
-            } else {
-              setSearching(true);
-              setSearchResults(
-                allMeals.filter(
-                  meal =>
-                    (meal.name
-                      .toLowerCase()
-                      .includes(e.target.value.toLowerCase()) ||
-                      meal.description
+        >
+          <input
+            className={classNames({
+              "form-control menu__topbar__search": !props.fromTables,
+              "orders-modal__menu__list__topbar__search": props.fromTables,
+              admin: props.user && props.user.role.toLowerCase() === "admin",
+            })}
+            type="text"
+            placeholder="Pretraži..."
+            aria-label="Pretraži"
+            onChange={e => {
+              if (e.target.value === "") {
+                setSearching(false);
+                setSearchResults(null);
+              } else {
+                setSearching(true);
+                setSearchResults(
+                  allMeals.filter(
+                    meal =>
+                      (meal.name
                         .toLowerCase()
                         .includes(e.target.value.toLowerCase()) ||
-                      meal.type
-                        .toLowerCase()
-                        .includes(e.target.value.toLowerCase())) &&
-                    meal
-                )
-              );
-            }
-          }}
-        />
-        {props.user && props.user.role === "Admin" && 
-          <button
-            type="button"
-            className="menu__topbar__add"
-            onClick={() => setShowMealModal(true)}
-          >
-            DODAJ NOVO JELO
-          </button>
+                        meal.description
+                          .toLowerCase()
+                          .includes(e.target.value.toLowerCase()) ||
+                        meal.type
+                          .toLowerCase()
+                          .includes(e.target.value.toLowerCase())) &&
+                      meal
+                  )
+                );
+              }
+            }}
+          />
+          {props.user && props.user.role === "Admin" &&
+            <button
+              type="button"
+              className="menu__topbar__add"
+              onClick={() => setShowMealModal(true)}
+            >
+              DODAJ NOVO JELO
+            </button>
+          }
+        </div>
+        {(searchResults ? searchResults : allMeals) &&
+        (searchResults ? searchResults : allMeals).length ?
+          (searchResults ? searchResults : allMeals).map((meal, index) =>
+            <div
+              className={classNames({
+                "card shadow orders-modal__menu__list__card": props.fromTables,
+                "card shadow menu__card": !props.fromTables,
+              })}
+              key={meal.id}
+            >
+              <div className="col-2 menu__card__name">{meal.name}</div>
+              <div className="col-3 menu__card__description">
+                {meal.description}
+              </div>
+              <div className="col menu__card__type">{meal.type}</div>
+              <div className="col menu__card__price">
+                {Number(meal.price).toFixed(2)} HRK
+              </div>
+              <div className="col menu__card__pdv">{meal.pdv}%</div>
+              <div
+                className="col menu__card__discount"
+                style={{ color: meal.discount ? "#81b29a" : "" }}
+              >
+                {meal.discount}%
+              </div>
+              <div className="col menu__card__total-price">
+                {(
+                  meal.price -
+                  meal.price * (meal.discount / 100) +
+                  (meal.price - meal.price * (meal.discount / 100)) *
+                    (meal.pdv / 100)
+                ).toFixed(2)}{" "}
+                HRK
+              </div>
+              {props.tableSelect &&
+                <div
+                  className="col-1  orders-modal__menu__list__card__picker"
+                  id="mealRow-picker"
+                >
+                  <QuantityPicker
+                    min={0}
+                    max={10}
+                    meal={meal}
+                    index={index}
+                    updateQuantity={updateQuantity}
+                    defaultValue={0}
+                  />
+                  <button
+                    type="button"
+                    className="orders-modal__menu__list__card__picker__addToOrder"
+                    style={{
+                      background: "none",
+                      border: "none",
+                      minWidth: "32px",
+                      color: "black",
+                      visibility: !meal.quantity ? "hidden" : "visible",
+                    }}
+                    onClick={() => {
+                      if (!meal.added) {
+                        props.addMeal({
+                          ...meal,
+                          status: "Ordered",
+                        });
+                        updateAdded(index, meal, true);
+                      } else {
+                        props.removeMeal({
+                          ...meal,
+                        });
+                        updateAdded(index, meal, false);
+                      }
+                    }}
+                  >
+                    {!meal.added ?
+                      <CheckCircleOutlineIcon
+                        style={{ color: " #ddbea9", fontSize: "30px" }}
+                      />
+                      :
+                      <HighlightOffIcon
+                        style={{ color: " #ddbea9", fontSize: "30px" }}
+                      />
+                    }
+                  </button>
+                </div>
+              }
+              {props.user && props.user.role === "Admin" &&
+                <div className="col-1 menu__card__button-container">
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      setMeal(meal);
+                      setShowDeleteModal(true);
+                    }}
+                  >
+                    <DeleteIcon style={{ color: "#3d405b" }} />
+                  </IconButton>
+                  <IconButton
+                    aria-label="edit"
+                    onClick={() => {
+                      setEditedMeal(meal);
+                      setEdit(true);
+                      setEditedMeal({
+                        ...meal,
+                        price: Number(meal.price).toFixed(2),
+                      });
+                      setShowMealModal(true);
+                    }}
+                  >
+                    <EditTwoToneIcon style={{ color: "#3d405b" }} />
+                  </IconButton>
+                </div>
+              }
+            </div>
+          )
+          :
+          <div className="no-meals">TRENUTNO NEMA JELA NA MENU-u</div>
         }
       </div>
-      {(searchResults ? searchResults : allMeals) &&
-      (searchResults ? searchResults : allMeals).length ? 
-        (searchResults ? searchResults : allMeals).map((meal, index) => 
-          <div
-            className={classNames({
-              "card shadow tables__orders-modal__menu__list__card":
-                props.fromTables,
-              "card shadow menu__card": !props.fromTables,
-            })}
-            key={meal.id}
-          >
-            <div className="col-2 menu__card__name">{meal.name}</div>
-            <div className="col-3 menu__card__description">
-              {meal.description}
-            </div>
-            <div className="col menu__card__type">{meal.type}</div>
-            <div className="col menu__card__price">
-              {Number(meal.price).toFixed(2)} HRK
-            </div>
-            <div className="col menu__card__pdv">{meal.pdv}%</div>
-            <div
-              className="col menu__card__discount"
-              style={{ color: meal.discount ? "#81b29a" : "" }}
-            >
-              {meal.discount}%
-            </div>
-            <div className="col menu__card__total-price">
-              {(
-                meal.price -
-                meal.price * (meal.discount / 100) +
-                (meal.price - meal.price * (meal.discount / 100)) *
-                  (meal.pdv / 100)
-              ).toFixed(2)}{" "}
-              HRK
-            </div>
-            {props.tableSelect && 
-              <div className="col-1  tables__orders-modal__menu__list__card__picker" id="mealRow-picker">
-                <QuantityPicker
-                  min={0}
-                  max={10}
-                  meal={meal}
-                  index={index}
-                  updateQuantity={updateQuantity}
-                  defaultValue={0}
-                />
-                <button
-                  type="button"
-                  className="tables__orders-modal__menu__list__card__picker__addToOrder"
-                  style={{
-                    background: "none",
-                    border: "none",
-                    minWidth: "32px",
-                    color: "black",
-                    visibility: !meal.quantity ? "hidden" : "visible",
-                  }}
-                  onClick={() => {
-                    if (!meal.added) {
-                      props.addMeal({
-                        ...meal,
-                        status: "Ordered",
-                      });
-                      updateAdded(index, meal, true);
-                    } else {
-                      props.removeMeal({
-                        ...meal,
-                      });
-                      updateAdded(index, meal, false);
-                    }
-                  }}
-                >
-                  {!meal.added ? 
-                    <CheckCircleOutlineIcon style={{ color: " #ddbea9", fontSize:"30px" }} />
-                    : 
-                    <HighlightOffIcon style={{color: " #ddbea9", fontSize:"30px" }} />
-                  }
-                </button>
-              </div>
-            }
-            {props.user && props.user.role === "Admin" && 
-              <div className="col-1 menu__card__button-container">
-                <IconButton
-                  aria-label="delete"
-                  onClick={() => {
-                    setMeal(meal);
-                    setShowDeleteModal(true);
-                  }}
-                >
-                  <DeleteIcon style={{ color: "#3d405b" }} />
-                </IconButton>
-                <IconButton
-                  aria-label="edit"
-                  onClick={() => {
-                    setEditedMeal(meal);
-                    setEdit(true);
-                    setEditedMeal({
-                      ...meal,
-                      price: Number(meal.price).toFixed(2),
-                    });
-                    setShowMealModal(true);
-                  }}
-                >
-                  <EditTwoToneIcon style={{ color: "#3d405b" }} />
-                </IconButton>
-              </div>
-            }
-          </div>
-        )
-        : 
-        <div className="no-meals">TRENUTNO NEMA JELA NA MENU-u</div>
-      }
-      {showMealModal && editedMeal ? 
-        <Modal showModal={showMealModal} closeModal={() => closeModal}>
-          <div className="menu__edit-modal animated--grow-in" id="fadeup">
+      {showMealModal && editedMeal &&
+        <Modal showModal={showMealModal} closeModal={closeModal}>
+          <div className="edit-modal animated--grow-in" id="fadeup">
             <form
-              className="menu__edit-modal__form"
+              className="edit-modal__form"
               onSubmit={e => {
                 e.preventDefault();
                 if (edit) {
@@ -317,34 +325,34 @@ function MeniList(props) {
                 resetMeals();
               }}
             >
-              <div className="menu__edit-modal__form__name">
-                <p className="menu__edit-modal__form__name__label">Naziv</p>
+              <div className="edit-modal__form__name">
+                <p className="edit-modal__form__name__label">Naziv</p>
                 <textarea
-                  className="menu__edit-modal__form__name__input"
+                  className="edit-modal__form__name__input"
                   defaultValue={edit ? editedMeal.name : ""}
                   onChange={e => {
                     setNewMealData("name", e.target.value);
                   }}
                 />
               </div>
-              <div className="menu__edit-modal__form__description">
-                <p className="menu__edit-modal__form__description__label">
+              <div className="edit-modal__form__description">
+                <p className="edit-modal__form__description__label">
                   Opis
                 </p>
                 <textarea
-                  className="menu__edit-modal__form__description__input"
+                  className="edit-modal__form__description__input"
                   defaultValue={edit ? editedMeal.description : ""}
                   onChange={e => {
                     setNewMealData("description", e.target.value);
                   }}
                 />
               </div>
-              <div className="menu__edit-modal__form__price">
-                <p className="menu__edit-modal__form__price__label">
+              <div className="edit-modal__form__price">
+                <p className="edit-modal__form__price__label">
                   Cijena (HRK)
                 </p>
                 <input
-                  className="menu__edit-modal__form__price__input"
+                  className="edit-modal__form__price__input"
                   type="number"
                   defaultValue={edit ? editedMeal.price : 0}
                   onChange={e => {
@@ -354,19 +362,19 @@ function MeniList(props) {
                   min="0"
                 />
               </div>
-              <div className="menu__edit-modal__form__type">
-                <p className="menu__edit-modal__form__type__label">
+              <div className="edit-modal__form__type">
+                <p className="edit-modal__form__type__label">
                   Vrsta jela
                 </p>
                 <select
-                  className="menu__edit-modal__form__type__input"
+                  className="edit-modal__form__type__input"
                   value={editedMeal.type}
                   onChange={e => setNewMealData("type", e.target.value)}
                   id="select"
                 >
-                  {mealTypes.map(option => 
+                  {mealTypes.map(option =>
                     <option
-                      className="menu__edit-modal__form__type__input__option"
+                      className="edit-modal__form__type__input__option"
                       key={option.value}
                       value={option.value}
                     >
@@ -375,10 +383,10 @@ function MeniList(props) {
                   )}
                 </select>
               </div>
-              <div className="menu__edit-modal__form__pdv">
-                <p className="menu__edit-modal__form__pdv__label">PDV (%)</p>
+              <div className="edit-modal__form__pdv">
+                <p className="edit-modal__form__pdv__label">PDV (%)</p>
                 <input
-                  className="menu__edit-modal__form__pdv__input"
+                  className="edit-modal__form__pdv__input"
                   defaultValue={edit ? editedMeal.pdv : 0}
                   onChange={e => {
                     setNewMealData("pdv", e.target.valueAsNumber);
@@ -389,12 +397,12 @@ function MeniList(props) {
                   type="number"
                 />
               </div>
-              <div className="menu__edit-modal__form__discount">
-                <p className="menu__edit-modal__form__discount__label">
+              <div className="edit-modal__form__discount">
+                <p className="edit-modal__form__discount__label">
                   Popust (%)
                 </p>
                 <input
-                  className="menu__edit-modal__form__discount__input"
+                  className="edit-modal__form__discount__input"
                   type="number"
                   defaultValue={edit ? editedMeal.discount : 0}
                   onChange={e => {
@@ -405,15 +413,15 @@ function MeniList(props) {
                   max="100"
                 />
               </div>
-              <div className="menu__edit-modal__button-container">
+              <div className="edit-modal__button-container">
                 <button
                   type="submit"
-                  className="menu__edit-modal__button-container__confirm-button"
+                  className="edit-modal__button-container__confirm-button"
                 >
                   Potvrdi
                 </button>
                 <button
-                  className="menu__edit-modal__button-container__decline-button"
+                  className="edit-modal__button-container__decline-button"
                   onClick={() => closeModal()}
                 >
                   Odustani
@@ -422,19 +430,19 @@ function MeniList(props) {
             </form>
           </div>
         </Modal>
-        : null}
-      {showDeleteModal && 
+      }
+      {showDeleteModal &&
         <Modal
           show={showDeleteModal}
           closeModal={() => setShowDeleteModal(false)}
         >
-          <div className="menu__delete-modal animated--grow-in delay-2s">
-            <p className="menu__delete-modal__text">
+          <div className="delete-modal animated--grow-in delay-2s">
+            <p className="delete-modal__text">
               Jeste li sigurni da želite obrisati ovo jelo?
             </p>
-            <div className="menu__delete-modal__button-container">
+            <div className="delete-modal__button-container">
               <button
-                className="menu__delete-modal__button-container__confirm-button"
+                className="delete-modal__button-container__confirm-button"
                 onClick={() => {
                   dispatch(removeMeal(props.user, meal.id));
                   setShowDeleteModal(false);
@@ -443,7 +451,7 @@ function MeniList(props) {
                 Da
               </button>
               <button
-                className="menu__delete-modal__button-container__decline-button"
+                className="delete-modal__button-container__decline-button"
                 onClick={() => setShowDeleteModal(false)}
               >
                 Ne
