@@ -5,6 +5,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import { makeStyles } from "@material-ui/core/styles";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import classNames from "classnames";
 
 import Header from "../Header/Header";
@@ -133,13 +134,24 @@ function MeniList(props) {
   ];
 
   return (
-    <div className="container-fluid menu">
+    <div
+      className={classNames({
+        "container-fluid menu": !props.fromTables,
+        "tables__orders-modal__menu__list": props.fromTables,
+      })}
+    >
       {!props.hideHeader && <Header label="Menu" user={props.user} />}
-      <div className="menu__topbar">
+      <div
+        className={classNames({
+          "menu__topbar": !props.fromTables,
+          "tables__orders-modal__menu__list__topbar": props.fromTables,
+        })}
+      >
         <input
           className={classNames({
-            "form-control menu__topbar__search": true,
-            admin: props.user && props.user.role.toLowerCase() === "admin"
+            "form-control menu__topbar__search": !props.fromTables,
+            "tables__orders-modal__menu__list__topbar__search": props.fromTables,
+            admin: props.user && props.user.role.toLowerCase() === "admin",
           })}
           type="text"
           placeholder="Pretraži..."
@@ -168,7 +180,7 @@ function MeniList(props) {
             }
           }}
         />
-        {props.user && props.user.role === "Admin" &&
+        {props.user && props.user.role === "Admin" && 
           <button
             type="button"
             className="menu__topbar__add"
@@ -179,13 +191,24 @@ function MeniList(props) {
         }
       </div>
       {(searchResults ? searchResults : allMeals) &&
-        (searchResults ? searchResults : allMeals).length ?
-        (searchResults ? searchResults : allMeals).map((meal, index) =>
-          <div className="card shadow menu__card" key={meal.id}>
+      (searchResults ? searchResults : allMeals).length ? 
+        (searchResults ? searchResults : allMeals).map((meal, index) => 
+          <div
+            className={classNames({
+              "card shadow tables__orders-modal__menu__list__card":
+                props.fromTables,
+              "card shadow menu__card": !props.fromTables,
+            })}
+            key={meal.id}
+          >
             <div className="col-2 menu__card__name">{meal.name}</div>
-            <div className="col-3 menu__card__description">{meal.description}</div>
+            <div className="col-3 menu__card__description">
+              {meal.description}
+            </div>
             <div className="col menu__card__type">{meal.type}</div>
-            <div className="col menu__card__price">{Number(meal.price).toFixed(2)} HRK</div>
+            <div className="col menu__card__price">
+              {Number(meal.price).toFixed(2)} HRK
+            </div>
             <div className="col menu__card__pdv">{meal.pdv}%</div>
             <div
               className="col menu__card__discount"
@@ -198,12 +221,12 @@ function MeniList(props) {
                 meal.price -
                 meal.price * (meal.discount / 100) +
                 (meal.price - meal.price * (meal.discount / 100)) *
-                (meal.pdv / 100)
+                  (meal.pdv / 100)
               ).toFixed(2)}{" "}
               HRK
             </div>
-            {props.tableSelect &&
-              <div className="col" id="mealRow-picker">
+            {props.tableSelect && 
+              <div className="col-1  tables__orders-modal__menu__list__card__picker" id="mealRow-picker">
                 <QuantityPicker
                   min={0}
                   max={10}
@@ -214,14 +237,13 @@ function MeniList(props) {
                 />
                 <button
                   type="button"
-                  className="mealRow__addToOrder"
+                  className="tables__orders-modal__menu__list__card__picker__addToOrder"
                   style={{
                     background: "none",
                     border: "none",
-                    verticalAlign: "middle",
                     minWidth: "32px",
                     color: "black",
-                    display: !meal.quantity ? "none" : "",
+                    visibility: !meal.quantity ? "hidden" : "visible",
                   }}
                   onClick={() => {
                     if (!meal.added) {
@@ -238,15 +260,15 @@ function MeniList(props) {
                     }
                   }}
                 >
-                  {!meal.added ?
-                    <button className="btn btn-success btn-circle" style={{ color: "#555555" }} />
-                    :
-                    <HighlightOffIcon style={{ color: "#555555" }} />
+                  {!meal.added ? 
+                    <CheckCircleOutlineIcon style={{ color: " #ddbea9", fontSize:"30px" }} />
+                    : 
+                    <HighlightOffIcon style={{color: " #ddbea9", fontSize:"30px" }} />
                   }
                 </button>
               </div>
             }
-            {props.user && props.user.role === "Admin" &&
+            {props.user && props.user.role === "Admin" && 
               <div className="col-1 menu__card__button-container">
                 <IconButton
                   aria-label="delete"
@@ -275,10 +297,10 @@ function MeniList(props) {
             }
           </div>
         )
-        :
+        : 
         <div className="no-meals">TRENUTNO NEMA JELA NA MENU-u</div>
       }
-      {showMealModal && editedMeal ?
+      {showMealModal && editedMeal ? 
         <Modal showModal={showMealModal} closeModal={() => closeModal}>
           <div className="menu__edit-modal animated--grow-in" id="fadeup">
             <form
@@ -296,9 +318,7 @@ function MeniList(props) {
               }}
             >
               <div className="menu__edit-modal__form__name">
-                <p className="menu__edit-modal__form__name__label">
-                  Naziv
-                </p>
+                <p className="menu__edit-modal__form__name__label">Naziv</p>
                 <textarea
                   className="menu__edit-modal__form__name__input"
                   defaultValue={edit ? editedMeal.name : ""}
@@ -344,19 +364,19 @@ function MeniList(props) {
                   onChange={e => setNewMealData("type", e.target.value)}
                   id="select"
                 >
-                  {mealTypes.map(option =>
+                  {mealTypes.map(option => 
                     <option
                       className="menu__edit-modal__form__type__input__option"
-                      key={option.value} value={option.value}>
+                      key={option.value}
+                      value={option.value}
+                    >
                       {option.value}
                     </option>
                   )}
                 </select>
               </div>
               <div className="menu__edit-modal__form__pdv">
-                <p className="menu__edit-modal__form__pdv__label">
-                  PDV (%)
-                </p>
+                <p className="menu__edit-modal__form__pdv__label">PDV (%)</p>
                 <input
                   className="menu__edit-modal__form__pdv__input"
                   defaultValue={edit ? editedMeal.pdv : 0}
@@ -369,10 +389,7 @@ function MeniList(props) {
                   type="number"
                 />
               </div>
-              <div
-                className="menu__edit-modal__form__discount"
-
-              >
+              <div className="menu__edit-modal__form__discount">
                 <p className="menu__edit-modal__form__discount__label">
                   Popust (%)
                 </p>
@@ -406,9 +423,11 @@ function MeniList(props) {
           </div>
         </Modal>
         : null}
-      {
-        showDeleteModal &&
-        <Modal show={showDeleteModal} closeModal={() => setShowDeleteModal(false)}>
+      {showDeleteModal && 
+        <Modal
+          show={showDeleteModal}
+          closeModal={() => setShowDeleteModal(false)}
+        >
           <div className="menu__delete-modal animated--grow-in delay-2s">
             <p className="menu__delete-modal__text">
               Jeste li sigurni da želite obrisati ovo jelo?

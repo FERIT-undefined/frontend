@@ -1,140 +1,254 @@
-.all-tables {
-  width: 100vw;
-  padding: 0 30px;
+@import "../../colors.scss";
+
+.tables {
   display: flex;
-  flex-flow: wrap;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 90vh;
-
-  @media screen and (max-width: 900px){
-   justify-content: center;
-  }
-  &__order-table {
-    width: 250px;
-    height: 250px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-image: none;
-    margin-right: 40px;
-    margin-top: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
-    flex-direction: column;
-    span{
-      width: 100%;
-      height: fit-content;
-      text-align: center;
-      font-size: 70px;
-    }
-    &.black {
-      background-image: url(../../assets/images/Black-outline-table.svg);
-    }
-    &.green {
-      background-image: url(../../assets/images/Green-outline-table.svg);
-    }
-    &.red {
-      background-image: url(../../assets/images/Red-outline-table.svg);
-    }
-    &.yellow {
-      background-image: url(../../assets/images/Yellow-outline-table.svg);
-    }
-    &.orange {
-      background-image: url(../../assets/images/Orange-outline-table.svg);
-    }
-    .table-button {
-      width: 100%;
-      height: 100%;
-      background: none;
-      border: none;
-      font-size: 32px;
-      font-weight: bold;
-    }
-  }
-}
-
-.table-card {
-  width: 75vw;
-  border-radius: 6px;
-  background: white;
-  height: 80vh;
-  padding: 1% 3%;
-  position: absolute;
-  justify-self: center;
+  position: fixed;
   flex-direction: column;
-  z-index: 1000000000;
+  margin-left: 14rem;
+  width: 90vw;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: $cream;
+  padding-top: 1%;
+  padding-bottom: 1%;
 
-  @media screen and (max-width: 800px) {
-    width: 95vw;
+  @media screen and (max-width: 900px) {
+    justify-content: center;
   }
+  &__list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 
-  &__close-icon {
-    width: 100%;
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    .MuiButtonBase-root {
-      background: none;
-      border: none;
-      display: block;
-      position: relative;
-      width: fit-content;
-      height: fit-content;
-      float: right;
+    &__order-table {
+      width: 270px;
+      height: 260px;
+      background-size: cover;
+      background-image: none;
+      margin: 2%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 50px;
+      cursor: pointer;
+      transition: all 0.5s;
+
+      &:hover {
+        width: 300px;
+        height: 290px;
+        font-size: 55px;
+        font-weight: bold;
+        transition: all 0.5s;
+      }
+
+      &.black {
+        background-image: url(../../assets/images/Black-outline-table.svg);
+      }
+      &.green {
+        background-image: url(../../assets/images/Green-outline-table.svg);
+        color: $green;
+      }
+      &.red {
+        background-image: url(../../assets/images/Red-outline-table.svg);
+        color: $red;
+      }
+      &.yellow {
+        background-image: url(../../assets/images/Yellow-outline-table.svg);
+        color: $yellow;
+      }
     }
   }
 
-  &__form {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
+  &__orders-modal {
+    border-radius: 20px;
+    background: $dark-blue;
+    width: 65%;
+    box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
+    transition: box-shadow 300ms;
     height: fit-content;
 
-    .col-9 {
-      max-width: 100%;
-      flex: 0 0 100%;
+    &__close-icon {
+      text-align: end;
+      padding: 1%;
     }
-    .MuiTextField-root {
-      display: flex;
-      width: 100%;
-      max-width: 100% !important;
-      border-bottom: 1px solid #555555;
-      margin: 7px 5px 7px 5px;
-    }
-    .MuiTextField-root:hover {
-      border-bottom: 2px solid #219ebc;
-    }
-    .MuiInput-underline:before {
-      display: none !important;
-    }
-    .MuiInput-underline:after {
-      display: none !important;
-    }
-    .MuiSelect-root {
-      width: 100%;
-    }
-    .MuiSelect-icon {
-      color: #219ebc;
-    }
-  }
+    &__card {
+      display: inline-flex;
+      flex-direction: row;
+      padding: 2%;
+      margin-left: 5%;
+      margin-bottom: 5%;
+      width: 90%;
 
-  #potvrdi-container {
-    display: flex;
-    width: 100%;
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-    justify-content: center;
-  }
-  #potvrdi {
-    background: none;
-    border-radius: 5px;
-    border: 1px solid #219ebc;
-    color: #219ebc;
-  }
-  #potvrdi:hover {
-    background: #219ebc;
-    color: white;
+      &.ordered {
+        border-left: 15px solid $red;
+      }
+      &.started {
+        border-left: 15px solid $yellow;
+      }
+      &.done {
+        border-left: 15px solid $green;
+      }
+
+      &__table {
+        display: flex;
+        width: 5%;
+        justify-content: center;
+        align-items: center;
+        font-size: 25px;
+        font-weight: bold;
+        &.ordered {
+          color: $red;
+        }
+        &.started {
+          color: $yellow;
+        }
+        &.done {
+          color: $green;
+        }
+      }
+
+      &__list {
+        display: flex;
+        flex-direction: column;
+        width: 85%;
+        font-size: 20px;
+        align-items: center;
+
+        &__meal {
+          display: inline-flex;
+          padding: 10px 0;
+          width: 100%;
+          height: 80px;
+          align-items: center;
+          &__name {
+            font-weight: bold;
+          }
+          &__quantity {
+            text-align: center;
+          }
+          &__price {
+            font-weight: bold;
+          }
+          &__status {
+            font-weight: bold;
+            white-space: nowrap;
+            &.ordered {
+              color: $red;
+            }
+            &.started {
+              color: $yellow;
+            }
+            &.done {
+              color: $green;
+            }
+          }
+        }
+      }
+    }
+
+    &__menu {
+      display: inline-flex;
+      flex-direction: column;
+      margin-left: 5%;
+      margin-bottom: 5%;
+      width: 90%;
+
+      &__list {
+        border-radius: 20px;
+
+        &__topbar {
+          display: inline-flex;
+          width: 92%;
+          align-items: center;
+          border-bottom: 1px solid $gray;
+          margin: 0% 0% 2% 0%;
+          padding-bottom: 2%;
+          box-shadow: 0px 6px 6px -6px $gray;
+
+          &__search {
+            width: 40% !important;
+            background: $dark-blue-opacity;
+            box-shadow: inset;
+            font-weight: bold;
+            border: 1px solid $cream;
+            outline: none;
+            border-radius: 0.25rem;
+            padding: 8px;
+            height: 50px;
+            box-shadow: 0 0.15rem 0.75rem 0 black !important;
+            font-size: 18px;
+
+            &:hover {
+              outline: none;
+              box-shadow: 0 0.15rem 1.75rem 0 black !important;
+              transition: box-shadow 300ms;
+            }
+
+            &:focus {
+              outline: none;
+              background: $cream;
+            }
+          }
+        }
+
+        &__card {
+          display: inline-flex;
+          flex-direction: row;
+          padding: 2% 0 2% 2%;
+          margin: 0.5% 0 0.5% 0;
+          background: white;
+          color: $light-gray;
+          font-size: 18px;
+          align-items: center;
+          border-left: 10px solid $menu-border;
+          cursor: default;
+          width: 100%;
+          box-shadow: 0 0.15rem 0.5rem 0 black !important;
+          transition: box-shadow 0.5s;
+
+          &:hover {
+            box-shadow: 0 0.15rem 1.75rem 0 black !important;
+            transition: box-shadow 0.5s;
+          }
+
+          &__picker {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            &__addToOrder {
+              text-align: center;
+            }
+          }
+        }
+      }
+
+      &__btn {
+        width: fit-content;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        background: $green;
+        color: $cream;
+        border: 1px solid $green;
+        border-radius: 4px;
+        padding: 1% 3%;
+        box-shadow: 0 0.15rem 0.5rem 0 black !important;
+        transition: box-shadow 300ms;
+        font-weight: bold;
+
+        &:hover {
+          color: white;
+          box-shadow: 0 0.15rem 1.75rem 0 black !important;
+          transition: box-shadow 300ms;
+        }
+
+        &:active {
+          color: $gray;
+        }
+      }
+    }
   }
 }

@@ -1,17 +1,48 @@
+@import "../../colors.scss";
+
 .quantity-picker {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    @media screen and (max-width: 1450px) {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-      }
-    .quantity-display {
-        width: 30px;
-        height:30px;
-        text-align: center;
-        border: 1px solid #219cbe;
-        border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  
+  &__display {
+    width: 35px;
+    height: 35px;
+    margin: 10px 1%;
+    text-align: center;
+    border: 3px solid $menu-border;
+    border-radius: 4px;
+    color: $light-gray;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  &__increment,
+  &__decrement {
+    width: 35px;
+    height: 35px;
+    border: 1px solid $menu-border;
+    background: $menu-background;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: $light-gray;
+
+    &:hover {
+      background: $menu-border;
+      color: white;
     }
+
+    &:active {
+      background: $menu-background;
+    }
+
+    &.disabled {
+      &:hover {
+        background: $menu-background;
+        color: $light-gray;
+      }
+    }
+  }
 }

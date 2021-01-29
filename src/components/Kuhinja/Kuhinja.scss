@@ -17,10 +17,11 @@
     flex-direction: row;
     padding: 1.5%;
     margin: 1% 5% 1% 3%;
+    transition: all 0.5s;
 
     &:hover {
       box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
-      transition: box-shadow 0.5s;
+      transition: all 0.5s;
     }
 
     &.ordered {
@@ -109,13 +110,14 @@
           font-size: 20px;
           font-weight: bold;
           box-shadow: 0 0.15rem 0.5rem 0 $dark-gray !important;
+          transition: all 0.5s;
 
           &:hover {
             outline: none;
             background: $dark-blue;
             color: $cream;
             box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
-            transition: background 0.5s;
+            transition: all 0.5s;
           }
 
           &:active {
@@ -137,7 +139,7 @@
     font-weight: bold;
     font-size: 25px;
     box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
-    transition: box-shadow 300ms;
+    transition: all 0.5s;
     border-radius: 10px;
     text-align: center;
 
@@ -155,11 +157,12 @@
         border-radius: 4px;
         padding: 1% 3%;
         box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
-        transition: box-shadow 300ms;
+        transition: all 0.5s;
         font-weight: bold;
 
         &:hover {
           color: white;
+          transition: all 0.5s;
         }
 
         &:active {
@@ -175,11 +178,12 @@
         border-radius: 4px;
         padding: 1% 3%;
         box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
-        transition: box-shadow 300ms;
+        transition: all 0.5s;
         font-weight: bold;
 
         &:hover {
           color: white;
+          transition: all 0.5s;
         }
 
         &:active {
