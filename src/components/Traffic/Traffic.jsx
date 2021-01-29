@@ -11,8 +11,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./Traffic.scss";
 import PDFExport from "./PDFExport/PDFExport";
 import { IconButton } from "@material-ui/core";
+import Header from "../Header/Header";
 
-const pdfFile = (traffic, chosenStartDate, chosenEndDate, totalTraffic) =>
+const pdfFile = (traffic, chosenStartDate, chosenEndDate, totalTraffic) => 
   <PDFExport
     traffic={traffic}
     totalTraffic={totalTraffic}
@@ -32,7 +33,7 @@ function Traffic() {
   const [totalTraffic, setTotalTraffic] = useState(0);
 
   const traffic = useSelector(state => state.traffic.traffic);
-
+  const user = useSelector(state => state.users.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,50 +62,72 @@ function Traffic() {
     );
   };
 
+  console.log(allTraffic);
   return (
-    <div className="container-fluid mt-4 menu">
-      <div className="range">
-        <div className="range__label">Promet za razdoblje: </div>
-        <div className="datepicker-select">
-          <DatePicker
-            dateFormat="dd.MM.yyyy"
-            selected={startDate}
-            onChange={date => setStartDate(date)}
-            maxDate={endDate}
-          />
-          <DatePicker
-            dateFormat="dd.MM.yyyy"
-            selected={endDate}
-            onChange={date => {
-              date.setHours(23, 59, 59, 999);
-              setEndDate(date);
-            }}
-            maxDate={moment.utc().toDate()}
-          />
+    <div className="container-fluid traffic">
+      <Header label="Promet" user={user} />
+      <div className="traffic__topbar">
+        <div className="traffic__topbar__range">
+          <div className="traffic__topbar__range__label">
+            Promet za razdoblje:{" "}
+          </div>
+          <div className="traffic__topbar__range__datepicker-container">
+            <DatePicker
+              dateFormat="dd.MM.yyyy"
+              selected={startDate}
+              onChange={date => setStartDate(date)}
+              maxDate={endDate}
+            />
+            <DatePicker
+              dateFormat="dd.MM.yyyy"
+              selected={endDate}
+              onChange={date => {
+                date.setHours(23, 59, 59, 999);
+                setEndDate(date);
+              }}
+              maxDate={moment.utc().toDate()}
+            />
+          </div>
+        </div>
+        <div className="traffic__topbar__info">
+          <div className="traffic__topbar__info__total">
+            <p className="traffic__topbar__info__total__label">
+              Ukupno u odabranom razdoblju:
+            </p>
+            <p className="traffic__topbar__info__total__value">
+              {" "}
+              {totalTraffic} HRK
+            </p>
+          </div>
+          <div className="traffic__topbar__info__button-container">
+            {download ? 
+              <PDFDownloadLink
+                document={pdfFile(allTraffic, startDate, endDate, totalTraffic)}
+                className="save-button reporting-details__footer__link text-decoration-none traffic__topbar__info__button-container__export__link"
+                fileName={`traffic-${startDate} - ${endDate}.pdf`}
+              >
+                {({ loading }) => loading ? "Učitavanje" : "Preuzmi"}
+              </PDFDownloadLink>
+              : 
+              <button
+                className="traffic__topbar__info__button-container__export"
+                onClick={() => setDownload(true)}
+                disabled={disabled}
+              >
+                {disabled ? "Priprema..." : "Generiraj izvješće"}
+              </button>
+            }
+            <button
+              className="traffic__topbar__info__button-container__print"
+              onClick={() => setPrint(true)}
+              disabled={disabled}
+            >
+              {disabled ? "Priprema..." : "Ispiši"}
+            </button>
+          </div>
         </div>
       </div>
-      <div>Ukupno u odabranom razdoblju: {totalTraffic} HRK</div>
-      <div>
-        {download ?
-          <PDFDownloadLink
-            document={pdfFile(allTraffic, startDate, endDate, totalTraffic)}
-            className="save-button reporting-details__footer__link text-decoration-none"
-            fileName={`traffic-${startDate} - ${endDate}.pdf`}
-          >
-            {({ loading }) =>
-              loading ? "Loading document..." : "Download now"
-            }
-          </PDFDownloadLink>
-          :
-          <button onClick={() => setDownload(true)} disabled={disabled}>
-            {disabled ? "Preparing..." : "Export"}
-          </button>
-        }
-        <button onClick={() => setPrint(true)} disabled={disabled}>
-          {disabled ? "Preparing..." : "print"}
-        </button>
-      </div>
-      <div className="row p-2 font-weight-bold mt-3 listInfoRow">
+      {/* <div className="row p-2 font-weight-bold mt-3 listInfoRow">
         <div className="col-9">
           <div className="row">
             <div className="col">NAZIV</div>
@@ -114,11 +137,14 @@ function Traffic() {
           </div>
         </div>
         <div className="col">DATUM</div>
-      </div>
-      {allTraffic && allTraffic.length ?
-        allTraffic.map((receipt, index) =>
-          <div className="row p-2 mt-2 mealRow" key={index}>
-            <div className="col-9">
+      </div> */}
+      {allTraffic && allTraffic.length ? 
+        allTraffic.map((receipt, index) => 
+          <div className="card shadow traffic__card" key={index}>
+            <div className="col-1 traffic__card__list__time">
+              {moment(receipt.finished_timestamp).format("DD.MM.YYYY. hh:mm")}
+            </div>
+            <div className="col traffic__card__list">
               {receipt.meals.map(meal => {
                 const mealPrice =
                   meal.price -
@@ -126,45 +152,41 @@ function Traffic() {
                   (meal.price - meal.price * (meal.discount / 100)) *
                     (meal.pdv / 100);
                 return (
-                  <div className="row traffic-meal-row" key={meal.name}>
-                    <div className="col">{meal.name}</div>
-                    <div className="col">{mealPrice.toFixed(2)} HRK </div>
-                    <div className="col">{meal.quantity}</div>
-                    <div className="col">
+                  <div className="traffic__card__list__meal" key={meal.name}>
+                    <div className="col traffic__card__list__meal__name">
+                      {meal.name}
+                    </div>
+                    <div className="col traffic__card__list__meal__price">
+                      {mealPrice.toFixed(2)} HRK{" "}
+                    </div>
+                    <div className="col traffic__card__list__meal__quantity">
+                      {meal.quantity} kom
+                    </div>
+                    <div className="col traffic__card__list__meal__total">
                       {(meal.quantity * mealPrice).toFixed(2)} HRK
                     </div>
                   </div>
                 );
               })}
             </div>
-            <div className="col">
-              {moment(receipt.finished_timestamp).format("DD.MM.YYYY. hh:mm")}
+            <div className="col-1 traffic__card__list__price">
+              {receipt.total_price.toFixed(2)} HRK
             </div>
           </div>
         )
-        :
+        : 
         <div className="no-traffic">NEMA PROMETA U ODABRANOM RASPONU</div>
       }
-      {print &&
-        <Modal
-          showModal={print}
-          closeModal={() => setPrint(false)}
-          style={{
-            height: "100%",
-            width: "75%",
-            margin: "auto",
-          }}
-        >
-          <>
-            <div className="print-close-icon">
-              <IconButton id="close" onClick={() => setPrint(false)}>
-                <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
-              </IconButton>
-            </div>
-            <PDFViewer width="100%" height="100%">
-              {pdfFile(allTraffic, startDate, endDate, totalTraffic)}
-            </PDFViewer>
-          </>
+      {print && 
+        <Modal showModal={print} closeModal={() => setPrint(false)}>
+          <div className="print-close-icon">
+            <IconButton id="close" onClick={() => setPrint(false)}>
+              <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
+            </IconButton>
+          </div>
+          <PDFViewer width="100%" height="100%">
+            {pdfFile(allTraffic, startDate, endDate, totalTraffic)}
+          </PDFViewer>
         </Modal>
       }
     </div>
