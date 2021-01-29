@@ -7,9 +7,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.15);
   cursor: default;
   align-items: center;
+  width: 100%;
+  z-index: 100;
 }
 .content {
   display:flex;

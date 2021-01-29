@@ -21,8 +21,7 @@ class PrivateRoute extends Component {
 
   renderFunc = async () => {
     const { refreshToken } = this.props;
-    // eslint-disable-next-line eqeqeq
-    if (refreshToken == null || refreshToken === "") {
+    if (refreshToken === null || refreshToken === "") {
       this.setState({ response: false });
     } else {
       this.setState({ response: true });

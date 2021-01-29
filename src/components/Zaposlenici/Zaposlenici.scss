@@ -1,123 +1,194 @@
+@import "../../colors.scss";
+
+.zaposlenici {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  margin-left: 14rem;
+  width: 90vw;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: $cream;
+  padding-top: 1%;
+  padding-bottom: 1%;
+
+  &__add {
+    margin: 1% 5% 2% 3%;
+    height: 50px;
+    width: fit-content !important;
+    background: $dark-blue;
+    border: 1px solid $dark-blue;
+    border-radius: 0.25rem;
+    color: $cream;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px;
+    box-shadow: 0 0.15rem 0.75rem 0 $dark-gray !important;
+    transition: all 0.5s;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+      "Helvetica Neue", sans-serif !important;
+
+    &:hover {
+      box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
+      transition: all 0.5s;
+      color: white;
+    }
+
+    &:active {
+      color: $light-gray;
+    }
+  }
+
+  &__card {
+    display: inline-flex;
+    flex-direction: row;
+    padding: 1.5%;
+    margin: 0.25% 5% 0.25% 3%;
+    background: $menu-background;
+    color: $light-gray;
+    font-size: 20px;
+    align-items: center;
+    border-left: 10px solid $menu-border;
+    transition: box-shadow 0.5s;
+    cursor: default;
+
+    &:hover {
+      box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
+      transition: box-shadow 0.5s;
+    }
+
+    &__fname,
+    &__lname,
+    &__role {
+      font-weight: bold;
+    }
+
+    &__role {
+      text-align: center;
+    }
+
+    &__button-container {
+      text-align: right;
+    }
+  }
+
+  &__edit-modal {
+    background: $dark-blue;
+    width: 40%;
+    border-radius: 20px;
+    height: fit-content;
+    padding: 40px;
+    box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &__form {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif !important;
+
+      &__fname,
+      &__lname,
+      &__password,
+      &__email,
+      &__role {
+        background: white;
+        border-radius: 10px;
+        color: $cream !important;
+        margin-bottom: 1%;
+        width: 100%;
+        padding: 2%;
+        height: fit-content;
+        box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
+
+        &__label {
+          padding-left: 10px;
+          font-size: 18px;
+          font-weight: bold;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+            "Helvetica Neue", sans-serif !important;
+          color: $light-gray;
+        }
+
+        &__input {
+          display: flex;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+            "Helvetica Neue", sans-serif !important;
+          font-size: 20px;
+          font-weight: bold;
+          color: $dark-blue;
+          padding-left: 10px;
+          background: none;
+          border: none;
+          width: 100%;
+          height: 40px;
+          border-bottom: 1px solid $dark-blue;
+
+          &:focus {
+            outline: none !important;
+            border-bottom: 3px solid $dark-blue !important;
+          }
+        }
+      }
+    }
+
+    &__button-container {
+      display: flex;
+      width: 100%;
+      margin: auto;
+      justify-content: space-evenly;
+
+      &__confirm-button {
+        margin-top: 20px;
+        background: $green;
+        color: $cream;
+        border: 1px solid $green;
+        border-radius: 4px;
+        padding: 1% 3%;
+        box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
+        transition: box-shadow 0.5s;
+        font-weight: bold;
+
+        &:hover {
+          color: white;
+        }
+
+        &:active {
+          color: $gray;
+        }
+      }
+
+      &__decline-button {
+        margin-top: 20px;
+        background: $red;
+        color: $cream;
+        border: 1px solid $red;
+        border-radius: 4px;
+        padding: 1% 3%;
+        box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
+        transition: box-shadow 0.5s;
+        font-weight: bold;
+
+        &:hover {
+          color: white;
+        }
+
+        &:active {
+          color: $gray;
+        }
+      }
+    }
+  }
+}
+
 .no-users {
   text-align: center;
   font-weight: bold;
   height: 100%;
   padding: 50px;
 }
-
-.detail-card {
-  width: 30vw;
-  padding: 3%;
-  left: 30%;
-  margin-bottom: 3%;
-  border-radius: 6px;
-  position: absolute;
-  background: white;
-  height: fit-content;
-  display: flex;
-  justify-self: center;
-  flex-direction: column;
-  // top: 50%;
-  @media screen and (max-width: 800px) {
-    left: 2.5%;
-    // top: 50%;
-    width: 95%;
-  }
-
-  &__close-icon{
-    background: none;
-    border: none !important;
-    display: flex;
-    justify-content: flex-end;
-    height: fit-content;
-  }
-
-  &__form {
-    display: flex;
-    justify-content: center;
-    margin-top: 2%;
-    width: 100%;
-
-    .MuiInputBase-input {
-      width: 20vw;
-
-      @media screen and (max-width: 800px) {
-        left: 2.5%;
-        top: 50%;
-        width: 70vw;
-      }
-    }
-    button{
-      background: none;
-      border-radius: 5px;
-      border: 1px solid #219ebc;
-      color: #219ebc;
-    }
-  }
-}
-
-
-.zaposlenici {
-  margin: 1%;
-
-  &__add {
-    transition-duration: 0.4s;
-    border-radius: 3px;
-    background-color: white;
-    color: #555555;
-    border: 1px solid #555555;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px 15px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 12px;
-    line-height: 14px;
-    text-align: center;
-    letter-spacing: 0.04em;
-    width: fit-content;
-    height: 35px;
-
-    &:hover {
-      background-color: #555555;
-      color: white;
-    }
-  }
-
-  &__btns {
-    white-space: nowrap;
-  }
-}
-
-.userRow {
-  border-radius: 6px;
-  box-shadow: 0px 0px 20px 0px #d0d0d0;
-  border: 1px solid transparent;
-  transition: box-shadow 300ms;
-
-  height: 80px;
-
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 14px;
-
-  text-align: center;
-  letter-spacing: 0.04em;
-}
-
-.userRow > .col {
-  align-self: center;
-  min-width: 75px;
-  height: fit-content;
-}
-
-.userRow:hover {
-  border-radius: 6px;
-  transition: box-shadow 300ms;
-  box-shadow: 0px 0px 30px 0px #8d99ae;
-}
-

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -16,6 +15,7 @@ import {
   getTableOrders,
 } from "../../store/actions/tableOrderActions";
 import Modal from "../Modal/Modal";
+import Header from "../Header/Header";
 import "./OrdersList.scss";
 
 function OrdersList(props) {
@@ -39,11 +39,27 @@ function OrdersList(props) {
         (meal.price -
           meal.price * (meal.discount / 100) +
           (meal.price - meal.price * (meal.discount / 100)) *
-            (meal.pdv / 100)) *
-          meal.quantity,
+          (meal.pdv / 100)) *
+        meal.quantity,
       0
     );
     return totalPrice.toFixed(2);
+  };
+
+  const getStatus = tableNumber => {
+    const currentTable = orders.filter(order => order.table === tableNumber);
+    let status;
+    if (!currentTable.length) {
+      status = "no orders";
+    } else {
+      const mealOrdered = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "ordered");
+      const mealStarted = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "started");
+      const mealDone = currentTable[0].meals.filter(meal => meal.status.toLowerCase() === "done");
+      if (mealOrdered.length) status = "ordered";
+      if (mealStarted.length >= 1) status = "started";
+      if (mealDone.length === currentTable[0].meals.length) status = "done";
+    }
+    return status;
   };
 
   const exportAllOrders = () => {
@@ -58,54 +74,54 @@ function OrdersList(props) {
 
   return (
     <div>
-      <div className="container-fluid orders-list">
+      <div className="container-fluid orders">
+        <Header label="Narudžbe" user={props.user} />
         <button
-          className=""
+          className="orders__export-all-button card"
           onClick={() => {
             setShow(true);
           }}
         >
           Pošalji na promet
         </button>
-        <div className="row p-2 font-weight-bold mt-3 listInfoRow">
-          <div className="col-1">STOL</div>
-          <div className="col">
-            <div className="row">
-              <div className="col">NARUDŽBA</div>
-              <div className="col">KOLIČINA</div>
-              <div className="col">CIJENA</div>
-              <div className="col">STATUS</div>
-            </div>
-          </div>
-          <div className="col-3">ISPIS</div>
-        </div>
         {orders && orders.length ?
           orders.map(order =>
-            <div
-              className={classNames({
-                "row p-2 mt-2 mealRow": true,
-                isDone: order.done,
-              })}
-              key={order.table}
-            >
-              <div className="col-1">{order.table}</div>
-              <div className="col">
+
+            <div className={classNames({
+              "card shadow orders__card": true,
+              "done": getStatus(order.table) === "done",
+              "started": getStatus(order.table) === "started",
+              "ordered": getStatus(order.table) === "ordered"
+            })} key={order.table}>
+
+              <div
+                className={classNames({
+                  "orders__card__table": true,
+                  "done": getStatus(order.table) === "done",
+                  "started": getStatus(order.table) === "started",
+                  "ordered": getStatus(order.table) === "ordered"
+                })}
+              >
+                {order.table}
+              </div>
+              <div className="orders__card__list">
                 {order.meals.map(meal => {
                   const mealPrice =
                     meal.price -
                     meal.price * (meal.discount / 100) +
                     (meal.price - meal.price * (meal.discount / 100)) *
-                      (meal.pdv / 100);
+                    (meal.pdv / 100);
+
                   return (
-                    <div className="row orders-meal-row" key={meal.name}>
-                      <div className="col">{meal.name}</div>
-                      <div className="col">{meal.quantity}</div>
-                      <div className="col">
+                    <div className="orders__card__list__meal" key={meal.id}>
+                      <div className="col orders__card__list__meal__name">{meal.name}</div>
+                      <div className="col orders__card__list__meal__quantity">{meal.quantity} kom</div>
+                      <div className="col orders__card__list__meal__price">
                         {(meal.quantity * mealPrice).toFixed(2)} HRK
                       </div>
                       <div
                         className={classNames({
-                          col: true,
+                          orders__card__list__meal__status: true,
                           done: meal.status.toLowerCase() === "done",
                           started: meal.status.toLowerCase() === "started",
                           ordered: meal.status.toLowerCase() === "ordered",
@@ -121,16 +137,13 @@ function OrdersList(props) {
                   );
                 })}
               </div>
-              <div className="col-3">
-                <div
-                  onClick={() => {
-                    setShowModal(true);
-                    setOrder(order);
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  <ReceiptIcon />
-                </div>
+              <div className="col orders__card__list__receipt"
+                onClick={() => {
+                  setShowModal(true);
+                  setOrder(order);
+                }}
+              >
+                <ReceiptIcon fontSize="large" />
               </div>
             </div>
           )
@@ -140,6 +153,7 @@ function OrdersList(props) {
       </div>
       {showModal && order &&
         <Modal
+          className="animated--grow-in delay-2s"
           showModal={showModal}
           closeModal={() => {
             setShowModal(false);
@@ -150,7 +164,7 @@ function OrdersList(props) {
             <div className="receipt__icons" hidden={hidden}>
               <div className="receipt__icons__close-icon">
                 <IconButton id="close" onClick={() => setShowModal(false)}>
-                  <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
+                  <CloseIcon id="closeIcon" style={{ color: "rgba(244, 243, 239, 1)" }} />
                 </IconButton>
               </div>
               <div className="receipt__icons__print-icon">
@@ -268,7 +282,7 @@ function OrdersList(props) {
                     });
                   }}
                 >
-                  <PrintIcon />
+                  <PrintIcon id="print-icon" style={{ color: " rgba(244, 243, 239, 1)", background: "transparent" }} />
                 </IconButton>
               </div>
               {order.done &&
@@ -288,54 +302,56 @@ function OrdersList(props) {
                       }
                     }}
                   >
-                    <DoneIcon />
+                    <DoneIcon style={{ color: " rgba(244, 243, 239, 1)" }} />
                   </IconButton>
                 </div>
               }
             </div>
-            <div className="info">
-              <div className="info__date">
-                {moment.utc().format("DD.MM.YYYY HH:MM")}
+            <div className="receipt__container">
+              <div className="receipt__container__info">
+                <div className="receipt__container__info__date">
+                  {moment.utc().format("DD.MM.YYYY HH:MM")}
+                </div>
+                <div className="receipt__container__info__waiter">
+                  Djelatnik: {props.user.fname} {props.user.lname}
+                </div>
+                <div className="receipt__container__info__table">Stol: {order.table}</div>
               </div>
-              <div className="info__waiter">
-                Djelatnik: {props.user.fname} {props.user.lname}
+              <hr />
+              <div className="col-9 receipt__container__table-header">
+                <div className="row p-2 mt-2">
+                  <div className="col">NAZIV</div>
+                  <div className="col">CIJENA</div>
+                  <div className="col">KOLIČINA</div>
+                  <div className="col">UKUPNO</div>
+                </div>
               </div>
-              <div className="info__table">Stol: {order.table}</div>
-            </div>
-            <hr />
-            <div className="col-9 receipt-table-header">
-              <div className="row p-2 mt-2">
-                <div className="col">NAZIV</div>
-                <div className="col">CIJENA</div>
-                <div className="col">KOLIČINA</div>
-                <div className="col">UKUPNO</div>
-              </div>
-            </div>
-            <div className="receipt-meal-row">
-              <div className="col-9 receipt-meal">
-                {order.meals.map(meal => {
-                  const mealPrice =
-                    meal.price -
-                    meal.price * (meal.discount / 100) +
-                    (meal.price - meal.price * (meal.discount / 100)) *
+              <div className="receipt__container__meal-row">
+                <div className="col-9 receipt__container__meal">
+                  {order.meals.map(meal => {
+                    const mealPrice =
+                      meal.price -
+                      meal.price * (meal.discount / 100) +
+                      (meal.price - meal.price * (meal.discount / 100)) *
                       (meal.pdv / 100);
-                  return (
-                    <div className="row p-2 mt-2" key={meal.name}>
-                      <div className="col">{meal.name}</div>
-                      <div className="col">{mealPrice.toFixed(2)} HRK</div>
-                      <div className="col">{meal.quantity}</div>
-                      <div className="col">
-                        {(meal.quantity * mealPrice).toFixed(2)} HRK
+                    return (
+                      <div className="row p-2 mt-2" key={meal.name}>
+                        <div className="col">{meal.name}</div>
+                        <div className="col">{mealPrice.toFixed(2)} HRK</div>
+                        <div className="col">{meal.quantity}</div>
+                        <div className="col">
+                          {(meal.quantity * mealPrice).toFixed(2)} HRK
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            <hr />
-            <div className="total-price">
-              <div className="total-price__label">Ukupno: </div>
-              <div className="total-price__value">{getTotalPrice()} HRK</div>
+              <hr />
+              <div className="receipt-container__total-price">
+                <div className="receipt__container__total-price__label">Ukupno: </div>
+                <div className="receipt__container__total-price__value">{getTotalPrice()} HRK</div>
+              </div>
             </div>
           </div>
         </Modal>
@@ -343,37 +359,27 @@ function OrdersList(props) {
       {show &&
         <Container>
           <Modal show={show} closeModal={() => setShow(false)}>
-            <div className="receipt" id="fadein">
-              <div className="close-icon">
-                <IconButton id="close" onClick={() => setShow(false)}>
-                  <CloseIcon id="closeIcon" style={{ color: "#219ebc" }} />
-                </IconButton>
-              </div>
-              <p>
+            <div className="orders__export-modal animated--grow-in delay-2s">
+              <p className="orders__export-modal__text">
                 Želite li poslati sve gotove narudžbe na promet?
+              </p>
+              <div className="orders__export-modal__button-container">
                 <button
-                  type="button"
-                  className="btn btn-default"
-                  aria-label="Left Align"
-                >
-                  <span
-                    className="glyphicon glyphicon-align-left"
-                    aria-hidden="true"
-                  ></span>
-                </button>
-                <Button
-                  variant="success"
+                  className="orders__export-modal__button-container__confirm-button"
                   onClick={() => {
                     exportAllOrders();
                     setShow(false);
                   }}
                 >
                   Da
-                </Button>
-                <Button variant="danger" onClick={() => setShow(false)}>
+                </button>
+                <button
+                  className="orders__export-modal__button-container__decline-button"
+                  onClick={() => setShow(false)}
+                >
                   Ne
-                </Button>
-              </p>
+                </button>
+              </div>
             </div>
           </Modal>
         </Container>

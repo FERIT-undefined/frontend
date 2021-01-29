@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import classNames from "classnames";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxRoundedIcon from "@material-ui/icons/AddBoxRounded";
 import IndeterminateCheckBoxRoundedIcon from "@material-ui/icons/IndeterminateCheckBoxRounded";
@@ -59,33 +60,33 @@ export default class QuantityPicker extends Component {
     const { disableDec, disableInc } = this.state;
     return (
       <div className="quantity-picker">
-        <IconButton
-          disabled={this.props.meal.added}
-          type="button"
-          className={`${
-            disableDec ? "mod-disable " : ""
-          }quantity-modifier modifier-left`}
-          onClick={this.decrement}
+        <button
+          className={classNames({
+            "quantity-picker__increment":true,
+            disabled: this.props.meal.added || disableInc
+          })}
+          disabled={this.props.meal.added || disableInc}
+          onClick={this.increment}
         >
-          <IndeterminateCheckBoxRoundedIcon style={{ color: "#219ebc" }} />
-        </IconButton>
+          +
+        </button>
         <input
-          className="quantity-display"
+          className="quantity-picker__display"
           type="text"
           value={this.state.value}
           readOnly
           disabled
         />
-        <IconButton
-          disabled={this.props.meal.added}
-          type="button"
-          className={`${
-            disableInc ? "mod-disable " : ""
-          }quantity-modifier modifier-right`}
-          onClick={this.increment}
+        <button
+          className={classNames({
+            "quantity-picker__decrement":true,
+            disabled: this.props.meal.added || disableDec
+          })}
+          disabled={this.props.meal.added || disableDec}
+          onClick={this.decrement}
         >
-          <AddBoxRoundedIcon style={{ color: "219ebc" }} />
-        </IconButton>
+          -
+        </button>
       </div>
     );
   }
