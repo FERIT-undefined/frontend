@@ -43,14 +43,14 @@ function NavbarContainer(props) {
       })} />,
     },
     {
-      isActive: window.location.pathname === "/meni",
+      isActive: window.location.pathname === "/jelovnik",
       navItemIndex: "1",
       onItemClick,
-      link: "/meni",
-      text: "Menu",
+      link: "/jelovnik",
+      text: "Jelovnik",
       imageSrc: <MenuBookIcon className={classNames({
         "navbar-icon": true,
-        selected: window.location.pathname === "/meni"
+        selected: window.location.pathname === "/jelovnik"
       })} />,
     },
     {
@@ -76,14 +76,14 @@ function NavbarContainer(props) {
       })} />,
     },
     {
-      isActive: window.location.pathname === "/meni",
+      isActive: window.location.pathname === "/jelovnik",
       navItemIndex: "4",
       onItemClick,
-      link: "/meni",
-      text: "Menu",
+      link: "/jelovnik",
+      text: "Jelovnik",
       imageSrc: <MenuBookIcon className={classNames({
         "navbar-icon": true,
-        selected: window.location.pathname === "/meni"
+        selected: window.location.pathname === "/jelovnik"
       })} />,
     },
     {

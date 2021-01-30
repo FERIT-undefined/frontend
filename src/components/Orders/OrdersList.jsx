@@ -95,7 +95,8 @@ function OrdersList(props) {
             <div
               className={classNames({
                 "card shadow orders__card": true,
-                done: getStatus(order.table) === "done",
+                "swing-in": true,
+                "done heartbeat": getStatus(order.table) === "done",
                 started: getStatus(order.table) === "started",
                 ordered: getStatus(order.table) === "ordered",
               })}

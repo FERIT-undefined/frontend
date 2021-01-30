@@ -13,7 +13,7 @@ import PDFExport from "./PDFExport/PDFExport";
 import { IconButton } from "@material-ui/core";
 import Header from "../Header/Header";
 
-const pdfFile = (traffic, chosenStartDate, chosenEndDate, totalTraffic) => 
+const pdfFile = (traffic, chosenStartDate, chosenEndDate, totalTraffic) =>
   <PDFExport
     traffic={traffic}
     totalTraffic={totalTraffic}
@@ -100,7 +100,7 @@ function Traffic() {
               </p>
             </div>
             <div className="traffic__topbar__info__button-container">
-              {download ? 
+              {download ?
                 <PDFDownloadLink
                   document={pdfFile(
                     allTraffic,
@@ -113,7 +113,7 @@ function Traffic() {
                 >
                   {({ loading }) => loading ? "Učitavanje" : "Preuzmi"}
                 </PDFDownloadLink>
-                : 
+                :
                 <button
                   className="traffic__topbar__info__button-container__export"
                   onClick={() => setDownload(true)}
@@ -143,9 +143,9 @@ function Traffic() {
         </div>
         <div className="col">DATUM</div>
       </div> */}
-        {allTraffic && allTraffic.length ? 
-          allTraffic.map((receipt, index) => 
-            <div className="card shadow traffic__card" key={index}>
+        {allTraffic && allTraffic.length ?
+          allTraffic.map((receipt, index) =>
+            <div className="card shadow swing-in traffic__card" key={index}>
               <div className="col-1 traffic__card__list__time">
                 {moment(receipt.finished_timestamp).format("DD.MM.YYYY. hh:mm")}
               </div>
@@ -179,11 +179,11 @@ function Traffic() {
               </div>
             </div>
           )
-          : 
+          :
           <div className="no-traffic">NEMA PROMETA U ODABRANOM RASPONU</div>
         }
       </div>
-      {print && 
+      {print &&
         <Modal showModal={print} closeModal={() => setPrint(false)}>
           <div className="print-modal">
             <PDFViewer width="100%" height="100%">

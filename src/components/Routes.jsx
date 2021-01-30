@@ -15,7 +15,7 @@ function Routes(props) {
     <Container fluid>
       <NavbarContainer user={props.user} />
       <Switch>
-        {props.user.role === "Admin" && 
+        {props.user.role === "Admin" &&
           <>
             <Route
               exact
@@ -23,13 +23,13 @@ function Routes(props) {
               component={() => <Zaposlenici user={props.user} />}
             />
             <Route
-              path="/meni"
+              path="/jelovnik"
               component={() => <MeniList user={props.user} />}
             />
             <Route path="/promet" component={() => <Traffic />} />
           </>
         }
-        {props.user.role === "Konobar" && 
+        {props.user.role === "Konobar" &&
           <>
             <Route
               exact
@@ -37,7 +37,7 @@ function Routes(props) {
               component={() => <OrdersList user={props.user} />}
             />
             <Route
-              path="/meni"
+              path="/jelovnik"
               component={() => <MeniList user={props.user} />}
             />
             <Route

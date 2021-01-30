@@ -52,7 +52,7 @@ function Zaposlenici(props) {
         </button>
         {users && users.length ?
           users.map(user =>
-            <div className="card shadow zaposlenici__card" key={user.id}>
+            <div className="card shadow zaposlenici__card swing-in" key={user.id}>
               <div className="col zaposlenici__card__fname">{user.fname}</div>
               <div className="col zaposlenici__card__lname">{user.lname}</div>
               <div className="col zaposlenici__card__email">{user.email}</div>

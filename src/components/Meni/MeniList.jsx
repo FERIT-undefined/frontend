@@ -141,7 +141,7 @@ function MeniList(props) {
           "orders-modal__menu__list": props.fromTables,
         })}
       >
-        {!props.hideHeader && <Header label="Menu" user={props.user} />}
+        {!props.hideHeader && <Header label="Jelovnik" user={props.user} />}
         <div
           className={classNames({
             menu__topbar: !props.fromTables,
@@ -198,6 +198,7 @@ function MeniList(props) {
               className={classNames({
                 "card shadow orders-modal__menu__list__card": props.fromTables,
                 "card shadow menu__card": !props.fromTables,
+                "swing-in": true,
               })}
               key={meal.id}
             >

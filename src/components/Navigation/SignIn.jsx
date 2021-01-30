@@ -22,11 +22,11 @@ export default function SignIn(props) {
   }, [error]);
 
   return (
-    !props.user && 
+    !props.user &&
       <div className="sign-in">
         <div className="sign-in__form-container">
-          <div className="sign-in__form-container__label">
-            Dobrodošli natrag!
+          <div className="sign-in__form-container__label text-triD">
+            Brza Klopa
           </div>
           <form
             className="sign-in__form-container__form"
@@ -67,11 +67,11 @@ export default function SignIn(props) {
               Sign In
             </button>
           </form>
-          {showError && error && 
+          {showError && error &&
             <div className="sign-in__form-container__error">Email ili lozinka nije ispravno unesena</div>
           }
         </div>
       </div>
-    
+
   );
 }

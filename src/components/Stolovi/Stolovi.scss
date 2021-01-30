@@ -9,7 +9,6 @@
   height: 100vh;
   overflow-y: auto;
   background-color: $cream;
-  padding-top: 1%;
   padding-bottom: 1%;
 
   @media screen and (max-width: 900px) {
@@ -171,7 +170,9 @@
 
         &__search {
           width: 40% !important;
-          background: $dark-blue-opacity;
+          background: $cream;
+          box-shadow: 0 1px 4px 0 $gray;
+          border-radius: 6px;
           box-shadow: inset;
           font-weight: bold;
           border: 1px solid $cream;
@@ -190,7 +191,7 @@
 
           &:focus {
             outline: none;
-            background: $cream;
+            background: #ffffff;
           }
         }
       }

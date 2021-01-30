@@ -56,12 +56,13 @@ const Kuhinja = () => {
     <div>
       <div className="container-fluid kitchen">
         <Header label="Narudžbe" user={user} />
-        {tableOrders && tableOrders.length ? 
+        {tableOrders && tableOrders.length ?
           tableOrders.map((order, i) =>
-            !order.done ? 
+            !order.done ?
               <div
                 className={classNames({
                   "card shadow orders__card": true,
+                  "swing-in": true,
                   done: getStatus(order.table) === "done",
                   started: getStatus(order.table) === "started",
                   ordered: getStatus(order.table) === "ordered",
@@ -82,7 +83,7 @@ const Kuhinja = () => {
                   {order.table}
                 </div>
                 <div className="orders__card__list">
-                  {order.meals.map(meal => 
+                  {order.meals.map(meal =>
                     <div className="orders__card__list__meal" key={meal.name}>
                       <div className="col-3 orders__card__list__meal__name">
                         {meal.name}
@@ -104,7 +105,7 @@ const Kuhinja = () => {
                           "U pripremi"}
                         {meal.status.toLowerCase() === "ordered" && "Naručeno"}
                       </div>
-                      {meal.status.toLowerCase() !== "done" && 
+                      {meal.status.toLowerCase() !== "done" &&
                         <div className="col kitchen__card__list__button-container">
                           <button
                             className="kitchen__card__list__button-container__change"
@@ -123,11 +124,11 @@ const Kuhinja = () => {
               </div>
               : null
           )
-          : 
+          :
           <div className="no-orders">TRENUTNO NEMA NARUDŽBI</div>
         }
       </div>
-      {show && 
+      {show &&
         <Modal show={show} closeModal={() => setShow(false)}>
           <div className="status-modal animated--grow-in delay-2s">
             <p className="status-modal__text">
