@@ -265,7 +265,7 @@ function Stolovi(props) {
                 <CloseIcon
                   id="closeIcon"
                   fontSize="large"
-                  style={{ color: "rgba(244, 243, 239, 0.7)" }}
+                  style={{ color: "#003049" }}
                 />
               </IconButton>
             </div>

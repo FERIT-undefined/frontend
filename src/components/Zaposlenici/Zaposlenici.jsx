@@ -19,6 +19,8 @@ function Zaposlenici(props) {
   const [editedUser, setEditedUser] = useState({});
   const [addUser, setAddUser] = useState(false);
   const users = useSelector(state => state.users.users);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [employee, setEmployee] = useState();
 
   const dispatch = useDispatch();
 
@@ -62,13 +64,8 @@ function Zaposlenici(props) {
                   <IconButton
                     aria-label="delete"
                     onClick={() => {
-                      if (
-                        window.confirm(
-                          "Jeste li sigurni da želite obrisati ovog korisnika?"
-                        )
-                      ) {
-                        dispatch(removeUser(props.user, user.id));
-                      }
+                      setEmployee(user);
+                      setShowDeleteModal(true);
                     }}
                   >
                     <DeleteIcon style={{ color: "#3d405b" }} />
@@ -111,7 +108,7 @@ function Zaposlenici(props) {
                 <p className="edit-modal__form__fname__label">
                   Ime
                 </p>
-                <textarea
+                <input
                   className="edit-modal__form__fname__input"
                   defaultValue={!addUser ? editedUser.fname : ""}
                   onChange={e => setEditedUserData("fname", e.target.value)}
@@ -121,7 +118,7 @@ function Zaposlenici(props) {
                 <p className="edit-modal__form__lname__label">
                   Prezime
                 </p>
-                <textarea
+                <input
                   className="edit-modal__form__lname__input"
                   defaultValue={!addUser ? editedUser.lname : ""}
                   onChange={e => setEditedUserData("lname", e.target.value)}
@@ -131,7 +128,7 @@ function Zaposlenici(props) {
                 <p className="edit-modal__form__email__label">
                   E-mail
                 </p>
-                <textarea
+                <input
                   className="edit-modal__form__email__input"
                   defaultValue={!addUser ? editedUser.email : ""}
                   onChange={e => setEditedUserData("email", e.target.value)}
@@ -144,7 +141,7 @@ function Zaposlenici(props) {
                 <p className="edit-modal__form__password__label">
                   Lozinka
                 </p>
-                <textarea
+                <input
                   className="edit-modal__form__password__input"
                   onChange={e => setEditedUserData("password", e.target.value)}
                 />
@@ -185,6 +182,33 @@ function Zaposlenici(props) {
                 </button>
               </div>
             </form>
+          </div>
+        </Modal>
+      }
+      {
+        showDeleteModal &&
+        <Modal show={showDeleteModal} closeModal={()=>setShowDeleteModal(false)}>
+          <div className="delete-modal animated--grow-in delay-2s">
+            <p className="delete-modal__text">
+              Jeste li sigurni da želite obrisati ovog korisnika?
+            </p>
+            <div className="delete-modal__button-container">
+              <button
+                className="delete-modal__button-container__confirm-button"
+                onClick={() => {
+                  dispatch(removeUser(props.user, employee.id));
+                  setShowDeleteModal(false);
+                }}
+              >
+                Da
+              </button>
+              <button
+                className="delete-modal__button-container__decline-button"
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Ne
+              </button>
+            </div>
           </div>
         </Modal>
       }

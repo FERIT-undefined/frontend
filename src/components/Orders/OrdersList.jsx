@@ -97,8 +97,8 @@ function OrdersList(props) {
                 "card shadow orders__card": true,
                 "swing-in": true,
                 "done heartbeat": getStatus(order.table) === "done",
-                started: getStatus(order.table) === "started",
-                ordered: getStatus(order.table) === "ordered",
+                "started": getStatus(order.table) === "started",
+                "ordered": getStatus(order.table) === "ordered",
               })}
               key={order.table}
             >
@@ -179,7 +179,7 @@ function OrdersList(props) {
                 <IconButton id="close" onClick={() => setShowModal(false)}>
                   <CloseIcon
                     id="closeIcon"
-                    style={{ color: "rgba(244, 243, 239, 1)" }}
+                    style={{ color: "#003049" }}
                   />
                 </IconButton>
               </div>
@@ -297,7 +297,7 @@ function OrdersList(props) {
                   <PrintIcon
                     id="print-icon"
                     style={{
-                      color: " rgba(244, 243, 239, 1)",
+                      color: "#003049",
                       background: "transparent",
                     }}
                   />
@@ -320,7 +320,7 @@ function OrdersList(props) {
                       }
                     }}
                   >
-                    <DoneIcon style={{ color: " rgba(244, 243, 239, 1)" }} />
+                    <DoneIcon style={{ color: "#003049" }} />
                   </IconButton>
                 </div>
               }
@@ -368,7 +368,7 @@ function OrdersList(props) {
                 </div>
               </div>
               <hr />
-              <div className="receipt-container__total-price">
+              <div className="receipt__container__total-price">
                 <div className="receipt__container__total-price__label">
                   Ukupno:{" "}
                 </div>

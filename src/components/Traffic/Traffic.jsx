@@ -110,7 +110,7 @@ function Traffic() {
                   className="save-button reporting-details__footer__link text-decoration-none traffic__topbar__info__button-container__export__link"
                   fileName={`Promet-${startDate} - ${endDate}.pdf`}
                 >
-                  {({ loading }) => loading ? "Učitavanje" : "Preuzmi"}
+                  {({ loading }) => loading ? "UČITAVANJE" : "PREUZMI"}
                 </PDFDownloadLink>
                 :
                 <button
@@ -118,7 +118,7 @@ function Traffic() {
                   onClick={() => setDownload(true)}
                   disabled={disabled}
                 >
-                  {disabled ? "Priprema..." : "Generiraj izvješće"}
+                  {disabled ? "PRIPREMA..." : "GENERIRAJ IZVJEŠĆE"}
                 </button>
               }
               <button
@@ -126,7 +126,7 @@ function Traffic() {
                 onClick={() => setPrint(true)}
                 disabled={disabled}
               >
-                {disabled ? "Priprema..." : "Ispiši"}
+                {disabled ? "PRIPREMA..." : "ISPIŠI"}
               </button>
             </div>
           </div>

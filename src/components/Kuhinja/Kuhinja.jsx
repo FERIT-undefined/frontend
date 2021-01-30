@@ -61,7 +61,7 @@ const Kuhinja = () => {
             !order.done ?
               <div
                 className={classNames({
-                  "card shadow orders__card": true,
+                  "card shadow kitchen__card": true,
                   "swing-in": true,
                   done: getStatus(order.table) === "done",
                   started: getStatus(order.table) === "started",
@@ -74,7 +74,7 @@ const Kuhinja = () => {
               >
                 <div
                   className={classNames({
-                    orders__card__table: true,
+                    kitchen__card__table: true,
                     done: getStatus(order.table) === "done",
                     started: getStatus(order.table) === "started",
                     ordered: getStatus(order.table) === "ordered",
@@ -82,18 +82,18 @@ const Kuhinja = () => {
                 >
                   {order.table}
                 </div>
-                <div className="orders__card__list">
+                <div className="kitchen__card__list">
                   {order.meals.map(meal =>
-                    <div className="orders__card__list__meal" key={meal.name}>
-                      <div className="col-3 orders__card__list__meal__name">
+                    <div className="kitchen__card__list__meal" key={meal.name}>
+                      <div className="col-3 kitchen__card__list__meal__name">
                         {meal.name}
                       </div>
-                      <div className="col-3 orders__card__list__meal__quantity">
+                      <div className="col-3 kitchen__card__list__meal__quantity">
                         {meal.quantity}
                       </div>
                       <div
                         className={classNames({
-                          orders__card__list__meal__status: true,
+                          kitchen__card__list__meal__status: true,
                           done: meal.status.toLowerCase() === "done",
                           started: meal.status.toLowerCase() === "started",
                           ordered: meal.status.toLowerCase() === "ordered",

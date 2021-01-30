@@ -16,18 +16,21 @@
     align-items: center;
     margin: 1% 5% 2% 3%;
     padding: 2%;
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0 1px 4px 0 $gray;
     border-radius: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 
     &__range {
       width: 100%;
       display: flex;
       flex-direction: row;
       align-items: center;
+      text-transform: uppercase;
       &__label {
-        font-size: 20px;
-        font-weight: bold;
+        font-size: 17px;
+        font-weight: 500;
         margin-right: 2%;
       }
       &__datepicker-container {
@@ -42,9 +45,9 @@
       justify-content: space-between;
       align-items: center;
       margin-top: 2%;
-
+      letter-spacing: 0.07em;
       &__total {
-        font-size: 22px;
+        font-size: 19px;
         display: flex;
         flex-direction: row;
         width: 75%;
@@ -55,36 +58,36 @@
         }
         &__value {
           margin-bottom: 0;
-          font-weight: bold;
+          font-weight: 700;
         }
       }
 
       &__button-container {
         display: flex;
-        width: 25%;
+        width: 30%;
         margin: auto;
         justify-content: space-evenly;
+        text-transform: uppercase;
 
         &__export,
         &__print {
           height: 50px;
-          width: 200px;
+          width: 220px;
           background: $dark-blue;
           border: 1px solid $dark-blue;
-          border-radius: 0.25rem;
-          color: $cream;
-          font-size: 18px;
-          font-weight: bold;
+          border-radius: 1px;
+          color: white;
+          font-size: 17px;
+          letter-spacing: 0.07em;
           padding: 8px;
-          box-shadow: 0 0.15rem 0.75rem 0 $dark-gray !important;
+          opacity: 0.8;
           transition: all 0.5s;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-            Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+            "Helvetica Neue", sans-serif !important;
 
           &:hover {
-            box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
+            opacity: 1;
             transition: all 0.5s;
-            color: white;
           }
 
           &:active {
@@ -100,18 +103,18 @@
           width: 200px;
           background: $dark-blue;
           border: 1px solid $dark-blue;
-          border-radius: 0.25rem;
-          color: $cream;
-          font-size: 18px;
-          font-weight: bold;
+          border-radius: 1px;
+          color: white;
+          font-size: 17px;
+          letter-spacing: 0.07em;
           padding: 8px;
-          box-shadow: 0 0.15rem 0.75rem 0 $dark-gray !important;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-            Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+          opacity: 0.8;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+            "Helvetica Neue", sans-serif !important;
           transition: all 0.5s;
 
           &:hover {
-            box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
+            opacity: 1;
             transition: all 0.5s;
             color: white;
           }
@@ -125,36 +128,42 @@
   }
 
   &__card {
+    height: fit-content;
     display: inline-flex;
     flex-direction: row;
     padding: 1.5%;
-    margin: 0.25% 5% 0.25% 3%;
+    margin: 0.5% 5% 0.25% 3%;
     background: $menu-background;
     color: $light-gray;
-    font-size: 20px;
+    font-size: 17px;
     align-items: center;
     border-left: 10px solid $menu-border;
     cursor: default;
-    align-items: center;
-    transition: all 0.5s;
-    box-shadow: 0 1px 4px 0 $gray !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.2) !important;
+    opacity: 0.8 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+      "Helvetica Neue", sans-serif !important;
+    transition: all 0.3s ease-in !important;
 
     &:hover {
-      box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
-      transition: box-shadow 0.5s;
+      opacity: 1 !important;
+      box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.4) !important;
+      transition: all 0.3s ease-in !important;
     }
 
     &__list {
       display: flex;
       flex-direction: column;
-      font-size: 20px;
+      width: 90%;
+      font-size: 17px;
       margin-right: 2%;
-      align-items: center;
 
       &__meal {
         display: inline-flex;
         padding: 10px 0;
-        width: 95%;
+        width: 100%;
 
         &__name {
           font-weight: bold;
@@ -179,7 +188,7 @@
 
       &__price {
         font-weight: bold;
-        font-size: 22px;
+        font-size: 20px;
         white-space: nowrap;
       }
     }
@@ -191,7 +200,7 @@
   height: 99vh;
   width: 50vw;
   display: flex;
-  &__close-icon{
+  &__close-icon {
     position: absolute;
     left: 77%;
     background-color: white;
@@ -201,35 +210,34 @@
 
 .react-datepicker-wrapper {
   margin-right: 5px;
-  box-shadow: 0px 0px 10px 0px $gray;
 }
 
 .react-datepicker {
-  box-shadow: 0px 0px 20px 0px #d0d0d0;
 
   &__input-container {
     input {
       cursor: pointer;
       padding: 5px 15px;
       border: 3px solid $dark-blue;
-      border-radius: 4px;
+      border-radius: 1px;
       font: inherit;
-      font-weight: bold;
+      letter-spacing: 0.05em;
       text-align: center;
       width: 120px;
       background: $dark-blue;
-      color: $cream;
+      color: white;
+      opacity: 0.8;
       transition: all 0.5s;
     }
 
     input:hover {
-      color: white;
-      box-shadow: 0px 0px 10px 0px $dark-gray;
+      opacity: 1;
       transition: all 0.5s;
     }
 
     input:focus {
-      color: white;
+      opacity: 1;
+      transition: all 0.5s;
     }
   }
 }

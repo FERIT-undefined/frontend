@@ -150,7 +150,7 @@ function MeniList(props) {
         >
           <input
             className={classNames({
-              "form-control menu__topbar__search": !props.fromTables,
+              "menu__topbar__search": !props.fromTables,
               "orders-modal__menu__list__topbar__search": props.fromTables,
               admin: props.user && props.user.role.toLowerCase() === "admin",
             })}
@@ -187,7 +187,7 @@ function MeniList(props) {
               className="menu__topbar__add"
               onClick={() => setShowMealModal(true)}
             >
-              DODAJ NOVO JELO
+              NOVO JELO
             </button>
           }
         </div>
@@ -306,7 +306,7 @@ function MeniList(props) {
             </div>
           )
           :
-          <div className="no-meals">TRENUTNO NEMA JELA NA MENU-u</div>
+          <div className="no-meals">TRENUTNO NEMA JELA NA JELOVNIKU</div>
         }
       </div>
       {showMealModal && editedMeal &&
@@ -328,7 +328,7 @@ function MeniList(props) {
             >
               <div className="edit-modal__form__name">
                 <p className="edit-modal__form__name__label">Naziv</p>
-                <textarea
+                <input
                   className="edit-modal__form__name__input"
                   defaultValue={edit ? editedMeal.name : ""}
                   onChange={e => {
@@ -340,7 +340,7 @@ function MeniList(props) {
                 <p className="edit-modal__form__description__label">
                   Opis
                 </p>
-                <textarea
+                <input
                   className="edit-modal__form__description__input"
                   defaultValue={edit ? editedMeal.description : ""}
                   onChange={e => {

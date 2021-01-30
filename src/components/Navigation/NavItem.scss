@@ -47,6 +47,7 @@
     margin-bottom: 0;
     opacity: 0.5;
     &.selected {
+      font-weight: bold;
       opacity: 1;
       transition: all 0.5s;
     }

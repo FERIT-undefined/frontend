@@ -13,12 +13,13 @@
 
   &__left {
     position: relative;
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 25px;
     width: 80%;
     align-items: center;
     display: flex;
     margin-left: 3%;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
     cursor: default;
   }
 
@@ -28,8 +29,10 @@
     align-items: center;
     width: 20%;
     margin-right: 3%;
+    font-size: 18px;
+    font-weight: 100;
     &__user {
-      font-size: 20px;
+      letter-spacing: 0.07em;
       cursor: default;
     }
     &__logout {
@@ -40,7 +43,6 @@
       font-weight: bold;
       align-items: center;
       height: 100%;
-      font-size: 20px;
     }
     &__logout:hover {
       opacity: 0.8;
