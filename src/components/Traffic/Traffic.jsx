@@ -58,10 +58,9 @@ function Traffic() {
         (previousScore, currentScore) =>
           previousScore + currentScore.total_price,
         0
-      )
+      ).toFixed(2)
     );
   };
-
   return (
     <div>
       <div className="container-fluid traffic">
@@ -109,7 +108,7 @@ function Traffic() {
                     totalTraffic
                   )}
                   className="save-button reporting-details__footer__link text-decoration-none traffic__topbar__info__button-container__export__link"
-                  fileName={`traffic-${startDate} - ${endDate}.pdf`}
+                  fileName={`Promet-${startDate} - ${endDate}.pdf`}
                 >
                   {({ loading }) => loading ? "Učitavanje" : "Preuzmi"}
                 </PDFDownloadLink>
