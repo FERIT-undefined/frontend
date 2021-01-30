@@ -14,24 +14,25 @@
 
   &__add {
     margin: 1% 5% 2% 3%;
-    height: 50px;
-    width: fit-content !important;
-    background: $dark-blue;
-    border: 1px solid $dark-blue;
-    border-radius: 0.25rem;
-    color: $cream;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 8px;
-    box-shadow: 0 0.15rem 0.75rem 0 $dark-gray !important;
-    transition: all 0.5s;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-      "Helvetica Neue", sans-serif !important;
+    width: -webkit-fit-content!important;
+    width: -moz-fit-content!important;
+    width: fit-content!important;
+    background: #3d405b;
+    border: 1px solid #3d405b;
+    border-radius: 1px;
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    padding: 0.6em 1.2em;
+    transition: all .5s;
+    letter-spacing: .05em;
+    opacity: 0.8;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif!important;
 
     &:hover {
-      box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
+      opacity: 1;
+      // box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
       transition: all 0.5s;
-      color: white;
+      // color: white;
     }
 
     &:active {
@@ -44,26 +45,31 @@
     flex-direction: row;
     padding: 1.5%;
     margin: 0.25% 5% 0.25% 3%;
-    background: $menu-background;
-    color: $light-gray;
-    font-size: 20px;
+    background: rgba(221, 190, 169, 0.15);
+    font-size: 17px;
     align-items: center;
-    border-left: 10px solid $menu-border;
-    transition: box-shadow 0.5s;
+    border-left: 10px solid #ddbea9;
     cursor: default;
+    transition: box-shadow 0.5s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.2) !important;
 
     &:hover {
-      box-shadow: 0 0.15rem 1.75rem 0 $light-gray !important;
-      transition: box-shadow 0.5s;
+      box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.4) !important;
+      transition: all 0.5s;
     }
 
     &__fname,
     &__lname,
     &__role {
-      font-weight: bold;
+      font-weight: 500;
+      letter-spacing: 0.1em;
     }
 
     &__role {
+      font-weight: 500;
+      letter-spacing: 0.1em;
       text-align: center;
     }
 
@@ -73,15 +79,15 @@
   }
 
   &__edit-modal {
-    background: $dark-blue;
+    background: #ffffff;
     width: 40%;
-    border-radius: 20px;
+    border-radius: 2px;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
     height: fit-content;
     padding: 40px;
-    box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.3) !important;
+
 
     &__form {
       width: 100%;
@@ -92,42 +98,43 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
         "Helvetica Neue", sans-serif !important;
 
+
       &__fname,
       &__lname,
       &__password,
       &__email,
       &__role {
-        background: white;
-        border-radius: 10px;
-        color: $cream !important;
+        color: rgba(244, 243, 239, 0.7) !important;
         margin-bottom: 1%;
         width: 100%;
         padding: 2%;
+        height: -webkit-fit-content;
+        height: -moz-fit-content;
         height: fit-content;
-        box-shadow: 0 0.15rem 1.75rem 0 $dark-gray !important;
 
         &__label {
           padding-left: 10px;
           font-size: 18px;
-          font-weight: bold;
+          letter-spacing: 0.05em;
+          font-weight: 700;
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
             "Helvetica Neue", sans-serif !important;
-          color: $light-gray;
+          color: #858796;
+          margin-bottom: 0px;
         }
 
         &__input {
           display: flex;
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
             "Helvetica Neue", sans-serif !important;
-          font-size: 20px;
-          font-weight: bold;
-          color: $dark-blue;
+          font-size: 17px;
+          line-height: 17px;
+          color: #3d405b;
           padding-left: 10px;
           background: none;
-          border: none;
           width: 100%;
-          height: 40px;
-          border-bottom: 1px solid $dark-blue;
+          border: none;
+          border-bottom: 1px solid #3d405b;
 
           &:focus {
             outline: none !important;

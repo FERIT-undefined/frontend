@@ -109,7 +109,7 @@ function Zaposlenici(props) {
                 <p className="zaposlenici__edit-modal__form__fname__label">
                   Ime
                 </p>
-                <textarea
+                <input
                   className="zaposlenici__edit-modal__form__fname__input"
                   defaultValue={!addUser ? editedUser.fname : ""}
                   onChange={e => setEditedUserData("fname", e.target.value)}
@@ -119,7 +119,7 @@ function Zaposlenici(props) {
                 <p className="zaposlenici__edit-modal__form__lname__label">
                   Prezime
                 </p>
-                <textarea
+                <input
                   className="zaposlenici__edit-modal__form__lname__input"
                   defaultValue={!addUser ? editedUser.lname : ""}
                   onChange={e => setEditedUserData("lname", e.target.value)}
@@ -129,7 +129,7 @@ function Zaposlenici(props) {
                 <p className="zaposlenici__edit-modal__form__email__label">
                   E-mail
                 </p>
-                <textarea
+                <input
                   className="zaposlenici__edit-modal__form__email__input"
                   defaultValue={!addUser ? editedUser.email : ""}
                   onChange={e => setEditedUserData("email", e.target.value)}
@@ -142,7 +142,7 @@ function Zaposlenici(props) {
                 <p className="zaposlenici__edit-modal__form__password__label">
                   Lozinka
                 </p>
-                <textarea
+                <input
                   className="zaposlenici__edit-modal__form__password__input"
                   onChange={e =>
                     setEditedUserData("password", e.target.value)

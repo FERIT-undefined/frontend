@@ -46,7 +46,9 @@
     position: relative;
     margin-bottom: 0;
     opacity: 0.5;
+    // font-weight: normal;
     &.selected {
+      font-weight: bold;
       opacity: 1;
       transition: all 0.5s;
     }

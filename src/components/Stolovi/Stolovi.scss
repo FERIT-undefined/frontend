@@ -20,6 +20,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    
 
     &__order-table {
       width: 270px;
@@ -34,12 +35,15 @@
       font-size: 50px;
       cursor: pointer;
       transition: all 0.5s;
+      opacity: 0.6;
 
       &:hover {
-        width: 300px;
-        height: 290px;
-        font-size: 55px;
-        font-weight: bold;
+
+        opacity: 1;
+        // width: 300px;
+        // height: 290px;
+        // font-size: 55px;
+        // font-weight: bold;
         transition: all 0.5s;
       }
 
