@@ -54,11 +54,13 @@ function Traffic() {
 
   const calculateTraffic = () => {
     setTotalTraffic(
-      traffic.reduce(
-        (previousScore, currentScore) =>
-          previousScore + currentScore.total_price,
-        0
-      ).toFixed(2)
+      traffic !== undefined ?
+        traffic.reduce(
+          (previousScore, currentScore) =>
+            previousScore + currentScore.total_price,
+          0
+        ).toFixed(2)
+        : 0
     );
   };
   return (
@@ -174,7 +176,7 @@ function Traffic() {
                 })}
               </div>
               <div className="col-1 traffic__card__list__price">
-                {receipt.total_price.toFixed(2)} HRK
+                {receipt.totalPrice !== undefined ? receipt.total_price.toFixed(2) : 0} HRK
               </div>
             </div>
           )
