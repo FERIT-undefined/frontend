@@ -63,6 +63,7 @@ function Traffic() {
         : 0
     );
   };
+  console.log(allTraffic);
   return (
     <div>
       <div className="container-fluid traffic">
@@ -176,7 +177,7 @@ function Traffic() {
                 })}
               </div>
               <div className="col-1 traffic__card__list__price">
-                {receipt.totalPrice !== undefined ? receipt.total_price.toFixed(2) : 0} HRK
+                {receipt && receipt.total_price} HRK
               </div>
             </div>
           )
