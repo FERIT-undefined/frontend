@@ -88,7 +88,7 @@ function OrdersList(props) {
             setShow(true);
           }}
         >
-          Pošalji na promet
+          Spremi gotove narudžbe
         </button>
         {orders && orders.length ?
           orders.map(order =>
@@ -384,7 +384,7 @@ function OrdersList(props) {
         <Modal show={show} closeModal={() => setShow(false)}>
           <div className="export-modal animated--grow-in delay-2s">
             <p className="export-modal__text">
-              Želite li poslati sve gotove narudžbe na promet?
+              Želite li spremiti sve gotove narudžbe?
             </p>
             <div className="export-modal__button-container">
               <button
