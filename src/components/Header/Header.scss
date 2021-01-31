@@ -21,6 +21,22 @@
     text-transform: uppercase;
     letter-spacing: 0.07em;
     cursor: default;
+
+    @media screen and (max-width: 400px) {
+      font-size: 14px !important;
+    }
+
+    @media screen and (max-width: 500px) {
+      font-size: 18px;
+    }
+
+    @media screen and (max-width: 860px) {
+      width: 50%;
+    }
+
+    @media screen and(min-width: 861px) and (max-width: 1547px) {
+      width: 60%;
+    }
   }
 
   &__right {
@@ -31,6 +47,14 @@
     margin-right: 3%;
     font-size: 18px;
     font-weight: 100;
+
+    @media screen and (max-width: 400px) {
+      font-size: 14px !important;
+    }
+    @media screen and (max-width: 500px) {
+      font-size: 18px;
+    }
+
     &__user {
       letter-spacing: 0.07em;
       cursor: default;

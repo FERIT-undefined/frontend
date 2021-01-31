@@ -1,6 +1,6 @@
 @import "../../colors.scss";
 
-.sidebar{
+.sidebar {
   position: fixed;
   overflow: hidden;
   background: $dark-blue;
@@ -8,6 +8,11 @@
   padding-right: 0;
   box-shadow: 0 1px 4px 0 $gray !important;
   z-index: 1;
+
+  @media screen and (max-width: 767px) {
+    font-size: 10px !important;
+  }
+
   .navbar__header {
     margin-top: 10%;
     font-size: 23px;
@@ -22,8 +27,20 @@
     margin-left: 8%;
     margin-right: 8%;
     padding-bottom: 5%;
+    white-space: nowrap;
+
+    @media screen and (max-width: 767px) {
+      font-size: 10px !important;
+    }
   }
   .navbar__body {
     margin-top: 20%;
+  }
+}
+
+.col-md-3,
+.col-12 {
+  @media screen and (min-width: 768px) {
+    max-width: none !important;
   }
 }
