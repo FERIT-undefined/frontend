@@ -150,7 +150,7 @@ function MeniList(props) {
         >
           <input
             className={classNames({
-              "menu__topbar__search": !props.fromTables,
+              menu__topbar__search: !props.fromTables,
               "orders-modal__menu__list__topbar__search": props.fromTables,
               admin: props.user && props.user.role.toLowerCase() === "admin",
             })}
@@ -181,7 +181,7 @@ function MeniList(props) {
               }
             }}
           />
-          {props.user && props.user.role === "Admin" &&
+          {props.user && props.user.role === "Admin" && 
             <button
               type="button"
               className="menu__topbar__add"
@@ -192,8 +192,8 @@ function MeniList(props) {
           }
         </div>
         {(searchResults ? searchResults : allMeals) &&
-        (searchResults ? searchResults : allMeals).length ?
-          (searchResults ? searchResults : allMeals).map((meal, index) =>
+        (searchResults ? searchResults : allMeals).length ? 
+          (searchResults ? searchResults : allMeals).map((meal, index) => 
             <div
               className={classNames({
                 "card shadow orders-modal__menu__list__card": props.fromTables,
@@ -226,7 +226,7 @@ function MeniList(props) {
                 ).toFixed(2)}{" "}
                 HRK
               </div>
-              {props.tableSelect &&
+              {props.tableSelect && 
                 <div
                   className="col-1  orders-modal__menu__list__card__picker"
                   id="mealRow-picker"
@@ -264,11 +264,11 @@ function MeniList(props) {
                       }
                     }}
                   >
-                    {!meal.added ?
+                    {!meal.added ? 
                       <CheckCircleOutlineIcon
                         style={{ color: " #ddbea9", fontSize: "30px" }}
                       />
-                      :
+                      : 
                       <HighlightOffIcon
                         style={{ color: " #ddbea9", fontSize: "30px" }}
                       />
@@ -276,7 +276,7 @@ function MeniList(props) {
                   </button>
                 </div>
               }
-              {props.user && props.user.role === "Admin" &&
+              {props.user && props.user.role === "Admin" && 
                 <div className="col-1 menu__card__button-container">
                   <IconButton
                     aria-label="delete"
@@ -305,11 +305,11 @@ function MeniList(props) {
               }
             </div>
           )
-          :
+          : 
           <div className="no-meals">TRENUTNO NEMA JELA NA JELOVNIKU</div>
         }
       </div>
-      {showMealModal && editedMeal &&
+      {showMealModal && editedMeal && 
         <Modal showModal={showMealModal} closeModal={closeModal}>
           <div className="edit-modal animated--grow-in" id="fadeup">
             <form
@@ -330,6 +330,7 @@ function MeniList(props) {
                 <p className="edit-modal__form__name__label">Naziv</p>
                 <input
                   className="edit-modal__form__name__input"
+                  required
                   defaultValue={edit ? editedMeal.name : ""}
                   onChange={e => {
                     setNewMealData("name", e.target.value);
@@ -337,10 +338,9 @@ function MeniList(props) {
                 />
               </div>
               <div className="edit-modal__form__description">
-                <p className="edit-modal__form__description__label">
-                  Opis
-                </p>
+                <p className="edit-modal__form__description__label">Opis</p>
                 <input
+                  required
                   className="edit-modal__form__description__input"
                   defaultValue={edit ? editedMeal.description : ""}
                   onChange={e => {
@@ -349,10 +349,9 @@ function MeniList(props) {
                 />
               </div>
               <div className="edit-modal__form__price">
-                <p className="edit-modal__form__price__label">
-                  Cijena (HRK)
-                </p>
+                <p className="edit-modal__form__price__label">Cijena (HRK)</p>
                 <input
+                  required
                   className="edit-modal__form__price__input"
                   type="number"
                   defaultValue={edit ? editedMeal.price : 0}
@@ -364,16 +363,15 @@ function MeniList(props) {
                 />
               </div>
               <div className="edit-modal__form__type">
-                <p className="edit-modal__form__type__label">
-                  Vrsta jela
-                </p>
+                <p className="edit-modal__form__type__label">Vrsta jela</p>
                 <select
+                  required
                   className="edit-modal__form__type__input"
                   value={editedMeal.type}
                   onChange={e => setNewMealData("type", e.target.value)}
                   id="select"
                 >
-                  {mealTypes.map(option =>
+                  {mealTypes.map(option => 
                     <option
                       className="edit-modal__form__type__input__option"
                       key={option.value}
@@ -387,6 +385,7 @@ function MeniList(props) {
               <div className="edit-modal__form__pdv">
                 <p className="edit-modal__form__pdv__label">PDV (%)</p>
                 <input
+                  required
                   className="edit-modal__form__pdv__input"
                   defaultValue={edit ? editedMeal.pdv : 0}
                   onChange={e => {
@@ -399,9 +398,7 @@ function MeniList(props) {
                 />
               </div>
               <div className="edit-modal__form__discount">
-                <p className="edit-modal__form__discount__label">
-                  Popust (%)
-                </p>
+                <p className="edit-modal__form__discount__label">Popust (%)</p>
                 <input
                   className="edit-modal__form__discount__input"
                   type="number"
@@ -432,7 +429,7 @@ function MeniList(props) {
           </div>
         </Modal>
       }
-      {showDeleteModal &&
+      {showDeleteModal && 
         <Modal
           show={showDeleteModal}
           closeModal={() => setShowDeleteModal(false)}

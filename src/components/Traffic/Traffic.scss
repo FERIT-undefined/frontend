@@ -214,6 +214,15 @@
 }
 
 .react-datepicker {
+  height: 390px;
+  width: 300px;
+  &__month-container {
+
+  }
+
+  &__week {
+    height: 50px;
+  }
 
   &__input-container {
     input {
@@ -253,6 +262,7 @@
 }
 
 .react-datepicker__day {
+  width: 35px;
   &--outside-month {
     color: #555555;
   }

@@ -65,7 +65,7 @@ export default class QuantityPicker extends Component {
             "quantity-picker__increment":true,
             disabled: this.props.meal.added || disableInc
           })}
-          disabled={this.props.meal.added || disableInc}
+          disabled={this.props.meal.added}
           onClick={this.increment}
         >
           +
@@ -82,7 +82,7 @@ export default class QuantityPicker extends Component {
             "quantity-picker__decrement":true,
             disabled: this.props.meal.added || disableDec
           })}
-          disabled={this.props.meal.added || disableDec}
+          disabled={this.props.meal.added}
           onClick={this.decrement}
         >
           -
